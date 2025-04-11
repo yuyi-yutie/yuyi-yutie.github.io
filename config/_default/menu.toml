@@ -10,15 +10,23 @@
 [[social]]
 identifier = "github"
 name = "GitHub"
-url = "https://github.com/CaiJimmy/hugo-theme-stack"
+url = "https://github.com/yuyi-yutie"
 
 [social.params]
 icon = "brand-github"
 
 [[social]]
-identifier = "twitter"
-name = "Twitter"
-url = "https://twitter.com"
+identifier = "bilibili"
+name = "Bilibili"
+url = "https://space.bilibili.com/3546602811689251?spm_id_from=333.1007.0.0"
 
 [social.params]
-icon = "brand-twitter"
+icon = "brand-bilibili"
+
+[[social]]
+identifier = "zhihu"
+name = "Zhihu"
+url = "https://www.zhihu.com/people/89-70-59-86-39"
+
+[social.params]
+icon = "brand-zhihu"
