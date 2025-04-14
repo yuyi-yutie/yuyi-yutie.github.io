@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
-        <title>状态机 on yuyi</title>
-        <link>http://localhost:1313/tags/%E7%8A%B6%E6%80%81%E6%9C%BA/</link>
-        <description>Recent content in 状态机 on yuyi</description>
+        <title>游戏程序 on yuyi</title>
+        <link>http://localhost:1313/categories/%E6%B8%B8%E6%88%8F%E7%A8%8B%E5%BA%8F/</link>
+        <description>Recent content in 游戏程序 on yuyi</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>yuyi</copyright>
-        <lastBuildDate>Fri, 11 Apr 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/%E7%8A%B6%E6%80%81%E6%9C%BA/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 11 Apr 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/categories/%E6%B8%B8%E6%88%8F%E7%A8%8B%E5%BA%8F/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>有限状态机</title>
         <link>http://localhost:1313/p/%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/</link>
         <pubDate>Fri, 11 Apr 2025 00:00:00 +0000</pubDate>

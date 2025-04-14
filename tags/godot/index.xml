@@ -8,18 +8,18 @@
         <language>zh-cn</language>
         <copyright>yuyi</copyright>
         <lastBuildDate>Fri, 11 Apr 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/godot/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>状态机总结</title>
-        <link>http://localhost:1313/p/%E7%8A%B6%E6%80%81%E6%9C%BA%E6%80%BB%E7%BB%93/</link>
+        <title>有限状态机</title>
+        <link>http://localhost:1313/p/%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/</link>
         <pubDate>Fri, 11 Apr 2025 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/p/%E7%8A%B6%E6%80%81%E6%9C%BA%E6%80%BB%E7%BB%93/</guid>
+        <guid>http://localhost:1313/p/%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/</guid>
         <description>&lt;h2 id=&#34;前言&#34;&gt;前言
 &lt;/h2&gt;&lt;p&gt;我在使用godot开发一个RTS游戏的时候，我突然发现游戏中的单位(Unit)有且仅有三个动作（当时没有考虑&amp;quot;状态&amp;quot;，而是直接将这些定义为动作）：静止，移动，攻击，或者他们的组合（比如边移动边攻击，当然，别和我杠边静止边移动）&lt;/p&gt;
 &lt;p&gt;然后就诞生了这样一个无限递归函数的流程图：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/%E7%8A%B6%E6%80%81%E6%9C%BA%E6%80%BB%E7%BB%93/%E7%8A%B6%E6%80%81%E6%9C%BA%E6%80%BB%E7%BB%931.jpg&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/%E7%8A%B6%E6%80%81%E6%9C%BA%E6%80%BB%E7%BB%931.jpg&#34;
 	width=&#34;1920&#34;
 	height=&#34;1352&#34;
-	srcset=&#34;http://localhost:1313/p/%E7%8A%B6%E6%80%81%E6%9C%BA%E6%80%BB%E7%BB%93/%E7%8A%B6%E6%80%81%E6%9C%BA%E6%80%BB%E7%BB%931_hu_e7e11bcb33e95b20.jpg 480w, http://localhost:1313/p/%E7%8A%B6%E6%80%81%E6%9C%BA%E6%80%BB%E7%BB%93/%E7%8A%B6%E6%80%81%E6%9C%BA%E6%80%BB%E7%BB%931_hu_58f12fda764299fd.jpg 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/%E7%8A%B6%E6%80%81%E6%9C%BA%E6%80%BB%E7%BB%931_hu_e7e11bcb33e95b20.jpg 480w, http://localhost:1313/p/%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/%E7%8A%B6%E6%80%81%E6%9C%BA%E6%80%BB%E7%BB%931_hu_58f12fda764299fd.jpg 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;状态机总结1&#34;
@@ -32,10 +32,10 @@
 &gt;&lt;/p&gt;
 &lt;p&gt;可nb了，当时我就觉得，wow，我简直是一个逻辑大王，直到我知道这么做会栈溢出&amp;hellip;&lt;/p&gt;
 &lt;p&gt;然后就去学了状态机，把上面的逻辑通过状态机写成了这样：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/%E7%8A%B6%E6%80%81%E6%9C%BA%E6%80%BB%E7%BB%93/%E7%8A%B6%E6%80%81%E6%9C%BA%E6%80%BB%E7%BB%932.jpg&#34;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/p/%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/%E7%8A%B6%E6%80%81%E6%9C%BA%E6%80%BB%E7%BB%932.jpg&#34;
 	width=&#34;1920&#34;
 	height=&#34;1093&#34;
-	srcset=&#34;http://localhost:1313/p/%E7%8A%B6%E6%80%81%E6%9C%BA%E6%80%BB%E7%BB%93/%E7%8A%B6%E6%80%81%E6%9C%BA%E6%80%BB%E7%BB%932_hu_e62bdb37d68f0d4b.jpg 480w, http://localhost:1313/p/%E7%8A%B6%E6%80%81%E6%9C%BA%E6%80%BB%E7%BB%93/%E7%8A%B6%E6%80%81%E6%9C%BA%E6%80%BB%E7%BB%932_hu_60e09c4624021ee6.jpg 1024w&#34;
+	srcset=&#34;http://localhost:1313/p/%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/%E7%8A%B6%E6%80%81%E6%9C%BA%E6%80%BB%E7%BB%932_hu_e62bdb37d68f0d4b.jpg 480w, http://localhost:1313/p/%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/%E7%8A%B6%E6%80%81%E6%9C%BA%E6%80%BB%E7%BB%932_hu_60e09c4624021ee6.jpg 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;状态机总结2&#34;

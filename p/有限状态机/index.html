@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="前言 我在使用godot开发一个RTS游戏的时候，我突然发现游戏中的单位(Unit)有且仅有三个动作（当时没有考虑&quot;状态&quot;，而是直接将这些定义为动作）：静止，移动，攻击，或者他们的组合（比如边移动边攻击，当然，别和我杠边静止边移动）\n">
+<title>有限状态机</title>
+
+<link rel='canonical' href='http://localhost:1313/p/%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/'>
+
+<link rel="stylesheet" href="/scss/style.min.b41fbeb1758861b170a462ca5c5b93b973caa976a8f1c39fb877a49158ef60fb.css"><meta property='og:title' content="有限状态机">
+<meta property='og:description' content="前言 我在使用godot开发一个RTS游戏的时候，我突然发现游戏中的单位(Unit)有且仅有三个动作（当时没有考虑&quot;状态&quot;，而是直接将这些定义为动作）：静止，移动，攻击，或者他们的组合（比如边移动边攻击，当然，别和我杠边静止边移动）\n">
+<meta property='og:url' content='http://localhost:1313/p/%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/'>
+<meta property='og:site_name' content='yuyi'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='状态机' /><meta property='article:tag' content='godot' /><meta property='article:published_time' content='2025-04-11T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-04-11T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="有限状态机">
+<meta name="twitter:description" content="前言 我在使用godot开发一个RTS游戏的时候，我突然发现游戏中的单位(Unit)有且仅有三个动作（当时没有考虑&quot;状态&quot;，而是直接将这些定义为动作）：静止，移动，攻击，或者他们的组合（比如边移动边攻击，当然，别和我杠边静止边移动）\n">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_ca2022513e914385.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🤔</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">yuyi</a></h1>
+            <h2 class="site-description">由e转i的社恐分子，效率奇怪的心流专家，喜欢胡思乱想的写手，可以画劣质像素画的不合格美术，把开发游戏当成创造世界的游戏策划，ue、unity、godot三手抓的八爪鱼游戏程序</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/3546602811689251?spm_id_from=333.1007.0.0'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6z" /><path d="M8 3l2 3" /><path d="M16 3l-2 3" /><path d="M9 13v-2" /><path d="M15 11v2" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://www.zhihu.com/people/89-70-59-86-39'
+                        target="_blank"
+                        title="Zhihu"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-zhihu"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 6h6v12h-2l-2 2l-1 -2h-1z" /><path d="M4 12h6.5" /><path d="M10.5 6h-5" /><path d="M6 4c-.5 2.5 -1.5 3.5 -2.5 4.5" /><path d="M8 6v7c0 4.5 -2 5.5 -4 7" /><path d="M11 18l-3 -5" /></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#用硬代码实现状态机">用硬代码实现状态机</a>
+      <ol>
+        <li><a href="#逻辑">逻辑</a></li>
+        <li><a href="#实现">实现</a></li>
+      </ol>
+    </li>
+    <li><a href="#用statemachine父节点state类子节点实现状态机">用StateMachine父节点+STATE类子节点实现状态机</a>
+      <ol>
+        <li><a href="#约定俗成">约定俗成</a></li>
+        <li><a href="#实现与理解">实现与理解</a></li>
+      </ol>
+    </li>
+    <li><a href="#依赖注入的状态机写法">依赖注入的状态机写法</a>
+      <ol>
+        <li><a href="#玩家">玩家</a></li>
+        <li><a href="#状态机">状态机</a></li>
+        <li><a href="#状态父类">状态父类</a></li>
+        <li><a href="#状态子类">状态子类</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E6%B8%B8%E6%88%8F%E7%A8%8B%E5%BA%8F/" >
+                游戏程序
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/">有限状态机</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2025-04-11</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 11 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="前言">前言
+</h2><p>我在使用godot开发一个RTS游戏的时候，我突然发现游戏中的单位(Unit)有且仅有三个动作（当时没有考虑&quot;状态&quot;，而是直接将这些定义为动作）：静止，移动，攻击，或者他们的组合（比如边移动边攻击，当然，别和我杠边静止边移动）</p>
+<p>然后就诞生了这样一个无限递归函数的流程图：</p>
+<p><img src="/p/%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/%E7%8A%B6%E6%80%81%E6%9C%BA%E6%80%BB%E7%BB%931.jpg"
+	width="1920"
+	height="1352"
+	srcset="/p/%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/%E7%8A%B6%E6%80%81%E6%9C%BA%E6%80%BB%E7%BB%931_hu_e7e11bcb33e95b20.jpg 480w, /p/%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/%E7%8A%B6%E6%80%81%E6%9C%BA%E6%80%BB%E7%BB%931_hu_58f12fda764299fd.jpg 1024w"
+	loading="lazy"
+	
+		alt="状态机总结1"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="142"
+		data-flex-basis="340px"
+	
+></p>
+<p>可nb了，当时我就觉得，wow，我简直是一个逻辑大王，直到我知道这么做会栈溢出&hellip;</p>
+<p>然后就去学了状态机，把上面的逻辑通过状态机写成了这样：</p>
+<p><img src="/p/%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/%E7%8A%B6%E6%80%81%E6%9C%BA%E6%80%BB%E7%BB%932.jpg"
+	width="1920"
+	height="1093"
+	srcset="/p/%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/%E7%8A%B6%E6%80%81%E6%9C%BA%E6%80%BB%E7%BB%932_hu_e62bdb37d68f0d4b.jpg 480w, /p/%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/%E7%8A%B6%E6%80%81%E6%9C%BA%E6%80%BB%E7%BB%932_hu_60e09c4624021ee6.jpg 1024w"
+	loading="lazy"
+	
+		alt="状态机总结2"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="175"
+		data-flex-basis="421px"
+	
+></p>
+<p>他们两个看上去逻辑是一样的，但区别就在上面的不能用，下面的能用，所以，状态机有什么用？</p>
+<p>即答：让不能用的东西变得能用！（bushi</p>
+<p>答：让actor个体（你说GameObject或CharacterBody也行，主要是我从虚幻开始学的，用actor习惯了）的行为用状态表示，从而<strong>减少逻辑混乱，增强代码可维护性和可扩展性</strong></p>
+<hr>
+<h2 id="用硬代码实现状态机">用硬代码实现状态机
+</h2><h3 id="逻辑">逻辑
+</h3><p>想象一下，我们只有一个enemy场景，和一个附着在enemy根节点上的脚本，这个脚本要全权负责enmey的巡逻，追逐，攻击逻辑（经典的patrol-chase-attack循环），我们该怎么写？</p>
+<p>既然用状态机，那么我们就把这三个变成状态吧，我们有巡逻状态，追逐状态，攻击状态，自然，我们需要一个<strong>枚举</strong>来存储这个分类，还要有一个变量来存储<strong>当前状态</strong>，嗯，好，记得要做这两个</p>
+<p>然后我们要处理一下动画，我们得三个状态显然要有不同的动画，那么我们就可以在更改当前状态时同步更改它的动画，那么要记得<strong>在更改状态的函数中同步更新动画</strong></p>
+<p>再者让我们想想，我们要怎么样更改状态呢，比如从patrol转到chase？或许你有许多种方法，比如添加一个Area2D然后把它的area_entered信号连接到根节点脚本中，但我们在这里还是只谈脚本中处理的方法</p>
+<p>那么我们就需要知道玩家在哪，敌人在哪，当玩家与敌人近到一定程度时就更改状态，这里我们用硬代码直接在tick里写，<strong>当我们的当前状态为patrol时，实时获取玩家与敌人位置，当二者距离小于侦查距离时，转换状态为chase</strong>，chase到attack的转换同理，<strong>二者距离小于攻击距离时，立刻攻击玩家，然后状态转为patrol</strong></p>
+<p>以上，一个硬代码状态机就实现了，好了，那么纸上谈兵结束了，现在自己对照下面的代码看上面的解释吧</p>
+<h3 id="实现">实现
+</h3><p>那么就用一下硬代码实现一下状态机吧</p>
+<p>这个硬代码是我从YouTube上一个老哥的博客学来的（啥不是学来的嘞，你说是不吼），以下是原帖，我改成了更简单的版本（原版是scanning-firing-charging循环，但我改成我觉得更简单易懂的patrol-chase-attack循环）</p>
+<p><a class="link" href="https://shaggydev.com/2023/10/08/godot-4-state-machines/"  target="_blank" rel="noopener"
+    >Godot 4 中的启动状态机 - The Shaggy Dev &mdash; Starter state machines in Godot 4 - The Shaggy Dev</a></p>
+<p>（这个文章里同时有硬代码方法和进阶状态机方法，看上半部分就行）</p>
+<p>（记住，不要用硬代码写状态机，除非你敢拿头保证你不会增加很多很复杂的状态或复合状态！）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="k">extends</span> <span class="ne">Node</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">enum</span> <span class="n">STATE</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="n">PATROL</span> <span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="n">CHASE</span> <span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="n">ATTACK</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="c1">#在此定义状态机中的所有状态</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">@</span><span class="k">export</span> <span class="n">Player</span> <span class="p">:</span> <span class="n">PLAYER</span> <span class="c1">#对玩家引用来判断是否在侦查范围内</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">current_state</span> <span class="p">:</span> <span class="n">STATE</span> <span class="o">=</span> <span class="n">PATROL</span> <span class="c1">#定义&#34;当前状态&#34;并赋初始值为PATROL</span>
+</span></span><span class="line"><span class="cl"><span class="err">@</span><span class="k">export</span> <span class="k">var</span> <span class="n">animation</span> <span class="p">:</span> <span class="n">AnimatedSprite2D</span> <span class="c1">#这个动画状态机没有任何架构上的意义，你可以不用管它，我只是想突出状态应该要有的enter函数而已，让我的那个更改状态的函数变得不那么蠢</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">@</span><span class="k">export</span> <span class="k">var</span> <span class="n">detect_distance</span> <span class="p">:</span> <span class="ne">float</span> <span class="c1">#侦查范围</span>
+</span></span><span class="line"><span class="cl"><span class="err">@</span><span class="k">export</span> <span class="k">var</span> <span class="n">attack_distance</span> <span class="p">:</span> <span class="ne">float</span> <span class="c1">#攻击范围</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">change_state</span><span class="p">(</span><span class="n">new_state</span> <span class="p">:</span> <span class="n">STATE</span><span class="p">)</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#更改状态的函数</span>
+</span></span><span class="line"><span class="cl">	<span class="n">current_state</span> <span class="o">=</span> <span class="n">new_state</span>
+</span></span><span class="line"><span class="cl">	<span class="n">match</span> <span class="n">current_state</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">		<span class="n">STATE</span><span class="o">.</span><span class="n">PATROL</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">			<span class="n">animation</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="s2">&#34;patrol&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="n">STATE</span><span class="o">.</span><span class="n">CHASE</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">			<span class="n">animation</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="s2">&#34;chase&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="n">STATE</span><span class="o">.</span><span class="n">ATTACK</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">			<span class="n">animation</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="s2">&#34;attack&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">			<span class="n">change_state</span><span class="p">(</span><span class="n">STATE</span><span class="o">.</span><span class="n">PATROL</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">#这三个match结果就是播放对应的动画</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">_process</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="n">match</span> <span class="n">current_state</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">		<span class="n">STATE</span><span class="o">.</span><span class="n">PATROL</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">			<span class="k">if</span> <span class="n">Player</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">distance_to</span><span class="p">(</span><span class="n">position</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">detect_distance</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">				<span class="n">change_state</span><span class="p">(</span><span class="n">STATE</span><span class="o">.</span><span class="n">CHASE</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="n">STATE</span><span class="o">.</span><span class="n">CHASE</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">			<span class="k">if</span> <span class="n">Player</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">distance_to</span><span class="p">(</span><span class="n">position</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">attack_distance</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">				<span class="n">change_state</span><span class="p">(</span><span class="n">STATE</span><span class="o">.</span><span class="n">ATTACK</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">_physics_process</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="n">match</span> <span class="n">current_state</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">#这下面的函数我就不写了，毕竟重心不在实现enemy动作，而是实现状态机的结构</span>
+</span></span><span class="line"><span class="cl">		<span class="n">STATE</span><span class="o">.</span><span class="n">PATROL</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">			<span class="n">random_move</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">		<span class="n">STATE</span><span class="o">.</span><span class="n">CHASE</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">			<span class="n">move_to_player</span><span class="p">(</span><span class="n">Player</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="n">STATE</span><span class="o">.</span><span class="n">ATTACK</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">			<span class="n">attack</span><span class="p">(</span><span class="n">Player</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>结束了，框架没了，是不是很简单？对，状态机就是这么简单</p>
+<hr>
+<h2 id="用statemachine父节点state类子节点实现状态机">用StateMachine父节点+STATE类子节点实现状态机
+</h2><h3 id="约定俗成">约定俗成
+</h3><p>知道了上面硬代码实现状态机的方法，有一些东西我就不重复了，知识直接extends过来就ok</p>
+<p>现在我们讲讲一个<strong>状态</strong>应该有什么</p>
+<p>什么？什么叫应该有什么？这是什么意思？意思就是<strong>状态</strong>这个东西的规范形式</p>
+<p>它会有四个函数，分别是</p>
+<ul>
+<li>
+<p>Enter()
+在状态改变为当前状态时调用，抽象理解为godot中的_enter_tree()</p>
+</li>
+<li>
+<p>Exit()
+在离开该状态时调用，理解为_exit_tree()</p>
+</li>
+<li>
+<p>Update()
+与_process()绑定调用，用于处理渲染</p>
+</li>
+<li>
+<p>Physics_Update()
+与_physics_process()绑定调用，用于处理逻辑</p>
+</li>
+</ul>
+<p>以上都是约定俗成，但我觉得它们应该能对你理解接下来的代码有点帮助</p>
+<h3 id="实现与理解">实现与理解
+</h3><p>以下是我适应的在godot中使用的状态机写法</p>
+<p>原帖</p>
+<p><a class="link" href="https://www.youtube.com/watch?v=ow_Lum-Agbs"  target="_blank" rel="noopener"
+    >Finite State Machines in Godot 4 in Under 10 Minutes - YouTube</a></p>
+<p>首先定义STATE这个东西，我们得知道STATE是什么，有什么默认函数（定义STATE类）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="c1">#STATE.gd</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">extends</span> <span class="ne">Node</span>
+</span></span><span class="line"><span class="cl"><span class="n">class_name</span> <span class="n">STATE</span> <span class="c1">#这里就是定义STATE</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">signal</span> <span class="n">ChangeState</span> <span class="c1">#在要更改状态时发出信号，这个信号将附带有将要转向的状态的字符串形式，然后我们在状态机中用字符串查找到的状态来替换当前状态</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">Enter</span><span class="p">()</span> <span class="p">:</span>  <span class="c1">#这个函数将在进入该状态时调用</span>
+</span></span><span class="line"><span class="cl">	<span class="k">pass</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">Exit</span><span class="p">()</span> <span class="p">:</span> <span class="c1">#在退出该状态时调用</span>
+</span></span><span class="line"><span class="cl">	<span class="k">pass</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">Update</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span> <span class="p">:</span> <span class="c1">#和_process绑定，用于处理渲染tick</span>
+</span></span><span class="line"><span class="cl">	<span class="k">pass</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">Physics_Update</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span> <span class="p">:</span> <span class="c1">#和_physics_process绑定，用于处理逻辑tick</span>
+</span></span><span class="line"><span class="cl">	<span class="k">pass</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>为什么上面的函数都是空的？</p>
+<p>因为后面会根据状态不同直接覆盖这些函数</p>
+<p>然后就是状态机了，先想想状态机应该有什么？</p>
+<p>状态机得：</p>
+<ol>
+<li>初始化状态（如果有）</li>
+<li>知道能有几种状态（状态的字典）</li>
+<li>知道当前状态是什么（知道当前要执行哪个状态的函数）</li>
+<li>能改变状态（有改变状态的函数）</li>
+</ol>
+<p>没了！那就写吧！</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="c1">#StateMachine.gd</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">extends</span> <span class="ne">Node</span>
+</span></span><span class="line"><span class="cl"><span class="n">class_name</span> <span class="n">state_machine</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">state_dictionary</span> <span class="p">:</span><span class="o">=</span> <span class="p">{}</span> <span class="c1">#这里是2</span>
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">current_state</span> <span class="p">:</span> <span class="n">STATE</span> <span class="c1">#这里是3</span>
+</span></span><span class="line"><span class="cl"><span class="err">@</span><span class="k">export</span> <span class="k">var</span> <span class="n">init_state</span> <span class="p">:</span> <span class="n">STATE</span> <span class="c1">#这里是1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">_ready</span><span class="p">()</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="c1">#这里是2</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">get_children</span><span class="p">()</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="n">child</span> <span class="n">is</span> <span class="n">STATE</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">			<span class="n">state_dictionary</span><span class="p">[</span><span class="n">child</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">to_lower</span><span class="p">()]</span> <span class="o">=</span> <span class="n">child</span> <span class="c1">#状态字典，键为状态的小写字符串形式，值为状态（子节点），这里的小写是用于保证代码安全的写法，避免因为大小写不同而检索不到相应的状态名</span>
+</span></span><span class="line"><span class="cl">			<span class="n">child</span><span class="o">.</span><span class="n">change_state</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">_change_state</span><span class="p">)</span> <span class="c1">#绑定信号到函数</span>
+</span></span><span class="line"><span class="cl">			
+</span></span><span class="line"><span class="cl">	<span class="c1">#这里是1</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="n">init_state</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">		<span class="n">current_state</span> <span class="o">=</span> <span class="n">init_state</span>
+</span></span><span class="line"><span class="cl">		<span class="n">current_state</span><span class="o">.</span><span class="n">Enter</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#这里是3</span>
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">_process</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="n">current_state</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">		<span class="n">current_state</span><span class="o">.</span><span class="n">Update</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">_physics_process</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="n">current_state</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">		<span class="n">current_state</span><span class="o">.</span><span class="n">Physics_Update</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#这里是4</span>
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">_change_state</span><span class="p">(</span><span class="n">new_state</span><span class="p">)</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="n">current_state</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">		<span class="n">current_state</span><span class="o">.</span><span class="n">Exit</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="n">current_state</span> <span class="o">=</span> <span class="n">state_dictionary</span><span class="p">[</span><span class="n">new_state</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">	<span class="n">current_state</span><span class="o">.</span><span class="n">Enter</span><span class="p">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>接下来用patrol-chase-attack循环来演示状态节点</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="c1">#patrol.gd</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">extends</span> <span class="n">STATE</span>
+</span></span><span class="line"><span class="cl"><span class="n">class_name</span> <span class="n">PATROL</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">@</span><span class="k">export</span> <span class="k">var</span> <span class="n">enemy</span> <span class="p">:</span> <span class="n">ENEMY</span> <span class="c1">#这里是用引用的方法来让根节点实现当前状态的逻辑的</span>
+</span></span><span class="line"><span class="cl"><span class="err">@</span><span class="k">export</span> <span class="k">var</span> <span class="n">player</span> <span class="p">:</span> <span class="n">PLAYER</span> <span class="c1">#引用Player检测玩家是否进入侦查距离</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">detect_distance</span> <span class="p">:</span> <span class="ne">float</span> <span class="c1">#侦查距离，当玩家与敌人的距离小于这一距离时，更改状态为chase</span>
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">wander_time</span> <span class="p">:</span> <span class="ne">float</span> <span class="c1">#为了不用✓十timer，这里用最朴素的方法写计时器</span>
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">current_wander_time</span> <span class="p">:</span> <span class="ne">float</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">random_move</span><span class="p">()</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="k">pass</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">#这里我就不演示了，反正就是enemy的运动逻辑</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">Enter</span><span class="p">()</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="n">random_move</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">Update</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="n">wander_time</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">		<span class="n">current_wander_time</span> <span class="o">-=</span> <span class="n">delta</span>
+</span></span><span class="line"><span class="cl">	<span class="k">else</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">		<span class="n">random_move</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">		<span class="n">current_wander_time</span> <span class="o">=</span> <span class="n">wander_time</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">_Physics_Update</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">#当玩家与敌人距离比侦查距离小时，将状态转换为chase</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="n">player</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">distance_to</span><span class="p">(</span><span class="n">position</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">detect_distance</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">		<span class="n">change_state</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="s2">&#34;chase&#34;</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>以上</p>
+<p>这个状态机的思路就是：</p>
+<ul>
+<li>给根节点一个节点StateMachine</li>
+<li>在StateMachine下添加STATE类节点</li>
+<li>StateMachine实时调用current_state的逻辑</li>
+<li>STATE节点获得对StateMachine的引用实现更改current_state逻辑</li>
+<li>STATE节点获得对根节点的引用实现STATE逻辑</li>
+</ul>
+<hr>
+<h2 id="依赖注入的状态机写法">依赖注入的状态机写法
+</h2><p>下面写一个进阶的状态机写法，原帖也是上面的那个，这个的代码我是直接抄来的，但注释是我自己写的</p>
+<h3 id="玩家">玩家
+</h3><p>首先我们需要一个CharacterBody2D作为根节点的场景</p>
+<p>然后我们给它一个AnimatedSprite2D和CollisionShape2D作为初始化</p>
+<p>然后给根节点附加一个脚本，在里面这样写</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="c1">#player.gd</span>
+</span></span><span class="line"><span class="cl"><span class="n">class_name</span> <span class="n">Player</span> <span class="c1">#声明节点类</span>
+</span></span><span class="line"><span class="cl"><span class="k">extends</span> <span class="n">CharacterBody2D</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">@</span><span class="k">onready</span> <span class="k">var</span> <span class="n">animations</span> <span class="o">=</span> <span class="o">$</span><span class="n">animations</span>
+</span></span><span class="line"><span class="cl"><span class="err">@</span><span class="k">onready</span> <span class="k">var</span> <span class="n">state_machine</span> <span class="o">=</span> <span class="o">$</span><span class="n">state_machine</span> <span class="c1">#这两个引用看看就好，应该知道是引用什么</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#接下来是经典的绑定状态机环节</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">_ready</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">void</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="n">state_machine</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">_unhandled_inputs</span><span class="p">(</span><span class="n">event</span> <span class="p">:</span> <span class="ne">InputEvent</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">void</span> <span class="p">:</span> <span class="c1">#这个是绑定未处理的输入事件</span>
+</span></span><span class="line"><span class="cl">	<span class="n">state_machine</span><span class="o">.</span><span class="n">process_input</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">_physics_process</span><span class="p">(</span><span class="n">delta</span> <span class="p">:</span> <span class="ne">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">void</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="n">state_machine</span><span class="o">.</span><span class="n">process_physics</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span> <span class="c1">#处理物理</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">_process</span><span class="p">(</span><span class="n">delta</span> <span class="p">:</span> <span class="ne">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">void</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="n">state_machine</span><span class="o">.</span><span class="n">process_frame</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span> <span class="c1">#处理渲染</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="状态机">状态机
+</h3><p>由于状态本质上是Player的&quot;热插拔大脑&quot;，所以这里就相当于子节点控制父节点</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="c1">#state_machine.gd</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">extends</span> <span class="ne">Node</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">@</span><span class="k">export</span>
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">starting_state</span><span class="p">:</span> <span class="n">State</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#初始化状态机的状态</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">current_state</span><span class="p">:</span> <span class="n">State</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#存储当前状态的变量</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">init</span><span class="p">(</span><span class="n">parent</span><span class="p">:</span> <span class="n">Player</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">void</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">get_children</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">		<span class="n">child</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span> 
+</span></span><span class="line"><span class="cl">		<span class="c1">#这里的child是附加在状态机下面的状态子节点，这里的parent是函数的输入参数，同时你再往上看，在Player的_ready()里调用了这个函数并将Player节点的self传过来了，那么这里就相当于一个桥梁，把Player的slef（对自身的引用，也就是根节点）再传给所有状态的parent变量中</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="n">change_state</span><span class="p">(</span><span class="n">starting_state</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">#初始化状态机的状态</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">change_state</span><span class="p">(</span><span class="n">new_state</span><span class="p">:</span> <span class="n">State</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">void</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#改变状态的函数</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="n">current_state</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">		<span class="n">current_state</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">#假如当前有状态，执行状态的exit函数</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="n">current_state</span> <span class="o">=</span> <span class="n">new_state</span>
+</span></span><span class="line"><span class="cl">	<span class="n">current_state</span><span class="o">.</span><span class="n">enter</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">#将当前状态设置为新状态，执行新状态的enter函数</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#这些函数的解释看后文</span>
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">process_physics</span><span class="p">(</span><span class="n">delta</span><span class="p">:</span> <span class="ne">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">void</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="k">var</span> <span class="n">new_state</span> <span class="o">=</span> <span class="n">current_state</span><span class="o">.</span><span class="n">process_physics</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="n">new_state</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">		<span class="n">change_state</span><span class="p">(</span><span class="n">new_state</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">process_input</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="ne">InputEvent</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">void</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="k">var</span> <span class="n">new_state</span> <span class="o">=</span> <span class="n">current_state</span><span class="o">.</span><span class="n">process_input</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="n">new_state</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">		<span class="n">change_state</span><span class="p">(</span><span class="n">new_state</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">process_frame</span><span class="p">(</span><span class="n">delta</span><span class="p">:</span> <span class="ne">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">void</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="k">var</span> <span class="n">new_state</span> <span class="o">=</span> <span class="n">current_state</span><span class="o">.</span><span class="n">process_frame</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="n">new_state</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">		<span class="n">change_state</span><span class="p">(</span><span class="n">new_state</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>看上面的三段函数你可能会很疑惑，绑定函数你懂，那为什么会有一个改变状态的函数？每次调用状态的函数后都要改变状态？</p>
+<p>不，仔细一点看，这里就是和我写的状态机不同的结构，看看声明的变量是什么，是状态中的绑定函数的返回值！那就意味着什么？这段代码在表达什么？</p>
+<p>假如需要改变状态，那么状态的process_input，process_frame，process_physics三个函数会返回要改变的状态，反之这个返回值将会为空，那么就不会调用if判断里的改变状态函数</p>
+<h3 id="状态父类">状态父类
+</h3><p>所有的state仍然要作一个类（毕竟你也看到了，在状态机里面的状态就是以State类型变量保存的）</p>
+<p>以下是State的脚本</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">class_name</span> <span class="n">State</span>
+</span></span><span class="line"><span class="cl"><span class="k">extends</span> <span class="ne">Node</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">@</span><span class="k">export</span>
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">animation_name</span><span class="p">:</span> <span class="ne">String</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#这一行代码提示我们，这是个夹杂了动画的状态机，但没关系，都是状态机，思想是通用的</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">@</span><span class="k">export</span>
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">move_speed</span><span class="p">:</span> <span class="ne">float</span> <span class="o">=</span> <span class="mi">300</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#设置玩家的移动速度，没有架构意义</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">gravity</span><span class="p">:</span> <span class="ne">int</span> <span class="o">=</span> <span class="n">ProjectSettings</span><span class="o">.</span><span class="n">get_setting</span><span class="p">(</span><span class="s2">&#34;physics/2d/default_gravity&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#获取重力，没有架构意义</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">parent</span><span class="p">:</span> <span class="n">Player</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#往前看状态机，在状态机初始化时，这个变量就会是Player根节点</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">enter</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">void</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="n">parent</span><span class="o">.</span><span class="n">animations</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="n">animation_name</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">exit</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">void</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="k">pass</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">process_input</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="ne">InputEvent</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="n">null</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">process_frame</span><span class="p">(</span><span class="n">delta</span><span class="p">:</span> <span class="ne">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="n">null</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">process_physics</span><span class="p">(</span><span class="n">delta</span><span class="p">:</span> <span class="ne">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="n">null</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#上面这些默认函数看看就好，反正就是这么个结构，我主张写的那个状态机不也是差不多这样嘛</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>或许你想问为什么不直接绑定godot的自带函数_process()和_physics_process()啥的，作者表示这是个人喜好，可以明确知道自己正在写什么内容</p>
+<h3 id="状态子类">状态子类
+</h3><p>接下来就是几个状态实例了，很明显，他们都挺简单的</p>
+<p>这是闲置状态</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="c1">#idle.gd</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">extends</span> <span class="n">State</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">@</span><span class="k">export</span>
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">fall_state</span><span class="p">:</span> <span class="n">State</span>
+</span></span><span class="line"><span class="cl"><span class="err">@</span><span class="k">export</span>
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">jump_state</span><span class="p">:</span> <span class="n">State</span>
+</span></span><span class="line"><span class="cl"><span class="err">@</span><span class="k">export</span>
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">move_state</span><span class="p">:</span> <span class="n">State</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#这些状态的引用都要在编辑器的inspector里注入</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">enter</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">void</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="n">super</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">#有关super()函数，请看后面的正文</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="n">parent</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">#毕竟这是idle，所以要把速度设为0</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">process_input</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="ne">InputEvent</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="ne">Input</span><span class="o">.</span><span class="n">is_action_just_pressed</span><span class="p">(</span><span class="s1">&#39;jump&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">parent</span><span class="o">.</span><span class="n">is_on_floor</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="n">jump_state</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">#假如按下了jump相关按键，并且玩家在地板上，那么就转换状态为jump_state</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="ne">Input</span><span class="o">.</span><span class="n">is_action_just_pressed</span><span class="p">(</span><span class="s1">&#39;move_left&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="ne">Input</span><span class="o">.</span><span class="n">is_action_just_pressed</span><span class="p">(</span><span class="s1">&#39;move_right&#39;</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="n">move_state</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">#看了上面的你也应该懂这行了吧</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="n">null</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">#默认什么都不返回，注意，返回什么，就会转换成什么状态，如果不理解，看上面的状态机</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">process_physics</span><span class="p">(</span><span class="n">delta</span><span class="p">:</span> <span class="ne">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="n">parent</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">y</span> <span class="o">+=</span> <span class="n">gravity</span> <span class="o">*</span> <span class="n">delta</span>
+</span></span><span class="line"><span class="cl">	<span class="n">parent</span><span class="o">.</span><span class="n">move_and_slide</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">#这里呃，你可以想象一个斜坡，玩家站在斜坡上时会因为重力作用而下滑，这里可不是和jump时模拟重力有关哦，注意这是idle状态，不会影响jump状态的</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">!</span><span class="n">parent</span><span class="o">.</span><span class="n">is_on_floor</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="n">fall_state</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="n">null</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>补充一个知识点，super()就是调用父类中的同名函数的函数，扩展的，super.函数名()则是调用父类中的相应函数</p>
+<p>接下来是跳跃状态</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="c1"># jump.gd</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">extends</span> <span class="n">State</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">@</span><span class="k">export</span>
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">fall_state</span><span class="p">:</span> <span class="n">State</span>
+</span></span><span class="line"><span class="cl"><span class="err">@</span><span class="k">export</span>
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">idle_state</span><span class="p">:</span> <span class="n">State</span>
+</span></span><span class="line"><span class="cl"><span class="err">@</span><span class="k">export</span>
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">move_state</span><span class="p">:</span> <span class="n">State</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#可以看的出来，作者是将所有可能转去的状态都引用到了这个脚本中，这个在我的那个状态机里是通过初始化遍历子节点创建字典+通过字符串键在字典中查询状态值的方法来做的</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">@</span><span class="k">export</span>
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">jump_force</span><span class="p">:</span> <span class="ne">float</span> <span class="o">=</span> <span class="mf">700.0</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">enter</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">void</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="n">super</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="n">parent</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="n">jump_force</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">#将根节点的y速度设置为跳跃初始速度（为什么是负？因为负才是往上）</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">process_physics</span><span class="p">(</span><span class="n">delta</span><span class="p">:</span> <span class="ne">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="n">parent</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">y</span> <span class="o">+=</span> <span class="n">gravity</span> <span class="o">*</span> <span class="n">delta</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">#处理重力的物理模拟，因为godot的物理模拟很差，所以自己写物理</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="n">parent</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">y</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="n">fall_state</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">#假如y速度小于0了，就是在下落了</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="k">var</span> <span class="n">movement</span> <span class="o">=</span> <span class="ne">Input</span><span class="o">.</span><span class="n">get_axis</span><span class="p">(</span><span class="s1">&#39;move_left&#39;</span><span class="p">,</span> <span class="s1">&#39;move_right&#39;</span><span class="p">)</span> <span class="o">*</span> <span class="n">move_speed</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">#这个有关空中左右移动，你可能会想，move_speed没有在这里声明啊，看看State父类，默认声明了</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="n">movement</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">		<span class="n">parent</span><span class="o">.</span><span class="n">animations</span><span class="o">.</span><span class="n">flip_h</span> <span class="o">=</span> <span class="n">movement</span> <span class="o">&lt;</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">#注意flip_h是有关图像翻转的</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="n">parent</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">movement</span>
+</span></span><span class="line"><span class="cl">	<span class="n">parent</span><span class="o">.</span><span class="n">move_and_slide</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="n">parent</span><span class="o">.</span><span class="n">is_on_floor</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="n">movement</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">			<span class="k">return</span> <span class="n">move_state</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="n">idle_state</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="n">null</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>以上</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E7%8A%B6%E6%80%81%E6%9C%BA/">状态机</a>
+        
+            <a href="/tags/godot/">Godot</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 yuyi
+    </section>
+    
+    <section class="powerby">
+        
+            All tragedy erased , I see only wonders... <br/>
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.2b127abaab7a00bb5c08cec3ae44f096ba0619c283a378773a55fe9ee6c6c209.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<style>
+    #TableOfContents > ul, ol {
+        ul, ol {
+            display: none;
+        }
+        .open {
+            display: block;
+        }
+    }
+</style>
+
+<script>
+    function initTocHide() {
+        
+        let toc = document.querySelector(".widget--toc");
+        if (!toc) {
+            return;
+        }
+        
+        window.addEventListener('scroll', function() {
+            
+            let openUl = document.querySelectorAll(".open");
+            if (openUl.length > 0) {
+              openUl.forEach((ul) => {
+                ul.classList.remove("open")
+              })
+            }
+            
+            let currentLi = document.querySelector(".active-class");
+            if (!currentLi) {
+                return
+            }
+            
+            if (currentLi.children.length > 1) {
+                currentLi.children[1].classList.add("open")
+            }
+            
+            let ul = currentLi.parentElement;
+            do {
+                ul.classList.add("open");
+                ul = ul.parentElement.parentElement
+            } while (ul !== undefined && (ul.localName === 'ul' || ul.localName === 'ol'))
+        });
+    }
+    initTocHide()
+</script>
+
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+        
+        window.dispatchEvent(new Event('resize'))
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "http://localhost:1313/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+
+<style>
+    #backTopBtn {
+        display: none;
+        position: fixed;
+        bottom: 30px;
+        z-index: 99;
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        background-image: url(http://localhost:1313/icons/backTop.svg);
+    }
+</style>
+
+<script>
+    
+
+    function initScrollTop() {
+        let rightSideBar = document.querySelector(".right-sidebar");
+        if (!rightSideBar) {
+            return;
+        }
+        
+        let btn = document.createElement("div");
+        btn.id = "backTopBtn";
+        btn.onclick = backToTop
+        rightSideBar.appendChild(btn)
+        
+        window.onscroll = function() {
+            
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                btn.style.display = "block";
+            } else {
+                btn.style.display = "none";
+            }
+        };
+    }
+
+    
+
+    function backToTop(){
+        window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+</script>
+
+
+    </body>
+</html>
