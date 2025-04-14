@@ -7,7 +7,15 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>yuyi</copyright>
-        <lastBuildDate>Sat, 12 Apr 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 14 Apr 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>喻文</title>
+        <link>http://localhost:1313/categories/%E5%96%BB%E6%96%87/</link>
+        <pubDate>Mon, 14 Apr 2025 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/categories/%E5%96%BB%E6%96%87/</guid>
+        <description></description>
+        </item>
+        <item>
         <title>轶文</title>
         <link>http://localhost:1313/categories/%E8%BD%B6%E6%96%87/</link>
         <pubDate>Sat, 12 Apr 2025 00:00:00 +0000</pubDate>
