@@ -288,6 +288,14 @@
         <li><a href="#实现与理解">实现与理解</a></li>
       </ol>
     </li>
+    <li><a href="#依赖注入的状态机写法">依赖注入的状态机写法</a>
+      <ol>
+        <li><a href="#玩家">玩家</a></li>
+        <li><a href="#状态机">状态机</a></li>
+        <li><a href="#状态父类">状态父类</a></li>
+        <li><a href="#状态子类">状态子类</a></li>
+      </ol>
+    </li>
   </ol>
 </nav>
         </div>
@@ -352,7 +360,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 6 分钟
+                    阅读时长: 10 分钟
                 </time>
             </div>
         
@@ -760,8 +768,417 @@
 <li>STATE节点获得对根节点的引用实现STATE逻辑</li>
 </ul>
 <hr>
-<p>下面写一个进阶的状态机写法</p>
-<p>ToDo（希望不鸽）</p>
+<h2 id="依赖注入的状态机写法">依赖注入的状态机写法
+</h2><p>下面写一个进阶的状态机写法，原帖也是上面的那个，这个的代码我是直接抄来的，但注释是我自己写的</p>
+<h3 id="玩家">玩家
+</h3><p>首先我们需要一个CharacterBody2D作为根节点的场景</p>
+<p>然后我们给它一个AnimatedSprite2D和CollisionShape2D作为初始化</p>
+<p>然后给根节点附加一个脚本，在里面这样写</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="c1">#player.gd</span>
+</span></span><span class="line"><span class="cl"><span class="n">class_name</span> <span class="n">Player</span> <span class="c1">#声明节点类</span>
+</span></span><span class="line"><span class="cl"><span class="k">extends</span> <span class="n">CharacterBody2D</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">@</span><span class="k">onready</span> <span class="k">var</span> <span class="n">animations</span> <span class="o">=</span> <span class="o">$</span><span class="n">animations</span>
+</span></span><span class="line"><span class="cl"><span class="err">@</span><span class="k">onready</span> <span class="k">var</span> <span class="n">state_machine</span> <span class="o">=</span> <span class="o">$</span><span class="n">state_machine</span> <span class="c1">#这两个引用看看就好，应该知道是引用什么</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#接下来是经典的绑定状态机环节</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">_ready</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">void</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="n">state_machine</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">_unhandled_inputs</span><span class="p">(</span><span class="n">event</span> <span class="p">:</span> <span class="ne">InputEvent</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">void</span> <span class="p">:</span> <span class="c1">#这个是绑定未处理的输入事件</span>
+</span></span><span class="line"><span class="cl">	<span class="n">state_machine</span><span class="o">.</span><span class="n">process_input</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">_physics_process</span><span class="p">(</span><span class="n">delta</span> <span class="p">:</span> <span class="ne">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">void</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="n">state_machine</span><span class="o">.</span><span class="n">process_physics</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span> <span class="c1">#处理物理</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">_process</span><span class="p">(</span><span class="n">delta</span> <span class="p">:</span> <span class="ne">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">void</span> <span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="n">state_machine</span><span class="o">.</span><span class="n">process_frame</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span> <span class="c1">#处理渲染</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="状态机">状态机
+</h3><p>由于状态本质上是Player的&quot;热插拔大脑&quot;，所以这里就相当于子节点控制父节点</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="c1">#state_machine.gd</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">extends</span> <span class="ne">Node</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">@</span><span class="k">export</span>
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">starting_state</span><span class="p">:</span> <span class="n">State</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#初始化状态机的状态</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">current_state</span><span class="p">:</span> <span class="n">State</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#存储当前状态的变量</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">init</span><span class="p">(</span><span class="n">parent</span><span class="p">:</span> <span class="n">Player</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">void</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">get_children</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">		<span class="n">child</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span> 
+</span></span><span class="line"><span class="cl">		<span class="c1">#这里的child是附加在状态机下面的状态子节点，这里的parent是函数的输入参数，同时你再往上看，在Player的_ready()里调用了这个函数并将Player节点的self传过来了，那么这里就相当于一个桥梁，把Player的slef（对自身的引用，也就是根节点）再传给所有状态的parent变量中</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="n">change_state</span><span class="p">(</span><span class="n">starting_state</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">#初始化状态机的状态</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">change_state</span><span class="p">(</span><span class="n">new_state</span><span class="p">:</span> <span class="n">State</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">void</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#改变状态的函数</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="n">current_state</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">		<span class="n">current_state</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">#假如当前有状态，执行状态的exit函数</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="n">current_state</span> <span class="o">=</span> <span class="n">new_state</span>
+</span></span><span class="line"><span class="cl">	<span class="n">current_state</span><span class="o">.</span><span class="n">enter</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">#将当前状态设置为新状态，执行新状态的enter函数</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#这些函数的解释看后文</span>
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">process_physics</span><span class="p">(</span><span class="n">delta</span><span class="p">:</span> <span class="ne">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">void</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="k">var</span> <span class="n">new_state</span> <span class="o">=</span> <span class="n">current_state</span><span class="o">.</span><span class="n">process_physics</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="n">new_state</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">		<span class="n">change_state</span><span class="p">(</span><span class="n">new_state</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">process_input</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="ne">InputEvent</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">void</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="k">var</span> <span class="n">new_state</span> <span class="o">=</span> <span class="n">current_state</span><span class="o">.</span><span class="n">process_input</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="n">new_state</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">		<span class="n">change_state</span><span class="p">(</span><span class="n">new_state</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">process_frame</span><span class="p">(</span><span class="n">delta</span><span class="p">:</span> <span class="ne">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">void</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="k">var</span> <span class="n">new_state</span> <span class="o">=</span> <span class="n">current_state</span><span class="o">.</span><span class="n">process_frame</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="n">new_state</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">		<span class="n">change_state</span><span class="p">(</span><span class="n">new_state</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>看上面的三段函数你可能会很疑惑，绑定函数你懂，那为什么会有一个改变状态的函数？每次调用状态的函数后都要改变状态？</p>
+<p>不，仔细一点看，这里就是和我写的状态机不同的结构，看看声明的变量是什么，是状态中的绑定函数的返回值！那就意味着什么？这段代码在表达什么？</p>
+<p>假如需要改变状态，那么状态的process_input，process_frame，process_physics三个函数会返回要改变的状态，反之这个返回值将会为空，那么就不会调用if判断里的改变状态函数</p>
+<h3 id="状态父类">状态父类
+</h3><p>所有的state仍然要作一个类（毕竟你也看到了，在状态机里面的状态就是以State类型变量保存的）</p>
+<p>以下是State的脚本</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">class_name</span> <span class="n">State</span>
+</span></span><span class="line"><span class="cl"><span class="k">extends</span> <span class="ne">Node</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">@</span><span class="k">export</span>
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">animation_name</span><span class="p">:</span> <span class="ne">String</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#这一行代码提示我们，这是个夹杂了动画的状态机，但没关系，都是状态机，思想是通用的</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">@</span><span class="k">export</span>
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">move_speed</span><span class="p">:</span> <span class="ne">float</span> <span class="o">=</span> <span class="mi">300</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#设置玩家的移动速度，没有架构意义</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">gravity</span><span class="p">:</span> <span class="ne">int</span> <span class="o">=</span> <span class="n">ProjectSettings</span><span class="o">.</span><span class="n">get_setting</span><span class="p">(</span><span class="s2">&#34;physics/2d/default_gravity&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#获取重力，没有架构意义</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">parent</span><span class="p">:</span> <span class="n">Player</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#往前看状态机，在状态机初始化时，这个变量就会是Player根节点</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">enter</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">void</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="n">parent</span><span class="o">.</span><span class="n">animations</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="n">animation_name</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">exit</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">void</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="k">pass</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">process_input</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="ne">InputEvent</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="n">null</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">process_frame</span><span class="p">(</span><span class="n">delta</span><span class="p">:</span> <span class="ne">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="n">null</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">process_physics</span><span class="p">(</span><span class="n">delta</span><span class="p">:</span> <span class="ne">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="n">null</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#上面这些默认函数看看就好，反正就是这么个结构，我主张写的那个状态机不也是差不多这样嘛</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>或许你想问为什么不直接绑定godot的自带函数_process()和_physics_process()啥的，作者表示这是个人喜好，可以明确知道自己正在写什么内容</p>
+<h3 id="状态子类">状态子类
+</h3><p>接下来就是几个状态实例了，很明显，他们都挺简单的</p>
+<p>这是闲置状态</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="c1">#idle.gd</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">extends</span> <span class="n">State</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">@</span><span class="k">export</span>
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">fall_state</span><span class="p">:</span> <span class="n">State</span>
+</span></span><span class="line"><span class="cl"><span class="err">@</span><span class="k">export</span>
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">jump_state</span><span class="p">:</span> <span class="n">State</span>
+</span></span><span class="line"><span class="cl"><span class="err">@</span><span class="k">export</span>
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">move_state</span><span class="p">:</span> <span class="n">State</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#这些状态的引用都要在编辑器的inspector里注入</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">enter</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">void</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="n">super</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">#有关super()函数，请看后面的正文</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="n">parent</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">#毕竟这是idle，所以要把速度设为0</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">process_input</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="ne">InputEvent</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="ne">Input</span><span class="o">.</span><span class="n">is_action_just_pressed</span><span class="p">(</span><span class="s1">&#39;jump&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">parent</span><span class="o">.</span><span class="n">is_on_floor</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="n">jump_state</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">#假如按下了jump相关按键，并且玩家在地板上，那么就转换状态为jump_state</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="ne">Input</span><span class="o">.</span><span class="n">is_action_just_pressed</span><span class="p">(</span><span class="s1">&#39;move_left&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="ne">Input</span><span class="o">.</span><span class="n">is_action_just_pressed</span><span class="p">(</span><span class="s1">&#39;move_right&#39;</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="n">move_state</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">#看了上面的你也应该懂这行了吧</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="n">null</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">#默认什么都不返回，注意，返回什么，就会转换成什么状态，如果不理解，看上面的状态机</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">process_physics</span><span class="p">(</span><span class="n">delta</span><span class="p">:</span> <span class="ne">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="n">parent</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">y</span> <span class="o">+=</span> <span class="n">gravity</span> <span class="o">*</span> <span class="n">delta</span>
+</span></span><span class="line"><span class="cl">	<span class="n">parent</span><span class="o">.</span><span class="n">move_and_slide</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">#这里呃，你可以想象一个斜坡，玩家站在斜坡上时会因为重力作用而下滑，这里可不是和jump时模拟重力有关哦，注意这是idle状态，不会影响jump状态的</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">!</span><span class="n">parent</span><span class="o">.</span><span class="n">is_on_floor</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="n">fall_state</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="n">null</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>补充一个知识点，super()就是调用父类中的同名函数的函数，扩展的，super.函数名()则是调用父类中的相应函数</p>
+<p>接下来是跳跃状态</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="c1"># jump.gd</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">extends</span> <span class="n">State</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">@</span><span class="k">export</span>
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">fall_state</span><span class="p">:</span> <span class="n">State</span>
+</span></span><span class="line"><span class="cl"><span class="err">@</span><span class="k">export</span>
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">idle_state</span><span class="p">:</span> <span class="n">State</span>
+</span></span><span class="line"><span class="cl"><span class="err">@</span><span class="k">export</span>
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">move_state</span><span class="p">:</span> <span class="n">State</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#可以看的出来，作者是将所有可能转去的状态都引用到了这个脚本中，这个在我的那个状态机里是通过初始化遍历子节点创建字典+通过字符串键在字典中查询状态值的方法来做的</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">@</span><span class="k">export</span>
+</span></span><span class="line"><span class="cl"><span class="k">var</span> <span class="n">jump_force</span><span class="p">:</span> <span class="ne">float</span> <span class="o">=</span> <span class="mf">700.0</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">enter</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">void</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="n">super</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="n">parent</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="n">jump_force</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">#将根节点的y速度设置为跳跃初始速度（为什么是负？因为负才是往上）</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">process_physics</span><span class="p">(</span><span class="n">delta</span><span class="p">:</span> <span class="ne">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">State</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="n">parent</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">y</span> <span class="o">+=</span> <span class="n">gravity</span> <span class="o">*</span> <span class="n">delta</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">#处理重力的物理模拟，因为godot的物理模拟很差，所以自己写物理</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="n">parent</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">y</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="n">fall_state</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">#假如y速度小于0了，就是在下落了</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="k">var</span> <span class="n">movement</span> <span class="o">=</span> <span class="ne">Input</span><span class="o">.</span><span class="n">get_axis</span><span class="p">(</span><span class="s1">&#39;move_left&#39;</span><span class="p">,</span> <span class="s1">&#39;move_right&#39;</span><span class="p">)</span> <span class="o">*</span> <span class="n">move_speed</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">#这个有关空中左右移动，你可能会想，move_speed没有在这里声明啊，看看State父类，默认声明了</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="n">movement</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">		<span class="n">parent</span><span class="o">.</span><span class="n">animations</span><span class="o">.</span><span class="n">flip_h</span> <span class="o">=</span> <span class="n">movement</span> <span class="o">&lt;</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">#注意flip_h是有关图像翻转的</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="n">parent</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">movement</span>
+</span></span><span class="line"><span class="cl">	<span class="n">parent</span><span class="o">.</span><span class="n">move_and_slide</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="n">parent</span><span class="o">.</span><span class="n">is_on_floor</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="n">movement</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">			<span class="k">return</span> <span class="n">move_state</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="n">idle_state</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="n">null</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>以上</p>
 
 </section>
 
