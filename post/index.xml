@@ -1133,6 +1133,17 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;以上&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;接下来&#34;&gt;接下来？
+&lt;/h2&gt;&lt;p&gt;哦好吧，我们必须得承认这只是状态机的冰山一角&lt;/p&gt;
+&lt;p&gt;试想一下，假如我们要做一个这个功能：&lt;/p&gt;
+&lt;p&gt;冲刺(dash)：向前方快速移动一段距离&lt;/p&gt;
+&lt;p&gt;你应该注意到了，我们完全可以基于walk这个状态来更改（别问我为什么上面没提这个状态，你就不能想象一下嘛），所以，在此我们会希望给状态机添加一个子状态机，然后在子状态机中处理dash和walk的关系&lt;/p&gt;
+&lt;p&gt;这叫&lt;strong&gt;分层状态机&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;假如我们要让一个角色边移动边攻击呢？两个状态同时执行？&lt;/p&gt;
+&lt;p&gt;这叫&lt;strong&gt;并发状态机&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;还有，假如我要设置一个规则：角色在跳跃时不能攻击？&lt;/p&gt;
+&lt;p&gt;涉及状态机间的通信（或者说类似于&lt;strong&gt;黑板&lt;/strong&gt;这样的行为树里有的东西）&lt;/p&gt;
 </description>
         </item>
         
