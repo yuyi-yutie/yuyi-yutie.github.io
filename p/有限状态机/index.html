@@ -547,11 +547,11 @@
 </li>
 <li>
 <p>Update()
-与_process()绑定调用，用于处理渲染</p>
+与状态机的_process()绑定调用，用于处理渲染</p>
 </li>
 <li>
 <p>Physics_Update()
-与_physics_process()绑定调用，用于处理逻辑</p>
+与状态机的_physics_process()绑定调用，用于处理逻辑</p>
 </li>
 </ul>
 <p>以上都是约定俗成，但我觉得它们应该能对你理解接下来的代码有点帮助</p>
@@ -777,7 +777,7 @@
 </h2><p>下面写一个进阶的状态机写法，原帖也是上面的那个，这个的代码我是直接抄来的，但注释是我自己写的</p>
 <h3 id="玩家">玩家
 </h3><p>首先我们需要一个CharacterBody2D作为根节点的场景</p>
-<p>然后我们给它一个AnimatedSprite2D和CollisionShape2D作为初始化</p>
+<p>然后我们给它一个AnimatedSprite2D和CollisionShape2D，这个不在状态机的架构范围里，我们就不谈这个了</p>
 <p>然后给根节点附加一个脚本，在里面这样写</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -804,25 +804,25 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="c1">#player.gd</span>
-</span></span><span class="line"><span class="cl"><span class="n">class_name</span> <span class="n">Player</span> <span class="c1">#声明节点类</span>
+</span></span><span class="line"><span class="cl"><span class="n">class_name</span> <span class="n">Player</span> <span class="c1">#声明节点类，当然，不声明的话后面引用CharacterBody2D类也行的</span>
 </span></span><span class="line"><span class="cl"><span class="k">extends</span> <span class="n">CharacterBody2D</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="err">@</span><span class="k">onready</span> <span class="k">var</span> <span class="n">animations</span> <span class="o">=</span> <span class="o">$</span><span class="n">animations</span>
-</span></span><span class="line"><span class="cl"><span class="err">@</span><span class="k">onready</span> <span class="k">var</span> <span class="n">state_machine</span> <span class="o">=</span> <span class="o">$</span><span class="n">state_machine</span> <span class="c1">#这两个引用看看就好，应该知道是引用什么</span>
+</span></span><span class="line"><span class="cl"><span class="err">@</span><span class="k">onready</span> <span class="k">var</span> <span class="n">state_machine</span> <span class="o">=</span> <span class="o">$</span><span class="n">state_machine</span> 
+</span></span><span class="line"><span class="cl"><span class="c1">#这两个引用看看就好，应该知道是引用的是什么</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">#接下来是经典的绑定状态机环节</span>
-</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">_ready</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">void</span><span class="p">:</span>
 </span></span><span class="line"><span class="cl">	<span class="n">state_machine</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">_unhandled_inputs</span><span class="p">(</span><span class="n">event</span> <span class="p">:</span> <span class="ne">InputEvent</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">void</span> <span class="p">:</span> <span class="c1">#这个是绑定未处理的输入事件</span>
+</span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">_unhandled_inputs</span><span class="p">(</span><span class="n">event</span> <span class="p">:</span> <span class="ne">InputEvent</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">void</span> <span class="p">:</span> <span class="c1">#这个是绑定未处理的输入事件，一般我们会直接在process里监听玩家输入，这里随你吧</span>
 </span></span><span class="line"><span class="cl">	<span class="n">state_machine</span><span class="o">.</span><span class="n">process_input</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">_physics_process</span><span class="p">(</span><span class="n">delta</span> <span class="p">:</span> <span class="ne">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">void</span> <span class="p">:</span>
-</span></span><span class="line"><span class="cl">	<span class="n">state_machine</span><span class="o">.</span><span class="n">process_physics</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span> <span class="c1">#处理物理</span>
+</span></span><span class="line"><span class="cl">	<span class="n">state_machine</span><span class="o">.</span><span class="n">process_physics</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span> <span class="c1">#处理物理tick</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">func</span> <span class="n">_process</span><span class="p">(</span><span class="n">delta</span> <span class="p">:</span> <span class="ne">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">void</span> <span class="p">:</span>
-</span></span><span class="line"><span class="cl">	<span class="n">state_machine</span><span class="o">.</span><span class="n">process_frame</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span> <span class="c1">#处理渲染</span>
+</span></span><span class="line"><span class="cl">	<span class="n">state_machine</span><span class="o">.</span><span class="n">process_frame</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span> <span class="c1">#处理渲染tick</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="状态机">状态机
@@ -922,8 +922,9 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>看上面的三段函数你可能会很疑惑，绑定函数你懂，那为什么会有一个改变状态的函数？每次调用状态的函数后都要改变状态？</p>
-<p>不，仔细一点看，这里就是和我写的状态机不同的结构，看看声明的变量是什么，是状态中的绑定函数的返回值！那就意味着什么？这段代码在表达什么？</p>
+<p>不，仔细一点看，这里是和我写的状态机不同的结构，看看声明的变量是什么，是状态中的绑定函数的返回值！那就意味着什么？这段代码在表达什么？</p>
 <p>假如需要改变状态，那么状态的process_input，process_frame，process_physics三个函数会返回要改变的状态，反之这个返回值将会为空，那么就不会调用if判断里的改变状态函数</p>
+<p>这里和依赖注入的关系不大，但我相信你可以理解的</p>
 <h3 id="状态父类">状态父类
 </h3><p>所有的state仍然要作一个类（毕竟你也看到了，在状态机里面的状态就是以State类型变量保存的）</p>
 <p>以下是State的脚本</p>
@@ -1189,12 +1190,14 @@
 </h2><p>哦好吧，我们必须得承认这只是状态机的冰山一角</p>
 <p>试想一下，假如我们要做一个这个功能：</p>
 <p>冲刺(dash)：向前方快速移动一段距离</p>
-<p>你应该注意到了，我们完全可以基于walk这个状态来更改（别问我为什么上面没提这个状态，你就不能想象一下嘛），所以，在此我们会希望给状态机添加一个子状态机，然后在子状态机中处理dash和walk的关系</p>
+<p>你应该注意到了，我们完全可以基于walk这个状态来更改（别问我为什么上面没提这个状态，你就不能想象一下嘛），所以，在此我们会希望给状态机添加一个子状态机，这个状态机可能叫MovementMachine，然后在它里面处理dash和walk的关系</p>
 <p>这叫<strong>分层状态机</strong></p>
 <p>假如我们要让一个角色边移动边攻击呢？两个状态同时执行？</p>
 <p>这叫<strong>并发状态机</strong></p>
+<p>基本原理就是在分层状态机中父状态机绑定子状态机process那一步分别调用所有子状态机的process</p>
 <p>还有，假如我要设置一个规则：角色在跳跃时不能攻击？</p>
 <p>涉及状态机间的通信（或者说类似于<strong>黑板</strong>这样的行为树里有的东西）</p>
+<p>这些我们后面细嗦</p>
 
 </section>
 
