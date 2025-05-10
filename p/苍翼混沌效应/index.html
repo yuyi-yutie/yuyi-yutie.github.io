@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="我的雷蛇驱动显示它能跑到720帧，虽然这是不可信的（以前跑杀手暗杀世界能跑出2万帧，你猜猜我信不信它），但也能说明它体量不大/优化挺好\n我这里玩的版本是2025年1月春节版本前的最后一个版本\n">
+<title>苍翼：混沌效应</title>
+
+<link rel='canonical' href='http://localhost:1313/p/%E8%8B%8D%E7%BF%BC%E6%B7%B7%E6%B2%8C%E6%95%88%E5%BA%94/'>
+
+<link rel="stylesheet" href="/scss/style.min.b41fbeb1758861b170a462ca5c5b93b973caa976a8f1c39fb877a49158ef60fb.css"><meta property='og:title' content="苍翼：混沌效应">
+<meta property='og:description' content="我的雷蛇驱动显示它能跑到720帧，虽然这是不可信的（以前跑杀手暗杀世界能跑出2万帧，你猜猜我信不信它），但也能说明它体量不大/优化挺好\n我这里玩的版本是2025年1月春节版本前的最后一个版本\n">
+<meta property='og:url' content='http://localhost:1313/p/%E8%8B%8D%E7%BF%BC%E6%B7%B7%E6%B2%8C%E6%95%88%E5%BA%94/'>
+<meta property='og:site_name' content='yuyi'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='看游戏' /><meta property='article:published_time' content='2025-01-09T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2025-01-09T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="苍翼：混沌效应">
+<meta name="twitter:description" content="我的雷蛇驱动显示它能跑到720帧，虽然这是不可信的（以前跑杀手暗杀世界能跑出2万帧，你猜猜我信不信它），但也能说明它体量不大/优化挺好\n我这里玩的版本是2025年1月春节版本前的最后一个版本\n">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_ca2022513e914385.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🤔</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">yuyi</a></h1>
+            <h2 class="site-description">由e转i的社恐分子，效率奇怪的心流专家，喜欢胡思乱想的写手，可以画劣质像素画的不合格美术，把开发游戏当成创造世界的游戏策划，ue、unity、godot三手抓的八爪鱼游戏程序</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/3546602811689251?spm_id_from=333.1007.0.0'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6z" /><path d="M8 3l2 3" /><path d="M16 3l-2 3" /><path d="M9 13v-2" /><path d="M15 11v2" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/yuyi-yutie'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://www.zhihu.com/people/89-70-59-86-39'
+                        target="_blank"
+                        title="Zhihu"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-zhihu"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 6h6v12h-2l-2 2l-1 -2h-1z" /><path d="M4 12h6.5" /><path d="M10.5 6h-5" /><path d="M6 4c-.5 2.5 -1.5 3.5 -2.5 4.5" /><path d="M8 6v7c0 4.5 -2 5.5 -4 7" /><path d="M11 18l-3 -5" /></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#游戏前">游戏前</a>
+      <ol>
+        <li><a href="#开始界面">开始界面</a></li>
+        <li><a href="#教程">教程</a></li>
+        <li><a href="#游戏前碎碎念">游戏前碎碎念</a></li>
+      </ol>
+    </li>
+    <li><a href="#游戏中这段不重要">游戏中（这段不重要）</a>
+      <ol>
+        <li><a href="#第一场游戏前">第一场游戏前</a></li>
+        <li><a href="#选择角色界面">选择角色界面</a></li>
+        <li><a href="#第一场游戏">第一场游戏</a></li>
+        <li><a href="#第二场游戏">第二场游戏</a></li>
+      </ol>
+    </li>
+    <li><a href="#重要的系统">重要的系统</a>
+      <ol>
+        <li><a href="#货币系统">货币系统</a></li>
+        <li><a href="#肉鸽所常见的关卡依赖型能力强化">肉鸽所常见的关卡依赖型能力强化</a></li>
+        <li><a href="#游戏外强化全局强化">游戏外强化（全局强化）</a></li>
+      </ol>
+    </li>
+    <li><a href="#思考">思考</a>
+      <ol>
+        <li><a href="#优点">优点</a></li>
+        <li><a href="#缺点">缺点</a></li>
+        <li><a href="#碎碎念">碎碎念</a></li>
+        <li><a href="#评分">评分</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E6%B8%B8%E6%88%8F%E7%AD%96%E5%88%92/" >
+                游戏策划
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/%E8%8B%8D%E7%BF%BC%E6%B7%B7%E6%B2%8C%E6%95%88%E5%BA%94/">苍翼：混沌效应</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2025-01-09</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 8 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>我的雷蛇驱动显示它能跑到720帧，虽然这是不可信的（以前跑杀手暗杀世界能跑出2万帧，你猜猜我信不信它），但也能说明它体量不大/优化挺好</p>
+<p>我这里玩的版本是2025年1月春节版本前的最后一个版本</p>
+<hr>
+<h2 id="游戏前">游戏前
+</h2><h3 id="开始界面">开始界面
+</h3><p>游戏开始就以黑屏+声音开幕，让玩家代入自己在一个训练设备中的感觉（开始还没意识到的，但在玩游戏的途中感觉到了这一点，很自然，很perfect）</p>
+<p>其他的就没什么特色了</p>
+<h3 id="教程">教程
+</h3><p>教程就是很正常普通的场景后有屏幕给键位和演示，然后给出不能攻击不能移动的敌人给你打靶，只给出来基础操作，然后说了一句进阶操作需要玩到后面才能慢慢解锁，还说要复杂操作打出</p>
+<p>提一嘴，键位很艹damn，反人类</p>
+<h3 id="游戏前碎碎念">游戏前碎碎念
+</h3><p>单人的横版动作游戏，说有多人，也说有boss连战但我还没玩到，游戏就是砍砍砍（我只解锁了两个角色，都是砍，看到了有其他角色能射射射，没有很高的操作门槛，网上的评论也就是说每个角色都有轮椅，但这并没有很令人这些玩家反感，我也是一样，这轮椅可太有舒适区了）</p>
+<p>游戏鼓励格挡（角色技能，不是完美格挡）和完美闪避（完美闪避的奖励是时间流速变慢）和无伤多杀（有些&quot;事件&quot;会在多杀后给予奖励，如给予游戏中的临时货币）</p>
+<hr>
+<h2 id="游戏中这段不重要">游戏中（这段不重要）
+</h2><h3 id="第一场游戏前">第一场游戏前
+</h3><p>现在我完成了教程，进到了游戏的大厅（类似于元气骑士里的客厅那样的），&ldquo;我&quot;现在是一个机器人，浮空移动，可跳跃（但是跳跃的前摇有点长，不舒服）</p>
+<p>游戏中的npc很少（一眼看去就一个），npc基本在一个屏幕只会出现一个，都有各自的区域（说房间也很像房间，但没有明确的界限），然后我就往右走，碰到的第一个npc在睡觉（这个npc是消耗游戏核心货币强化角色默认属性的，现在暂时是强化HP和嵌入强化槽的（就是增加特殊能力），不知道后面怎么样，它在睡觉，这点处理很好，此时玩家还没接触货币系统，也可以让玩家原味（无强化）体验一遍游戏内容）</p>
+<p>然后我想往回走，坐电梯到了二楼，左边闪了光，我没去看（可惜了，真应该看看的），当时看到还有三楼，瞬间就没了探索欲望，于是坐回电梯到一楼，再往右走，就触发了与核心npc的对话，交代了玩家为什么战斗（这是一个训练，要增加啥啥啥居民的战斗意识啥的，剧情无所谓了，因为很显然它不主打剧情），对话完毕之后它和我说继续往右走，那就往右走吧，路过了难度选择系统，我没去看，然后在我继续往右走的时候就有能量把我强制吸向右边（我猜这段是用来加载后面的资源的过渡时间，不过被吸走有点不舒服），到了选择角色界面</p>
+<h3 id="选择角色界面">选择角色界面
+</h3><p>（首先有一点很奇怪，我明明选择游戏音频是英文，角色语言无一例外全是日语，额有点无语，当然，游戏自带中文语言）</p>
+<p>选择角色界面开始是全部角色都上锁，然后可以自己选择初始英雄（这个自由性强的感觉不是时候），此时玩家可以选中任意角色然后按个键观看这个角色的视频和技能，强化（这个作为唯一的选择角色引导有点意思，但我不舒服），我选择了一个技能是格挡的，他的技能是开始格挡（持续一段时间，这个时间有点长，期间不能动，正反都格挡，被攻击触发一闪（和拔刀斩有点像））</p>
+<h3 id="第一场游戏">第一场游戏
+</h3><p>角色很笨重（当然这是选择角色的视频里提到过的，但笨重的还是出乎我的意料了），冲刺（闪避）有很明显的前摇（所有角色冲刺都有前摇，这个尤其明显），攻击也慢，但打击感不错，体现在攻击时刀划过的地方有粒子和拖尾特效，击中人震屏（其实挺平平无奇的，相较于其他打击感很好的游戏）</p>
+<p>小怪都没有很高强度，前摇明显，攻击间隔也长</p>
+<p>游戏为关卡制，有重肉鸽元素，玩家在完成一个关卡后可以选择下一个关卡（大部分是三选一，也有更少选项的，包括各个属性的强化天赋，&ldquo;潜能&rdquo;（就是在选择角色界面展示的&quot;强化&rdquo;，这些强化大部分是技能的改变什么的，比如二段跳改三段跳，冲刺落雷什么的），增加HP上限，增加MP上限，增加游戏临时货币点数，兑换游戏临时货币为各种小的强化，触发随机事件，精英挑战）</p>
+<p>顺便提一嘴，游戏有完美通关（无伤）的标识，但没有相应的奖励</p>
+<p>其中前四个关卡为打小怪后即可获取相应的增益，后面的关卡（除精英挑战）都是类似商店的关卡，精英挑战则是在打完后随机获得打小怪能获得的四个增益中的随机一个，触发两次获得该增益</p>
+<p>boss战也没有很紧张，游戏不注重见招拆招，注重快速干掉对手，boss战后会获得一个潜能强化和一个增益（如增加空中伤害，增加空中防御什么的增益较小的随机增益）</p>
+<p>第一场游戏因为没有摸清楚敌人都是什么东西，惨败在第三个boss处</p>
+<p>在角色死亡后会弹出评分界面，然后会让你选择一个在游戏中获得的增益保留（此时我一脸懵逼不知道这是什么东西，这个新机制的引导真的不行，我自行脑补出了就是可以保留一个增益让我可以在下一局开始时携带）</p>
+<h3 id="第二场游戏">第二场游戏
+</h3><p>在游戏前我探索了二楼左边发光的地方，里面就是一个东西讲我听不懂的话，应该是用于升华游戏主题的东西，还提示了多回目搜集元素，在电梯旁有一个npc提示电梯坏了，要以后才能开放（内容解锁的精髓，我懂我懂）</p>
+<p>在选择难度界面我把难度调低了（游戏的难度系统目前看只有两层，普通和进阶，但可以在普通里变相降低难度（包括降低陷阱伤害，降低敌人伤害，血量，增加boss战后的增益数量），在进阶难度里变相提升难度（包括增加敌人血量攻击等））</p>
+<p>选择了一个输出为主的英雄，游戏提示可以携带英雄的传承技能（没有描述传承技能是什么东西，这个引导真的，我哭死，反正稀里糊涂），我选择了我上一把的英雄（这个传承技能机制我脑补就是可以携带一个英雄的技能和那个保留在这个英雄上的增益，在本局开始时直接携带（这种拼技能的机制有点意思哈，不过我当时没反应过来，真没引导）），这个传承技能还可以在游戏中强化（当然也和前面的游戏中强化一样是暂时强化）</p>
+<p>摇轮椅通关了倒数第二个boss，然后会给出三个选项，加HP ，加MP和最终挑战，我直接选了最终挑战，就是打最终boss，有n个阶段，花里胡哨，有点冗长，但还是被我的轮椅创死了，关尾提示我解锁了进阶难度</p>
+<hr>
+<h2 id="重要的系统">重要的系统
+</h2><h3 id="货币系统">货币系统
+</h3><p>临时货币+全局货币</p>
+<p>临时货币用于在游戏中的兑换点处兑换临时强化，持续一局游戏，游戏结束后临时货币清零</p>
+<p>全局货币在游戏后得到，用于强化所有角色属性</p>
+<h3 id="肉鸽所常见的关卡依赖型能力强化">肉鸽所常见的关卡依赖型能力强化
+</h3><p>在选关时会出现&quot;潜能&quot;或&quot;光&quot;，&ldquo;暗&rdquo;，&ldquo;电&quot;等的元素字样</p>
+<p>&ldquo;潜能&quot;关通过后会给出三个选项，对应着选择角色界面的强化（包括但不限于攻击附带效果，三段跳，技能附带效果等），但这些强化通常不能全点满，略感不适</p>
+<p>元素字样的关卡通关后会给出三个选项，为该元素主题的强化，如在&quot;影&quot;主题的强化中，一个强化的效果为：攻击敌人后，敌人的影子会爆炸（不是这样的描述，但差不多意思），造成伤害，初选确实有意思，但后来发现有点鸡肋，因为它产生影子的机制是怪被攻击后在攻击前的原地留下一个残影，而由于我的角色攻击自带推的效果，所以这个影子基本打不到敌人</p>
+<p>元素强化的上限与角色的动作数相关，如传承技能可以放一个元素强化，普攻一个，冲刺一个，技能一个，如果位置冲突，那么玩家要从中做取舍</p>
+<p>同时元素强化也可以强化原有的元素强化，比如我可能原来有一个&quot;攻击后召唤史莱姆&quot;的强化，那么我后面就可能可以选择一个&quot;延长史莱姆存活时间&quot;的强化（&ldquo;强化&quot;这个以后开个分支，感觉是可以梳理一下的）</p>
+<h3 id="游戏外强化全局强化">游戏外强化（全局强化）
+</h3><p>目前，在游戏前期，分为面板属性强化和特殊能力叠加</p>
+<p>在游玩一局游戏后，那个睡着的npc会醒（期间有引导，但无关紧要），在这个npc处可以使用全局货币直接强化HP（暂时没有看到强化其他东西），在HP强化等级高了之后可以解锁一些槽位，这些槽位可以添加一些可强化的类似于强化芯片一样的东西，效果大多是增加HP，增加MP，连杀达到多少获得伤害提升什么的，强化HP等级越高，槽位越多，芯片可以使用全局货币加上通关后获得的道具强化，增加强化数值</p>
+<hr>
+<h2 id="思考">思考
+</h2><h3 id="优点">优点
+</h3><ul>
+<li>先声夺人的游戏开始界面：</li>
+</ul>
+<p>这个细节做的真的很好，泛用性很高</p>
+<ul>
+<li>创新性的强化系统：</li>
+</ul>
+<p>强化系统一看就懂，局外有数值强化和可定制化效果强化，局内有&quot;潜能&quot;强化和元素强化，着重强调重复强化系统，这个现在被某大厂抄了</p>
+<ul>
+<li>创新性的传承技能机制：</li>
+</ul>
+<p>提供了可拼接的角色技能系统（最多拼两个，加角色本身技能一共三个技能），自由度更高，体验也会更好</p>
+<h3 id="缺点">缺点
+</h3><ul>
+<li>复杂的键位和反直觉的默认键位：</li>
+</ul>
+<p>总之键位就是一大痛点，很明显不遵循奥卡姆剃刀原则</p>
+<ul>
+<li>传承技能机制没有引导：</li>
+</ul>
+<p>连文字说明都没有，真的，唉，在我玩到很后面才给了一个任务来讲这个系统，那它明显没考虑这个任务之前接触到这个系统的玩家啊</p>
+<h3 id="碎碎念">碎碎念
+</h3><p>苍翼好玩吗？感觉不是很好玩，每次选关时都会剥离我的一部分沉浸感，小怪和boss也很笨</p>
+<p>角色手感也大多很笨重，和空洞骑士这样的手感根本比不了，感觉和它所宣传的炫酷连招有点出入</p>
+<p>每个角色都有轮椅使得它可以让玩家很快速轻松的获得通关的爽感，这点不知道算优点还是缺点</p>
+<p>没有多次游戏的欲望，肉鸽元素没有很好的融入游戏，这点比不上死亡细胞</p>
+<h3 id="评分">评分
+</h3><p>可玩性：B</p>
+<p>复玩性：C</p>
+<p>创新性：C</p>
+<p>可借鉴：A</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E7%9C%8B%E6%B8%B8%E6%88%8F/">看游戏</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/%E5%AD%A6%E7%94%9F%E8%B5%B7%E4%B9%89%E5%86%9B%E7%AD%96%E5%88%92%E6%A1%88v3/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">学生起义军策划案v3</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 yuyi
+    </section>
+    
+    <section class="powerby">
+        
+            All tragedy erased , I see only wonders... <br/>
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.2b127abaab7a00bb5c08cec3ae44f096ba0619c283a378773a55fe9ee6c6c209.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<style>
+    #TableOfContents > ul, ol {
+        ul, ol {
+            display: none;
+        }
+        .open {
+            display: block;
+        }
+    }
+</style>
+
+<script>
+    function initTocHide() {
+        
+        let toc = document.querySelector(".widget--toc");
+        if (!toc) {
+            return;
+        }
+        
+        window.addEventListener('scroll', function() {
+            
+            let openUl = document.querySelectorAll(".open");
+            if (openUl.length > 0) {
+              openUl.forEach((ul) => {
+                ul.classList.remove("open")
+              })
+            }
+            
+            let currentLi = document.querySelector(".active-class");
+            if (!currentLi) {
+                return
+            }
+            
+            if (currentLi.children.length > 1) {
+                currentLi.children[1].classList.add("open")
+            }
+            
+            let ul = currentLi.parentElement;
+            do {
+                ul.classList.add("open");
+                ul = ul.parentElement.parentElement
+            } while (ul !== undefined && (ul.localName === 'ul' || ul.localName === 'ol'))
+        });
+    }
+    initTocHide()
+</script>
+
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+        
+        window.dispatchEvent(new Event('resize'))
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "http://localhost:1313/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+
+<style>
+    #backTopBtn {
+        display: none;
+        position: fixed;
+        bottom: 30px;
+        z-index: 99;
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        background-image: url(http://localhost:1313/icons/backTop.svg);
+    }
+</style>
+
+<script>
+    
+
+    function initScrollTop() {
+        let rightSideBar = document.querySelector(".right-sidebar");
+        if (!rightSideBar) {
+            return;
+        }
+        
+        let btn = document.createElement("div");
+        btn.id = "backTopBtn";
+        btn.onclick = backToTop
+        rightSideBar.appendChild(btn)
+        
+        window.onscroll = function() {
+            
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                btn.style.display = "block";
+            } else {
+                btn.style.display = "none";
+            }
+        };
+    }
+
+    
+
+    function backToTop(){
+        window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+</script>
+
+
+    </body>
+</html>

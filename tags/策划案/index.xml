@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>策划案 on yuyi</title>
+        <link>http://localhost:1313/tags/%E7%AD%96%E5%88%92%E6%A1%88/</link>
+        <description>Recent content in 策划案 on yuyi</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>yuyi</copyright>
+        <lastBuildDate>Sat, 10 May 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/%E7%AD%96%E5%88%92%E6%A1%88/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>学生起义军策划案v3</title>
+        <link>http://localhost:1313/p/%E5%AD%A6%E7%94%9F%E8%B5%B7%E4%B9%89%E5%86%9B%E7%AD%96%E5%88%92%E6%A1%88v3/</link>
+        <pubDate>Sat, 10 May 2025 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/p/%E5%AD%A6%E7%94%9F%E8%B5%B7%E4%B9%89%E5%86%9B%E7%AD%96%E5%88%92%E6%A1%88v3/</guid>
+        <description>&lt;p&gt;游戏类型：RTS&lt;/p&gt;
+&lt;h2 id=&#34;游戏背景&#34;&gt;游戏背景
+&lt;/h2&gt;&lt;p&gt;在不遥远的过去或不遥远的将来，学生阶级与教师主义阶级之间的矛盾愈演愈烈，在某个非人类学校中，两位学生阶级先锋在作业本上演算起了推翻学校暴政，建立学生友好型社会的战争&lt;/p&gt;
+&lt;p&gt;（纯幻想唉唉）&lt;/p&gt;
+&lt;h2 id=&#34;游戏核心机制&#34;&gt;游戏核心机制
+&lt;/h2&gt;&lt;h3 id=&#34;指挥官机制&#34;&gt;指挥官机制
+&lt;/h3&gt;&lt;p&gt;在游戏中，玩家不能直接控制某个部队进行移动/攻击，而必须将产出的单位添加到某个&amp;quot;指挥官&amp;quot;旗下，通过控制&amp;quot;指挥官&amp;quot;在游戏中实现战斗（这一点类似于钢铁雄心中的集团军和方面军的机制）&lt;/p&gt;
+&lt;p&gt;玩家控制指挥官只能下达一个命令，我们抽象这个命令为&amp;quot;设置目标点&amp;quot;，玩家操控某个指挥官后右键点击主视图中的地块以&amp;quot;设置目标点&amp;quot;，选中的指挥官会以&amp;quot;自己的风格&amp;quot;前往这个&amp;quot;目标点&amp;quot;，下达命令有冷却&lt;/p&gt;
+&lt;p&gt;指挥官的&amp;quot;自己的风格&amp;quot;取决于他的&amp;quot;性格&amp;quot;，我们可以将其理解为&amp;quot;特有的部队buff&amp;quot;和&amp;quot;特有的战斗逻辑&amp;quot;，如：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;小明：（这里可以将&amp;quot;性格&amp;quot;解释为&amp;quot;好战&amp;quot;，仅作演示）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;自动攻击侦查范围（自身的视野范围）内所有敌人&lt;/p&gt;
+&lt;p&gt;部队攻击力+100%&lt;/p&gt;
+&lt;p&gt;有目标点时，部队攻击力+50%（别和我揪实现逻辑，这只是演示）&lt;/p&gt;
+&lt;p&gt;净空侦查范围内所有敌军时，视为&amp;quot;达到目标点&amp;quot;&lt;/p&gt;
+&lt;p&gt;&amp;hellip;（更多逻辑）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;明小：（解释为&amp;quot;保守&amp;quot;）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;攻击自身小范围内的敌人&lt;/p&gt;
+&lt;p&gt;部队血量+50%&lt;/p&gt;
+&lt;p&gt;无目标点时，部队获得50%免伤&lt;/p&gt;
+&lt;p&gt;&amp;hellip;（其实这个甚至能加到肉鸽元素里，暂时还是不想这么多了吧）&lt;/p&gt;
+&lt;p&gt;当有部队到达目标点附近一个区域时，视为&amp;quot;达到目标点&amp;quot;&lt;/p&gt;
+&lt;p&gt;单位可以有冷却地更换指挥官，更换指挥官会损失部队经验（指挥官和部队不熟咯，当然有些指挥官可以有不减少经验的性格&amp;quot;平易近人&amp;quot;）&lt;/p&gt;
+&lt;p&gt;指挥官可以通过指挥中心消耗资源&amp;quot;招募&amp;quot;和&amp;quot;晋升&amp;quot;&lt;/p&gt;
+&lt;h3 id=&#34;指挥上限机制&#34;&gt;指挥上限机制
+&lt;/h3&gt;&lt;p&gt;每个玩家都有单位指挥上限，每个指挥官也有单位指挥上限&lt;/p&gt;
+&lt;p&gt;玩家可以通过占领&amp;quot;学校&amp;quot;，研究科技等提升指挥上限&lt;/p&gt;
+&lt;p&gt;指挥官可以通过&amp;quot;晋升&amp;quot;等提升指挥上限（别问我为什么只有一个就等了，没想出来嘛）&lt;/p&gt;
+&lt;h3 id=&#34;占领区机制&#34;&gt;占领区机制
+&lt;/h3&gt;&lt;p&gt;RTS中核心的&amp;quot;扩张&amp;quot;部分在此为&amp;quot;占领&amp;quot;&lt;/p&gt;
+&lt;p&gt;游戏初始有多片中立区域（这里谈的是遭遇战，我们暂时称这些区域其为&amp;quot;学校&amp;quot;），玩家可以派遣部队到达这些&amp;quot;学校&amp;quot;（详细机制参考&amp;quot;占山为王&amp;quot;或某些FPS游戏的占点机制），持续一段时间后该&amp;quot;学校&amp;quot;将归属于占领玩家&lt;/p&gt;
+&lt;p&gt;玩家可以在归属于己的&amp;quot;学校&amp;quot;建立建筑（我们更喜欢称其为改造学校为某个建筑），这些建筑包括&amp;quot;资源建筑&amp;quot;（如&amp;quot;作业反应堆&amp;quot;），&amp;ldquo;军事建筑&amp;rdquo;（如&amp;quot;红埔军校&amp;quot;，别和我揪名字，我叫它AABB都行），&amp;ldquo;研究建筑&amp;rdquo;（如&amp;quot;图书馆&amp;quot;），&amp;ldquo;防御建筑&amp;rdquo;（如&amp;quot;反卷宣传塔&amp;quot;）等&lt;/p&gt;
+&lt;p&gt;有建筑的&amp;quot;学校&amp;quot;无法被占领，若要占领需先摧毁建筑&lt;/p&gt;
+&lt;h2 id=&#34;玩家操作概览&#34;&gt;玩家操作概览
+&lt;/h2&gt;&lt;p&gt;![[学生起义军策划案v3.png]]&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

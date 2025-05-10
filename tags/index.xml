@@ -7,7 +7,31 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>yuyi</copyright>
-        <lastBuildDate>Tue, 15 Apr 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sat, 10 May 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Godot</title>
+        <link>http://localhost:1313/tags/godot/</link>
+        <pubDate>Sat, 10 May 2025 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/tags/godot/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>策划案</title>
+        <link>http://localhost:1313/tags/%E7%AD%96%E5%88%92%E6%A1%88/</link>
+        <pubDate>Sat, 10 May 2025 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/tags/%E7%AD%96%E5%88%92%E6%A1%88/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>算法</title>
+        <link>http://localhost:1313/tags/%E7%AE%97%E6%B3%95/</link>
+        <pubDate>Sat, 10 May 2025 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/tags/%E7%AE%97%E6%B3%95/</guid>
+        <description></description>
+        </item>
+        <item>
         <title>闲笔</title>
         <link>http://localhost:1313/tags/%E9%97%B2%E7%AC%94/</link>
         <pubDate>Tue, 15 Apr 2025 00:00:00 +0000</pubDate>
@@ -32,19 +56,19 @@
         <description></description>
         </item>
         <item>
-        <title>Godot</title>
-        <link>http://localhost:1313/tags/godot/</link>
-        <pubDate>Fri, 11 Apr 2025 00:00:00 +0000</pubDate>
-        
-        <guid>http://localhost:1313/tags/godot/</guid>
-        <description></description>
-        </item>
-        <item>
         <title>状态机</title>
         <link>http://localhost:1313/tags/%E7%8A%B6%E6%80%81%E6%9C%BA/</link>
         <pubDate>Fri, 11 Apr 2025 00:00:00 +0000</pubDate>
         
         <guid>http://localhost:1313/tags/%E7%8A%B6%E6%80%81%E6%9C%BA/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>看游戏</title>
+        <link>http://localhost:1313/tags/%E7%9C%8B%E6%B8%B8%E6%88%8F/</link>
+        <pubDate>Thu, 09 Jan 2025 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/tags/%E7%9C%8B%E6%B8%B8%E6%88%8F/</guid>
         <description></description>
         </item>
         

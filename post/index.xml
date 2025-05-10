@@ -7,7 +7,171 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>yuyi</copyright>
-        <lastBuildDate>Sun, 27 Apr 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sat, 10 May 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>格子的洪水算法</title>
+        <link>http://localhost:1313/p/%E6%A0%BC%E5%AD%90%E7%9A%84%E6%B4%AA%E6%B0%B4%E7%AE%97%E6%B3%95/</link>
+        <pubDate>Sat, 10 May 2025 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/p/%E6%A0%BC%E5%AD%90%E7%9A%84%E6%B4%AA%E6%B0%B4%E7%AE%97%E6%B3%95/</guid>
+        <description>&lt;h2 id=&#34;应用场景&#34;&gt;应用场景
+&lt;/h2&gt;&lt;p&gt;回忆一下以前玩的老游戏，像《三国戏英杰传》那样的策略战棋游戏，在点击一个战棋之后，地面是不是会出现一片“可移动区域”，更高级一点的还会在外围增加一圈攻击距离&lt;/p&gt;
+&lt;p&gt;那个就可以用洪水算法（又称广度优先算法）实现，当然，这本来是寻路算法的一部分，这里我只是简单地写一下它的基本实现方法&lt;/p&gt;
+&lt;h2 id=&#34;基本逻辑&#34;&gt;基本逻辑
+&lt;/h2&gt;&lt;p&gt;为什么它叫洪水算法？想象现在有一个正方形格子纸世界，在这个世界中，有一个格子是洪水，现在洪水要无限地扩散，每个时间单位扩散到周围四条边的格子，被扩散的格子在下一个时间单位也会往外扩散&lt;/p&gt;
+&lt;p&gt;那么我们改怎么实现？首先我们需要根据当前洪水格子坐标得到周围四个格子坐标，然后把这四个格子都标记为“洪水”，这会是一个函数，我们会在每个时间单位都对所有的“洪水”调用这个函数&lt;/p&gt;
+&lt;p&gt;现在我们已经实现了一个无脑的“洪水”了，但有一个性能问题，那就是两个相邻的“洪水”会在一次洪水扩散中相互把对方变成“洪水”，这就未免有点蠢了，“我杀我自己”？&lt;/p&gt;
+&lt;p&gt;那我们怎么解决这个问题呢？那就是把“洪水”格子打上标签（或许是一个变量，又或者是在洪水数组里查找它），告诉相邻“洪水”：主公，别开枪，自己人！&lt;/p&gt;
+&lt;p&gt;那么一个简单的洪水算法就写完了，怎么样，是不是很简单？&lt;/p&gt;
+&lt;h2 id=&#34;代码实现&#34;&gt;代码实现
+&lt;/h2&gt;&lt;p&gt;首先，为了图方便，我们会定义一个功能为“获取所有相邻格子”的函数，其中，这里的格子将是格子坐标Array[Vector2i]&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-gdscript&#34; data-lang=&#34;gdscript&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;GetNeighbours&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;index&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;Vector2i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;kd&#34;&gt;var&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;GridsToReturn&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;Array&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;nc&#34;&gt;Vector2i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Grid&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;GridManager&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Grid&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;index&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;index&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;vector2i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;			&lt;span class=&#34;n&#34;&gt;GridsToReturn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;append&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Grid&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;index&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;k&#34;&gt;elif&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Grid&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;index&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;index&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;vector2i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;			&lt;span class=&#34;n&#34;&gt;GridsToReturn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;append&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Grid&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;index&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;k&#34;&gt;elif&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Grid&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;index&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;index&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;vector2i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;			&lt;span class=&#34;n&#34;&gt;GridsToReturn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;append&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Grid&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;index&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;k&#34;&gt;elif&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Grid&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;index&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;index&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;vector2i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;			&lt;span class=&#34;n&#34;&gt;GridsToReturn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;append&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Grid&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;index&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;GridToReturn&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;然后我们就该写最核心的函数了，关于洪水扩散的，这里，我们将返回在n个时间单位后，格子纸上所有洪水的坐标Array[Vector2i]&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-gdscript&#34; data-lang=&#34;gdscript&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;Flood&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;index&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;Vector2i&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;distance&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;#第一个是洪水起始点坐标，第二个是洪水扩散距离&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;kd&#34;&gt;var&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;range&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;Array&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;nc&#34;&gt;Vector2i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;#返回的最终结果&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;kd&#34;&gt;var&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;now&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;array&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;nc&#34;&gt;Vector2i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;#洪水边缘的格子&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;kd&#34;&gt;var&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;open&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;Array&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;nc&#34;&gt;Vector2i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;#洪水走过的格子&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;n&#34;&gt;now&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;append&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;index&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;c1&#34;&gt;#设置洪水起始点&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;k&#34;&gt;while&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;distance&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;current&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;now&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;			&lt;span class=&#34;kd&#34;&gt;var&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;neighbours&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;GetNeighbours&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;current&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;			&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;neighbour&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;neighbours&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;				&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;!&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;neighbour&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;open&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;and&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;neighbour&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;index&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;				&lt;span class=&#34;c1&#34;&gt;#这里是保证neighbour不是洪水走过的格子，且neighbour不是洪水起始点&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;					&lt;span class=&#34;n&#34;&gt;open&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;append&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;neighbour&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;					&lt;span class=&#34;nb&#34;&gt;range&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;append&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;neighbour&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;n&#34;&gt;now&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;clear&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Grid&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;open&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;			&lt;span class=&#34;n&#34;&gt;now&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;append&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Grid&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;			&lt;span class=&#34;c1&#34;&gt;#所有洪水已经占领的格子都将是下一次洪水的起始格子&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;n&#34;&gt;open&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;clear&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;		&lt;span class=&#34;n&#34;&gt;distance&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;range&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;以上，我们就可以根据一个格子a和所需要扩散的距离n获取距离a的n个格子内的所有格子坐标&lt;/p&gt;
+&lt;h2 id=&#34;接下来&#34;&gt;接下来？
+&lt;/h2&gt;&lt;p&gt;你可以考虑为它添加一点新功能&lt;/p&gt;
+&lt;p&gt;比如，假如场景中的格子有的是障碍物怎么办，这时我们就得把“障碍物”从“洪水”中剔除出去，这个比较简单，在洪水扩散时检查一下格子的“标签”就行了&lt;/p&gt;
+&lt;p&gt;再如，有时候碍于地形等因素，移动到某个格子需要的行动力不为1（不与其他格子相同），这时我们就得给格子添加权重什么的&lt;/p&gt;
+&lt;p&gt;作为寻路算法最简单的一个，洪水算法显然不能满足诸如敌人ai寻路（伟大的A*算法）的，即使是格子寻路也难办，这时候我们就得去学相应的高级高级一点的算法了，不过不必担心，它们也是从洪水算法生出来的，相信大同小异&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>学生起义军策划案v3</title>
+        <link>http://localhost:1313/p/%E5%AD%A6%E7%94%9F%E8%B5%B7%E4%B9%89%E5%86%9B%E7%AD%96%E5%88%92%E6%A1%88v3/</link>
+        <pubDate>Sat, 10 May 2025 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/p/%E5%AD%A6%E7%94%9F%E8%B5%B7%E4%B9%89%E5%86%9B%E7%AD%96%E5%88%92%E6%A1%88v3/</guid>
+        <description>&lt;p&gt;游戏类型：RTS&lt;/p&gt;
+&lt;h2 id=&#34;游戏背景&#34;&gt;游戏背景
+&lt;/h2&gt;&lt;p&gt;在不遥远的过去或不遥远的将来，学生阶级与教师主义阶级之间的矛盾愈演愈烈，在某个非人类学校中，两位学生阶级先锋在作业本上演算起了推翻学校暴政，建立学生友好型社会的战争&lt;/p&gt;
+&lt;p&gt;（纯幻想唉唉）&lt;/p&gt;
+&lt;h2 id=&#34;游戏核心机制&#34;&gt;游戏核心机制
+&lt;/h2&gt;&lt;h3 id=&#34;指挥官机制&#34;&gt;指挥官机制
+&lt;/h3&gt;&lt;p&gt;在游戏中，玩家不能直接控制某个部队进行移动/攻击，而必须将产出的单位添加到某个&amp;quot;指挥官&amp;quot;旗下，通过控制&amp;quot;指挥官&amp;quot;在游戏中实现战斗（这一点类似于钢铁雄心中的集团军和方面军的机制）&lt;/p&gt;
+&lt;p&gt;玩家控制指挥官只能下达一个命令，我们抽象这个命令为&amp;quot;设置目标点&amp;quot;，玩家操控某个指挥官后右键点击主视图中的地块以&amp;quot;设置目标点&amp;quot;，选中的指挥官会以&amp;quot;自己的风格&amp;quot;前往这个&amp;quot;目标点&amp;quot;，下达命令有冷却&lt;/p&gt;
+&lt;p&gt;指挥官的&amp;quot;自己的风格&amp;quot;取决于他的&amp;quot;性格&amp;quot;，我们可以将其理解为&amp;quot;特有的部队buff&amp;quot;和&amp;quot;特有的战斗逻辑&amp;quot;，如：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;小明：（这里可以将&amp;quot;性格&amp;quot;解释为&amp;quot;好战&amp;quot;，仅作演示）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;自动攻击侦查范围（自身的视野范围）内所有敌人&lt;/p&gt;
+&lt;p&gt;部队攻击力+100%&lt;/p&gt;
+&lt;p&gt;有目标点时，部队攻击力+50%（别和我揪实现逻辑，这只是演示）&lt;/p&gt;
+&lt;p&gt;净空侦查范围内所有敌军时，视为&amp;quot;达到目标点&amp;quot;&lt;/p&gt;
+&lt;p&gt;&amp;hellip;（更多逻辑）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;明小：（解释为&amp;quot;保守&amp;quot;）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;攻击自身小范围内的敌人&lt;/p&gt;
+&lt;p&gt;部队血量+50%&lt;/p&gt;
+&lt;p&gt;无目标点时，部队获得50%免伤&lt;/p&gt;
+&lt;p&gt;&amp;hellip;（其实这个甚至能加到肉鸽元素里，暂时还是不想这么多了吧）&lt;/p&gt;
+&lt;p&gt;当有部队到达目标点附近一个区域时，视为&amp;quot;达到目标点&amp;quot;&lt;/p&gt;
+&lt;p&gt;单位可以有冷却地更换指挥官，更换指挥官会损失部队经验（指挥官和部队不熟咯，当然有些指挥官可以有不减少经验的性格&amp;quot;平易近人&amp;quot;）&lt;/p&gt;
+&lt;p&gt;指挥官可以通过指挥中心消耗资源&amp;quot;招募&amp;quot;和&amp;quot;晋升&amp;quot;&lt;/p&gt;
+&lt;h3 id=&#34;指挥上限机制&#34;&gt;指挥上限机制
+&lt;/h3&gt;&lt;p&gt;每个玩家都有单位指挥上限，每个指挥官也有单位指挥上限&lt;/p&gt;
+&lt;p&gt;玩家可以通过占领&amp;quot;学校&amp;quot;，研究科技等提升指挥上限&lt;/p&gt;
+&lt;p&gt;指挥官可以通过&amp;quot;晋升&amp;quot;等提升指挥上限（别问我为什么只有一个就等了，没想出来嘛）&lt;/p&gt;
+&lt;h3 id=&#34;占领区机制&#34;&gt;占领区机制
+&lt;/h3&gt;&lt;p&gt;RTS中核心的&amp;quot;扩张&amp;quot;部分在此为&amp;quot;占领&amp;quot;&lt;/p&gt;
+&lt;p&gt;游戏初始有多片中立区域（这里谈的是遭遇战，我们暂时称这些区域其为&amp;quot;学校&amp;quot;），玩家可以派遣部队到达这些&amp;quot;学校&amp;quot;（详细机制参考&amp;quot;占山为王&amp;quot;或某些FPS游戏的占点机制），持续一段时间后该&amp;quot;学校&amp;quot;将归属于占领玩家&lt;/p&gt;
+&lt;p&gt;玩家可以在归属于己的&amp;quot;学校&amp;quot;建立建筑（我们更喜欢称其为改造学校为某个建筑），这些建筑包括&amp;quot;资源建筑&amp;quot;（如&amp;quot;作业反应堆&amp;quot;），&amp;ldquo;军事建筑&amp;rdquo;（如&amp;quot;红埔军校&amp;quot;，别和我揪名字，我叫它AABB都行），&amp;ldquo;研究建筑&amp;rdquo;（如&amp;quot;图书馆&amp;quot;），&amp;ldquo;防御建筑&amp;rdquo;（如&amp;quot;反卷宣传塔&amp;quot;）等&lt;/p&gt;
+&lt;p&gt;有建筑的&amp;quot;学校&amp;quot;无法被占领，若要占领需先摧毁建筑&lt;/p&gt;
+&lt;h2 id=&#34;玩家操作概览&#34;&gt;玩家操作概览
+&lt;/h2&gt;&lt;p&gt;![[学生起义军策划案v3.png]]&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>Box-Muller变换－用随机数函数获取正态分布随机数</title>
         <link>http://localhost:1313/p/box-muller%E5%8F%98%E6%8D%A2%E7%94%A8%E9%9A%8F%E6%9C%BA%E6%95%B0%E5%87%BD%E6%95%B0%E8%8E%B7%E5%8F%96%E6%AD%A3%E6%80%81%E5%88%86%E5%B8%83%E9%9A%8F%E6%9C%BA%E6%95%B0/</link>
         <pubDate>Sun, 27 Apr 2025 00:00:00 +0000</pubDate>
@@ -1246,6 +1410,99 @@ $$&lt;p&gt;即可&lt;/p&gt;
 &lt;p&gt;还有，假如我要设置一个规则：角色在跳跃时不能攻击？&lt;/p&gt;
 &lt;p&gt;涉及状态机间的通信（或者说类似于&lt;strong&gt;黑板&lt;/strong&gt;这样的行为树里有的东西）&lt;/p&gt;
 &lt;p&gt;这些我们后面细嗦&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>苍翼：混沌效应</title>
+        <link>http://localhost:1313/p/%E8%8B%8D%E7%BF%BC%E6%B7%B7%E6%B2%8C%E6%95%88%E5%BA%94/</link>
+        <pubDate>Thu, 09 Jan 2025 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/p/%E8%8B%8D%E7%BF%BC%E6%B7%B7%E6%B2%8C%E6%95%88%E5%BA%94/</guid>
+        <description>&lt;p&gt;我的雷蛇驱动显示它能跑到720帧，虽然这是不可信的（以前跑杀手暗杀世界能跑出2万帧，你猜猜我信不信它），但也能说明它体量不大/优化挺好&lt;/p&gt;
+&lt;p&gt;我这里玩的版本是2025年1月春节版本前的最后一个版本&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;游戏前&#34;&gt;游戏前
+&lt;/h2&gt;&lt;h3 id=&#34;开始界面&#34;&gt;开始界面
+&lt;/h3&gt;&lt;p&gt;游戏开始就以黑屏+声音开幕，让玩家代入自己在一个训练设备中的感觉（开始还没意识到的，但在玩游戏的途中感觉到了这一点，很自然，很perfect）&lt;/p&gt;
+&lt;p&gt;其他的就没什么特色了&lt;/p&gt;
+&lt;h3 id=&#34;教程&#34;&gt;教程
+&lt;/h3&gt;&lt;p&gt;教程就是很正常普通的场景后有屏幕给键位和演示，然后给出不能攻击不能移动的敌人给你打靶，只给出来基础操作，然后说了一句进阶操作需要玩到后面才能慢慢解锁，还说要复杂操作打出&lt;/p&gt;
+&lt;p&gt;提一嘴，键位很艹damn，反人类&lt;/p&gt;
+&lt;h3 id=&#34;游戏前碎碎念&#34;&gt;游戏前碎碎念
+&lt;/h3&gt;&lt;p&gt;单人的横版动作游戏，说有多人，也说有boss连战但我还没玩到，游戏就是砍砍砍（我只解锁了两个角色，都是砍，看到了有其他角色能射射射，没有很高的操作门槛，网上的评论也就是说每个角色都有轮椅，但这并没有很令人这些玩家反感，我也是一样，这轮椅可太有舒适区了）&lt;/p&gt;
+&lt;p&gt;游戏鼓励格挡（角色技能，不是完美格挡）和完美闪避（完美闪避的奖励是时间流速变慢）和无伤多杀（有些&amp;quot;事件&amp;quot;会在多杀后给予奖励，如给予游戏中的临时货币）&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;游戏中这段不重要&#34;&gt;游戏中（这段不重要）
+&lt;/h2&gt;&lt;h3 id=&#34;第一场游戏前&#34;&gt;第一场游戏前
+&lt;/h3&gt;&lt;p&gt;现在我完成了教程，进到了游戏的大厅（类似于元气骑士里的客厅那样的），&amp;ldquo;我&amp;quot;现在是一个机器人，浮空移动，可跳跃（但是跳跃的前摇有点长，不舒服）&lt;/p&gt;
+&lt;p&gt;游戏中的npc很少（一眼看去就一个），npc基本在一个屏幕只会出现一个，都有各自的区域（说房间也很像房间，但没有明确的界限），然后我就往右走，碰到的第一个npc在睡觉（这个npc是消耗游戏核心货币强化角色默认属性的，现在暂时是强化HP和嵌入强化槽的（就是增加特殊能力），不知道后面怎么样，它在睡觉，这点处理很好，此时玩家还没接触货币系统，也可以让玩家原味（无强化）体验一遍游戏内容）&lt;/p&gt;
+&lt;p&gt;然后我想往回走，坐电梯到了二楼，左边闪了光，我没去看（可惜了，真应该看看的），当时看到还有三楼，瞬间就没了探索欲望，于是坐回电梯到一楼，再往右走，就触发了与核心npc的对话，交代了玩家为什么战斗（这是一个训练，要增加啥啥啥居民的战斗意识啥的，剧情无所谓了，因为很显然它不主打剧情），对话完毕之后它和我说继续往右走，那就往右走吧，路过了难度选择系统，我没去看，然后在我继续往右走的时候就有能量把我强制吸向右边（我猜这段是用来加载后面的资源的过渡时间，不过被吸走有点不舒服），到了选择角色界面&lt;/p&gt;
+&lt;h3 id=&#34;选择角色界面&#34;&gt;选择角色界面
+&lt;/h3&gt;&lt;p&gt;（首先有一点很奇怪，我明明选择游戏音频是英文，角色语言无一例外全是日语，额有点无语，当然，游戏自带中文语言）&lt;/p&gt;
+&lt;p&gt;选择角色界面开始是全部角色都上锁，然后可以自己选择初始英雄（这个自由性强的感觉不是时候），此时玩家可以选中任意角色然后按个键观看这个角色的视频和技能，强化（这个作为唯一的选择角色引导有点意思，但我不舒服），我选择了一个技能是格挡的，他的技能是开始格挡（持续一段时间，这个时间有点长，期间不能动，正反都格挡，被攻击触发一闪（和拔刀斩有点像））&lt;/p&gt;
+&lt;h3 id=&#34;第一场游戏&#34;&gt;第一场游戏
+&lt;/h3&gt;&lt;p&gt;角色很笨重（当然这是选择角色的视频里提到过的，但笨重的还是出乎我的意料了），冲刺（闪避）有很明显的前摇（所有角色冲刺都有前摇，这个尤其明显），攻击也慢，但打击感不错，体现在攻击时刀划过的地方有粒子和拖尾特效，击中人震屏（其实挺平平无奇的，相较于其他打击感很好的游戏）&lt;/p&gt;
+&lt;p&gt;小怪都没有很高强度，前摇明显，攻击间隔也长&lt;/p&gt;
+&lt;p&gt;游戏为关卡制，有重肉鸽元素，玩家在完成一个关卡后可以选择下一个关卡（大部分是三选一，也有更少选项的，包括各个属性的强化天赋，&amp;ldquo;潜能&amp;rdquo;（就是在选择角色界面展示的&amp;quot;强化&amp;rdquo;，这些强化大部分是技能的改变什么的，比如二段跳改三段跳，冲刺落雷什么的），增加HP上限，增加MP上限，增加游戏临时货币点数，兑换游戏临时货币为各种小的强化，触发随机事件，精英挑战）&lt;/p&gt;
+&lt;p&gt;顺便提一嘴，游戏有完美通关（无伤）的标识，但没有相应的奖励&lt;/p&gt;
+&lt;p&gt;其中前四个关卡为打小怪后即可获取相应的增益，后面的关卡（除精英挑战）都是类似商店的关卡，精英挑战则是在打完后随机获得打小怪能获得的四个增益中的随机一个，触发两次获得该增益&lt;/p&gt;
+&lt;p&gt;boss战也没有很紧张，游戏不注重见招拆招，注重快速干掉对手，boss战后会获得一个潜能强化和一个增益（如增加空中伤害，增加空中防御什么的增益较小的随机增益）&lt;/p&gt;
+&lt;p&gt;第一场游戏因为没有摸清楚敌人都是什么东西，惨败在第三个boss处&lt;/p&gt;
+&lt;p&gt;在角色死亡后会弹出评分界面，然后会让你选择一个在游戏中获得的增益保留（此时我一脸懵逼不知道这是什么东西，这个新机制的引导真的不行，我自行脑补出了就是可以保留一个增益让我可以在下一局开始时携带）&lt;/p&gt;
+&lt;h3 id=&#34;第二场游戏&#34;&gt;第二场游戏
+&lt;/h3&gt;&lt;p&gt;在游戏前我探索了二楼左边发光的地方，里面就是一个东西讲我听不懂的话，应该是用于升华游戏主题的东西，还提示了多回目搜集元素，在电梯旁有一个npc提示电梯坏了，要以后才能开放（内容解锁的精髓，我懂我懂）&lt;/p&gt;
+&lt;p&gt;在选择难度界面我把难度调低了（游戏的难度系统目前看只有两层，普通和进阶，但可以在普通里变相降低难度（包括降低陷阱伤害，降低敌人伤害，血量，增加boss战后的增益数量），在进阶难度里变相提升难度（包括增加敌人血量攻击等））&lt;/p&gt;
+&lt;p&gt;选择了一个输出为主的英雄，游戏提示可以携带英雄的传承技能（没有描述传承技能是什么东西，这个引导真的，我哭死，反正稀里糊涂），我选择了我上一把的英雄（这个传承技能机制我脑补就是可以携带一个英雄的技能和那个保留在这个英雄上的增益，在本局开始时直接携带（这种拼技能的机制有点意思哈，不过我当时没反应过来，真没引导）），这个传承技能还可以在游戏中强化（当然也和前面的游戏中强化一样是暂时强化）&lt;/p&gt;
+&lt;p&gt;摇轮椅通关了倒数第二个boss，然后会给出三个选项，加HP ，加MP和最终挑战，我直接选了最终挑战，就是打最终boss，有n个阶段，花里胡哨，有点冗长，但还是被我的轮椅创死了，关尾提示我解锁了进阶难度&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;重要的系统&#34;&gt;重要的系统
+&lt;/h2&gt;&lt;h3 id=&#34;货币系统&#34;&gt;货币系统
+&lt;/h3&gt;&lt;p&gt;临时货币+全局货币&lt;/p&gt;
+&lt;p&gt;临时货币用于在游戏中的兑换点处兑换临时强化，持续一局游戏，游戏结束后临时货币清零&lt;/p&gt;
+&lt;p&gt;全局货币在游戏后得到，用于强化所有角色属性&lt;/p&gt;
+&lt;h3 id=&#34;肉鸽所常见的关卡依赖型能力强化&#34;&gt;肉鸽所常见的关卡依赖型能力强化
+&lt;/h3&gt;&lt;p&gt;在选关时会出现&amp;quot;潜能&amp;quot;或&amp;quot;光&amp;quot;，&amp;ldquo;暗&amp;rdquo;，&amp;ldquo;电&amp;quot;等的元素字样&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;潜能&amp;quot;关通过后会给出三个选项，对应着选择角色界面的强化（包括但不限于攻击附带效果，三段跳，技能附带效果等），但这些强化通常不能全点满，略感不适&lt;/p&gt;
+&lt;p&gt;元素字样的关卡通关后会给出三个选项，为该元素主题的强化，如在&amp;quot;影&amp;quot;主题的强化中，一个强化的效果为：攻击敌人后，敌人的影子会爆炸（不是这样的描述，但差不多意思），造成伤害，初选确实有意思，但后来发现有点鸡肋，因为它产生影子的机制是怪被攻击后在攻击前的原地留下一个残影，而由于我的角色攻击自带推的效果，所以这个影子基本打不到敌人&lt;/p&gt;
+&lt;p&gt;元素强化的上限与角色的动作数相关，如传承技能可以放一个元素强化，普攻一个，冲刺一个，技能一个，如果位置冲突，那么玩家要从中做取舍&lt;/p&gt;
+&lt;p&gt;同时元素强化也可以强化原有的元素强化，比如我可能原来有一个&amp;quot;攻击后召唤史莱姆&amp;quot;的强化，那么我后面就可能可以选择一个&amp;quot;延长史莱姆存活时间&amp;quot;的强化（&amp;ldquo;强化&amp;quot;这个以后开个分支，感觉是可以梳理一下的）&lt;/p&gt;
+&lt;h3 id=&#34;游戏外强化全局强化&#34;&gt;游戏外强化（全局强化）
+&lt;/h3&gt;&lt;p&gt;目前，在游戏前期，分为面板属性强化和特殊能力叠加&lt;/p&gt;
+&lt;p&gt;在游玩一局游戏后，那个睡着的npc会醒（期间有引导，但无关紧要），在这个npc处可以使用全局货币直接强化HP（暂时没有看到强化其他东西），在HP强化等级高了之后可以解锁一些槽位，这些槽位可以添加一些可强化的类似于强化芯片一样的东西，效果大多是增加HP，增加MP，连杀达到多少获得伤害提升什么的，强化HP等级越高，槽位越多，芯片可以使用全局货币加上通关后获得的道具强化，增加强化数值&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;思考&#34;&gt;思考
+&lt;/h2&gt;&lt;h3 id=&#34;优点&#34;&gt;优点
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;先声夺人的游戏开始界面：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这个细节做的真的很好，泛用性很高&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;创新性的强化系统：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;强化系统一看就懂，局外有数值强化和可定制化效果强化，局内有&amp;quot;潜能&amp;quot;强化和元素强化，着重强调重复强化系统，这个现在被某大厂抄了&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;创新性的传承技能机制：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;提供了可拼接的角色技能系统（最多拼两个，加角色本身技能一共三个技能），自由度更高，体验也会更好&lt;/p&gt;
+&lt;h3 id=&#34;缺点&#34;&gt;缺点
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;复杂的键位和反直觉的默认键位：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;总之键位就是一大痛点，很明显不遵循奥卡姆剃刀原则&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;传承技能机制没有引导：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;连文字说明都没有，真的，唉，在我玩到很后面才给了一个任务来讲这个系统，那它明显没考虑这个任务之前接触到这个系统的玩家啊&lt;/p&gt;
+&lt;h3 id=&#34;碎碎念&#34;&gt;碎碎念
+&lt;/h3&gt;&lt;p&gt;苍翼好玩吗？感觉不是很好玩，每次选关时都会剥离我的一部分沉浸感，小怪和boss也很笨&lt;/p&gt;
+&lt;p&gt;角色手感也大多很笨重，和空洞骑士这样的手感根本比不了，感觉和它所宣传的炫酷连招有点出入&lt;/p&gt;
+&lt;p&gt;每个角色都有轮椅使得它可以让玩家很快速轻松的获得通关的爽感，这点不知道算优点还是缺点&lt;/p&gt;
+&lt;p&gt;没有多次游戏的欲望，肉鸽元素没有很好的融入游戏，这点比不上死亡细胞&lt;/p&gt;
+&lt;h3 id=&#34;评分&#34;&gt;评分
+&lt;/h3&gt;&lt;p&gt;可玩性：B&lt;/p&gt;
+&lt;p&gt;复玩性：C&lt;/p&gt;
+&lt;p&gt;创新性：C&lt;/p&gt;
+&lt;p&gt;可借鉴：A&lt;/p&gt;
 </description>
         </item>
         
