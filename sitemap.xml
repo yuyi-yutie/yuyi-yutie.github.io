@@ -2,20 +2,40 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>http://localhost:1313/dae/century1normal/passage1/</loc>
+    <lastmod>2025-08-18T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/dae/xu/</loc>
+  </url><url>
+    <loc>http://localhost:1313/dae/century1normal/passage2/</loc>
+    <lastmod>2025-08-21T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/dae/century1normal/</loc>
+    <lastmod>2025-08-18T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/dae/century1normal/passage3/</loc>
+    <lastmod>2025-09-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/dae/century1normal/passage4/</loc>
+    <lastmod>2025-10-27T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/dae/century1normal/passage5/</loc>
+    <lastmod>2025-10-29T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/</loc>
-    <lastmod>2025-11-10T15:47:34+08:00</lastmod>
+    <lastmod>2025-11-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/about/</loc>
-    <lastmod>2025-11-09T18:19:53+08:00</lastmod>
+    <lastmod>2025-11-09T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/essay/</loc>
-    <lastmod>2025-11-09T18:19:53+08:00</lastmod>
+    <lastmod>2025-11-09T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/dae/</loc>
-    <lastmod>2025-11-09T18:19:53+08:00</lastmod>
+    <lastmod>2025-11-09T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/game/</loc>
-    <lastmod>2025-11-09T18:19:53+08:00</lastmod>
+    <lastmod>2025-11-09T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/before18/</loc>
     <lastmod>2025-04-12T00:00:00+00:00</lastmod>
