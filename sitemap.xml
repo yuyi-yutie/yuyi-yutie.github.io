@@ -40,6 +40,9 @@
     <loc>http://localhost:1313/before18/</loc>
     <lastmod>2025-04-12T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>http://localhost:1313/game/%E7%8A%B6%E6%80%81%E6%9C%BA%E6%80%BB%E7%BB%93/</loc>
+    <lastmod>2025-04-11T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/categories/</loc>
   </url><url>
     <loc>http://localhost:1313/tags/</loc>
