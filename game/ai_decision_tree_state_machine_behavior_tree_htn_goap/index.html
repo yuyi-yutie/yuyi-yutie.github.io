@@ -1144,25 +1144,25 @@ Sequence -&gt; 状态节点：门是锁着的？ -&gt; 动作节点：解锁门 
 <p><a href="https://www.bilibili.com/video/BV1iG4y1i78Q/?share_source=copy_web&amp;vd_source=ff55028a1f378d23599a756d4f11c840&amp;t=3451"target="_blank" rel="noopener">17.游戏引擎Gameplay玩法系统：高级AI (Part 1) | GAMES104-现代游戏引擎：从入门到实践 【精准空降到 57:31】</a></p>
 <hr>
 <ul>
-<li>Step 1
-根据priority检查Goal Set</li>
+<li>Step 1</li>
 </ul>
+<p>根据priority检查Goal Set</p>
 <p>找到precondition符合World State且优先级最高的一个goal</p>
 <ul>
-<li>Step 2
-比较goal的state与World State中的state</li>
+<li>Step 2</li>
 </ul>
+<p>比较goal的state与World State中的state</p>
 <p>将为满足的state扔到栈stack of unsatisfied states</p>
 <ul>
-<li>Step 3
-检查stack of unsatisfied states中第一个未满足的state</li>
+<li>Step 3</li>
 </ul>
+<p>检查stack of unsatisfied states中第一个未满足的state</p>
 <p>从Action Set中查找是否有Action的effect可以使该state改为goal需要的state（此处的effect通常称为set state）</p>
 <p>将这个Action放入将执行的计划栈中（plan stack）</p>
 <ul>
-<li>Step 4
-若将要放入plan stack中的Action的precondition未被满足，则将该precondition作为state放入stack of unsatisfied states中</li>
+<li>Step 4</li>
 </ul>
+<p>若将要放入plan stack中的Action的precondition未被满足，则将该precondition作为state放入stack of unsatisfied states中</p>
 <p>继续执行Step 3，直到stack of unsatisfied states清空</p>
 <p>输出plan stack作为计划执行队列交给Plan Runner</p>
 <p>（以上有不严谨的地方，如在plan stack中的Action的先后顺序未被提及）</p>
