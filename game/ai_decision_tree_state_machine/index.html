@@ -649,7 +649,7 @@ extends Node enum STATE { PATROL , CHASE , ATTACK } #在此定义状态机中的
 <p>可nb了，当时我就觉得，wow，我简直是一个逻辑大王，直到我知道这么做会栈溢出&hellip;</p>
 <p>然后就去学了状态机，把上面的逻辑通过状态机写成了这样：</p>
 <p>
-    <img src="../AI%e5%86%b3%e7%ad%96-%e7%8a%b6%e6%80%81%e6%9c%ba.jpg" alt=""  loading="lazy" /></p>
+    <img src="../AI%e5%86%b3%e7%ad%96-%e7%8a%b6%e6%80%81%e6%9c%ba2.jpg" alt=""  loading="lazy" /></p>
 <p>他们两个看上去逻辑是一样的，但区别就在上面的不能用，下面的能用，所以，状态机有什么用？</p>
 <p>即答：让不能用的东西变得能用！（bushi</p>
 <p>答：让actor个体（你说GameObject或CharacterBody也行，主要是我从虚幻开始学的，用actor习惯了）的行为用状态表示，从而<strong>减少逻辑混乱，增强代码可维护性和可扩展性</strong></p>
