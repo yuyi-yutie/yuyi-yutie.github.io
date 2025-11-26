@@ -26,7 +26,7 @@
 HTN概念图 GOAP概念图 2.1 全篇速览举例 （这个例子看不懂的话就是不会接下来要讲的东西）
 此处举一个比较直观的例子：我们需要做一个项羽和一个刘邦
 2.1.1 用状态机的写法 项羽有&#34;巡逻&#34;，“冲锋”，“开大”，这三个的转换关系分别是，默认处于巡逻状态，在看到敌人后向其冲锋，当与敌人距离小于某个值时开大，随后直接进入巡逻状态，以此反复
-刘邦就有&#34;待命&#34;，“摇人”，“撤退”，这三个的转换关系分别是，默认处于待命状态，看到敌人后进入摇人状态，随后直接进入撤退状态，在看不到敌人后进入待命状态，以此反复" /><link rel="canonical" href="http://localhost:1313/game/ai%E5%86%B3%E7%AD%96-%E7%8A%B6%E6%80%81%E6%9C%BA&#43;%E8%A1%8C%E4%B8%BA%E6%A0%91&#43;htn&#43;goap/" itemprop="url" />
+刘邦就有&#34;待命&#34;，“摇人”，“撤退”，这三个的转换关系分别是，默认处于待命状态，看到敌人后进入摇人状态，随后直接进入撤退状态，在看不到敌人后进入待命状态，以此反复" /><link rel="canonical" href="http://localhost:1313/game/ai_decision_tree_state_machine_behavior_tree_htn_goap/" itemprop="url" />
 
 <meta property="og:title" content="AI决策-状态机&#43;行为树&#43;HTN&#43;GOAP">
 <meta
@@ -88,7 +88,7 @@ HTN概念图 GOAP概念图 2.1 全篇速览举例 （这个例子看不懂的话
   content="
     article
   ">
-<meta property="og:url" content="http://localhost:1313/game/ai%E5%86%B3%E7%AD%96-%E7%8A%B6%E6%80%81%E6%9C%BA&#43;%E8%A1%8C%E4%B8%BA%E6%A0%91&#43;htn&#43;goap/"><meta property="article:section" content="game">
+<meta property="og:url" content="http://localhost:1313/game/ai_decision_tree_state_machine_behavior_tree_htn_goap/"><meta property="article:section" content="game">
 
 <meta
   property="article:published_time"
@@ -383,7 +383,7 @@ HTN概念图 GOAP概念图 2.1 全篇速览举例 （这个例子看不懂的话
         <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="/game/ai%E5%86%B3%E7%AD%96-%E7%8A%B6%E6%80%81%E6%9C%BA/"
+    href="/game/ai_decision_tree_state_machine/"
     
   >AI决策-状态机
     </a>
@@ -391,7 +391,7 @@ HTN概念图 GOAP概念图 2.1 全篇速览举例 （这个例子看不懂的话
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="/game/%E5%A2%A8%E5%AE%88%E5%AD%A4%E5%9F%8E/"
+    href="/game/stick_to_an_isolated_city/"
     
   >墨守孤城
     </a>
@@ -399,7 +399,7 @@ HTN概念图 GOAP概念图 2.1 全篇速览举例 （这个例子看不懂的话
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="/game/%E4%B9%9D%E7%8E%8B/"
+    href="/game/nine_kings/"
     
   >九王
     </a>
@@ -407,7 +407,7 @@ HTN概念图 GOAP概念图 2.1 全篇速览举例 （这个例子看不懂的话
             </li><li class="hx:flex hx:flex-col open"><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
-    href="/game/ai%E5%86%B3%E7%AD%96-%E7%8A%B6%E6%80%81%E6%9C%BA&#43;%E8%A1%8C%E4%B8%BA%E6%A0%91&#43;htn&#43;goap/"
+    href="/game/ai_decision_tree_state_machine_behavior_tree_htn_goap/"
     
   >AI决策-状态机&#43;行为树&#43;HTN&#43;GOAP
     </a>
@@ -470,28 +470,28 @@ HTN概念图 GOAP概念图 2.1 全篇速览举例 （这个例子看不懂的话
           <li class=""><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="/game/ai%E5%86%B3%E7%AD%96-%E7%8A%B6%E6%80%81%E6%9C%BA/"
+    href="/game/ai_decision_tree_state_machine/"
     
   >AI决策-状态机
     </a></li>
           <li class=""><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="/game/%E5%A2%A8%E5%AE%88%E5%AD%A4%E5%9F%8E/"
+    href="/game/stick_to_an_isolated_city/"
     
   >墨守孤城
     </a></li>
           <li class=""><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="/game/%E4%B9%9D%E7%8E%8B/"
+    href="/game/nine_kings/"
     
   >九王
     </a></li>
           <li class="open"><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
-    href="/game/ai%E5%86%B3%E7%AD%96-%E7%8A%B6%E6%80%81%E6%9C%BA&#43;%E8%A1%8C%E4%B8%BA%E6%A0%91&#43;htn&#43;goap/"
+    href="/game/ai_decision_tree_state_machine_behavior_tree_htn_goap/"
     
   >AI决策-状态机&#43;行为树&#43;HTN&#43;GOAP
     </a></li>
@@ -1188,7 +1188,7 @@ Sequence -&gt; 状态节点：门是锁着的？ -&gt; 动作节点：解锁门 
         
     <div class="hx:mt-12 hx:mb-8 hx:block hx:text-xs hx:text-gray-500 hx:ltr:text-right hx:rtl:text-left hx:dark:text-gray-400">最后更新于 <time datetime="2025-11-25T00:00:00.000Z">2025年11月25日</time></div>
         <div class="hx:mb-8 hx:flex hx:items-center hx:border-t hx:pt-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-neutral-400 hx:dark:contrast-more:border-neutral-400 hx:print:hidden"><a
-        href="/game/%E4%B9%9D%E7%8E%8B/"
+        href="/game/nine_kings/"
         title="九王"
         class="hx:flex hx:max-w-[50%] hx:items-center hx:gap-1 hx:py-4 hx:text-base hx:font-medium hx:text-gray-600 hx:transition-colors [word-break:break-word] hx:hover:text-primary-600 hx:dark:text-gray-300 hx:md:text-lg hx:ltr:pr-4 hx:rtl:pl-4"
       ><svg class="hx:inline hx:h-5 hx:shrink-0 hx:ltr:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>九王</a></div>

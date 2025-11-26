@@ -5,12 +5,12 @@
     <loc>http://localhost:1313/dae/century1normal/passage1/</loc>
     <lastmod>2025-08-18T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/game/ai%E5%86%B3%E7%AD%96-%E7%8A%B6%E6%80%81%E6%9C%BA/</loc>
+    <loc>http://localhost:1313/game/ai_decision_tree_state_machine/</loc>
     <lastmod>2025-04-11T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/dae/xu/</loc>
   </url><url>
-    <loc>http://localhost:1313/game/%E5%A2%A8%E5%AE%88%E5%AD%A4%E5%9F%8E/</loc>
+    <loc>http://localhost:1313/game/stick_to_an_isolated_city/</loc>
     <lastmod>2025-11-21T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/dae/century1normal/passage2/</loc>
@@ -19,13 +19,13 @@
     <loc>http://localhost:1313/dae/century1normal/</loc>
     <lastmod>2025-08-18T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/game/%E4%B9%9D%E7%8E%8B/</loc>
+    <loc>http://localhost:1313/game/nine_kings/</loc>
     <lastmod>2025-11-24T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/dae/century1normal/passage3/</loc>
     <lastmod>2025-09-29T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/game/ai%E5%86%B3%E7%AD%96-%E7%8A%B6%E6%80%81%E6%9C%BA&#43;%E8%A1%8C%E4%B8%BA%E6%A0%91&#43;htn&#43;goap/</loc>
+    <loc>http://localhost:1313/game/ai_decision_tree_state_machine_behavior_tree_htn_goap/</loc>
     <lastmod>2025-11-25T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/dae/century1normal/passage4/</loc>

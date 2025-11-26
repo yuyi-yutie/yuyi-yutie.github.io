@@ -8,113 +8,77 @@
 <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
 <link fetchpriority="low" href="/site.webmanifest" rel="manifest" />
-<title>AI决策-状态机 – 乂轶·轶名-0verDay</title>
-  <meta name="description" content="1 前言 我在使用godot开发一个RTS游戏的时候，我突然发现游戏中的单位(Unit)有且仅有三个动作（当时没有考虑&#34;状态&#34;，而是直接将这些定义为动作）：静止，移动，攻击，或者他们的组合（比如边移动边攻击，当然，别和我杠边静止边移动）
-然后就诞生了这样一个无限递归函数的流程图：
-可nb了，当时我就觉得，wow，我简直是一个逻辑大王，直到我知道这么做会栈溢出…
-然后就去学了状态机，把上面的逻辑通过状态机写成了这样：
-他们两个看上去逻辑是一样的，但区别就在上面的不能用，下面的能用，所以，状态机有什么用？
-即答：让不能用的东西变得能用！（bushi
-答：让actor个体（你说GameObject或CharacterBody也行，主要是我从虚幻开始学的，用actor习惯了）的行为用状态表示，从而减少逻辑混乱，增强代码可维护性和可扩展性
-2 用硬代码实现状态机 2.1 逻辑 想象一下，我们只有一个enemy场景，和一个附着在enemy根节点上的脚本，这个脚本要全权负责enmey的巡逻，追逐，攻击逻辑（经典的patrol-chase-attack循环），我们该怎么写？
-既然用状态机，那么我们就把这三个变成状态吧，我们有巡逻状态，追逐状态，攻击状态，自然，我们需要一个枚举来存储这个分类，还要有一个变量来存储当前状态，嗯，好，记得要做这两个
-然后我们要处理一下动画，我们得三个状态显然要有不同的动画，那么我们就可以在更改当前状态时同步更改它的动画，那么要记得在更改状态的函数中同步更新动画
-再者让我们想想，我们要怎么样更改状态呢，比如从patrol转到chase？或许你有许多种方法，比如添加一个Area2D然后把它的area_entered信号连接到根节点脚本中，但我们在这里还是只谈脚本中处理的方法
-那么我们就需要知道玩家在哪，敌人在哪，当玩家与敌人近到一定程度时就更改状态，这里我们用硬代码直接在tick里写，当我们的当前状态为patrol时，实时获取玩家与敌人位置，当二者距离小于侦查距离时，转换状态为chase，chase到attack的转换同理，二者距离小于攻击距离时，立刻攻击玩家，然后状态转为patrol
-以上，一个硬代码状态机就实现了，好了，那么纸上谈兵结束了，现在自己对照下面的代码看上面的解释吧
-2.2 实现 那么就用一下硬代码实现一下状态机吧
-这个硬代码是我从YouTube上一个老哥的博客学来的（啥不是学来的嘞，你说是不吼），以下是原帖，我改成了更简单的版本（原版是scanning-firing-charging循环，但我改成我觉得更简单易懂的patrol-chase-attack循环）
-Godot 4 中的启动状态机 - The Shaggy Dev — Starter state machines in Godot 4 - The Shaggy Dev
-（这个文章里同时有硬代码方法和进阶状态机方法，看上半部分就行）
-（记住，不要用硬代码写状态机，除非你敢拿头保证你不会增加很多很复杂的状态或复合状态！）
-extends Node enum STATE { PATROL , CHASE , ATTACK } #在此定义状态机中的所有状态 @export Player : PLAYER #对玩家引用来判断是否在侦查范围内 var current_state : STATE = PATROL #定义&#34;当前状态&#34;并赋初始值为PATROL @export var animation : AnimatedSprite2D #这个动画状态机没有任何架构上的意义，你可以不用管它，我只是想突出状态应该要有的enter函数而已，让我的那个更改状态的函数变得不那么蠢 @export var detect_distance : float #侦查范围 @export var attack_distance : float #攻击范围 func change_state(new_state : STATE) : current_state = new_state match current_state : STATE.PATROL : animation.play(&#34;patrol&#34;) STATE.CHASE : animation.play(&#34;chase&#34;) STATE.ATTACK : animation.play(&#34;attack&#34;) change_state(PATROL) func _process(delta) : match current_state : STATE.PATROL : if Player.position.distance_to(position) &lt; detect_distance : change_state(STATE.CHASE) STATE.CHASE : if Player.position.distance_to(position) &lt; attack_distance : change_state(STATE.ATTACK) func _physics_process(delta) : match current_state : #这下面的函数我就不写了，毕竟重心不在实现enemy动作，而是实现状态机的结构 STATE.PATROL : random_move() STATE.CHASE : move_to_player(Player) STATE.ATTACK : attack(Player) 结束了，框架没了，是不是很简单？对，状态机就是这么简单" /><link rel="canonical" href="http://localhost:1313/game/ai%E5%86%B3%E7%AD%96-%E7%8A%B6%E6%80%81%E6%9C%BA/" itemprop="url" />
+<title>墨守孤城 – 乂轶·轶名-0verDay</title>
+  <meta name="description" content="游戏类型：RTS?&#43;塔防?&#43;自走棋?
+画风：国风&#43;水墨风
+一句话总结：有些卖ip的意思，玩法没有很大的创新性，对RTS的简化值得借鉴
+主题：采集资源，建造军队，防御攻击
+（吐槽一下，优化真的烂）
+游戏主玩法 游戏玩法流程和RTS是一个模子刻出来的，至少我玩到整个游戏关卡流程的一半还没看到更多的机制或系统
+经济系统 游戏中有以下资源种类： 人口，粮食，水墨，木材，石材，乌薪，产业链（纯纯的败笔）
+其中，除人口和粮食之外，其他资源均以&#34;天&#34;为回合单位，依回合结束时的资源增长数获得 （每天为15秒）
+人口 是一次性生产的少量资源
+游戏中的人口有且仅有住房类建筑能提供，同时住房类建筑会提供水墨，可以理解为水墨增长和人口增长是成正比的
+人口是建造某些生产类建筑所需的资源，如伐木场（木材），猎人小屋（食物），采石场（石材），墨薪采矿场（墨薪） 是训练军事单位所需的资源
+粮食 是一次性生产的少量资源
+游戏中的粮食由&#34;农田&#34;和&#34;猎人小屋&#34;提供
+其中&#34;农田&#34;仅消耗水墨，是游戏开始时必造的主要建筑，“猎人小屋&#34;消耗人口，水墨，木材，是游戏中期生产粮食的主要建筑
+对于&#34;农田”，游戏中设定了&#34;肥沃度&#34;系统，每一个空地地块都有一个&#34;肥沃度&#34;值，特别地，肥沃度为0的空地即为&#34;荒地&#34;，在只有荒地的地块无法建造农田
+肥沃度仅由地图决定
+对于&#34;猎人小屋&#34;，其存在一个&#34;影响范围&#34;，在该影响范围内的树木会为玩家提供一次性的粮食值，树木量与粮食量关联函数暂未知，反正多多益善
+特殊地，猎人小屋的影响范围不能重叠（要求玩家通过合理城市规划来最大化资源生产）
+是建造住房类建筑的核心资源，前期的资源循环存在于&#34;水墨&#34;-&gt;“粮食”-&gt;“人口”&#43;“水墨&#34;中
+木材 是周期性生产的大量资源
+游戏中的木材由伐木场类建筑提供，同&#34;猎人小屋”，只不过其生产资源是周期性的
+石材 是周期性生产的少量资源
+游戏中存在&#34;石头&#34;地块，在该地块上建造采石场类建筑，保证石头在采石场影响范围内即可为玩家周期性地提供石材资源
+乌薪 完全同&#34;石材&#34;，只不过量更少
+水墨 可以广义地理解为&#34;钱&#34;，基本所有建筑建造，单位训练，地图扩张都需要&#34;水墨&#34;
+产业链 是一种只有顶级建筑一次性生产，专门用于升级顶级部队的个位数资源" /><link rel="canonical" href="http://localhost:1313/game/stick_to_an_isolated_city/" itemprop="url" />
 
-<meta property="og:title" content="AI决策-状态机">
+<meta property="og:title" content="墨守孤城">
 <meta
   property="og:description"
   content="
     
-      1 前言
-    我在使用godot开发一个RTS游戏的时候，我突然发现游戏中的单位(Unit)有且仅有三个动作（当时没有考虑&quot;状态&quot;，而是直接将这些定义为动作）：静止，移动，攻击，或者他们的组合（比如边移动边攻击，当然，别和我杠边静止边移动）
-然后就诞生了这样一个无限递归函数的流程图：
-
-    
-可nb了，当时我就觉得，wow，我简直是一个逻辑大王，直到我知道这么做会栈溢出&hellip;
-然后就去学了状态机，把上面的逻辑通过状态机写成了这样：
-
-    
-他们两个看上去逻辑是一样的，但区别就在上面的不能用，下面的能用，所以，状态机有什么用？
-即答：让不能用的东西变得能用！（bushi
-答：让actor个体（你说GameObject或CharacterBody也行，主要是我从虚幻开始学的，用actor习惯了）的行为用状态表示，从而减少逻辑混乱，增强代码可维护性和可扩展性
-
-2 用硬代码实现状态机
-    2.1 逻辑
-    想象一下，我们只有一个enemy场景，和一个附着在enemy根节点上的脚本，这个脚本要全权负责enmey的巡逻，追逐，攻击逻辑（经典的patrol-chase-attack循环），我们该怎么写？
-既然用状态机，那么我们就把这三个变成状态吧，我们有巡逻状态，追逐状态，攻击状态，自然，我们需要一个枚举来存储这个分类，还要有一个变量来存储当前状态，嗯，好，记得要做这两个
-然后我们要处理一下动画，我们得三个状态显然要有不同的动画，那么我们就可以在更改当前状态时同步更改它的动画，那么要记得在更改状态的函数中同步更新动画
-再者让我们想想，我们要怎么样更改状态呢，比如从patrol转到chase？或许你有许多种方法，比如添加一个Area2D然后把它的area_entered信号连接到根节点脚本中，但我们在这里还是只谈脚本中处理的方法
-那么我们就需要知道玩家在哪，敌人在哪，当玩家与敌人近到一定程度时就更改状态，这里我们用硬代码直接在tick里写，当我们的当前状态为patrol时，实时获取玩家与敌人位置，当二者距离小于侦查距离时，转换状态为chase，chase到attack的转换同理，二者距离小于攻击距离时，立刻攻击玩家，然后状态转为patrol
-以上，一个硬代码状态机就实现了，好了，那么纸上谈兵结束了，现在自己对照下面的代码看上面的解释吧
-2.2 实现
-    那么就用一下硬代码实现一下状态机吧
-这个硬代码是我从YouTube上一个老哥的博客学来的（啥不是学来的嘞，你说是不吼），以下是原帖，我改成了更简单的版本（原版是scanning-firing-charging循环，但我改成我觉得更简单易懂的patrol-chase-attack循环）
-Godot 4 中的启动状态机 - The Shaggy Dev &mdash; Starter state machines in Godot 4 - The Shaggy Dev
-（这个文章里同时有硬代码方法和进阶状态机方法，看上半部分就行）
-（记住，不要用硬代码写状态机，除非你敢拿头保证你不会增加很多很复杂的状态或复合状态！）
-
-
-extends Node
-
-enum STATE {
-PATROL ,
-CHASE ,
-ATTACK
-} #在此定义状态机中的所有状态
-
-@export Player : PLAYER #对玩家引用来判断是否在侦查范围内
-
-var current_state : STATE = PATROL #定义&#34;当前状态&#34;并赋初始值为PATROL
-@export var animation : AnimatedSprite2D #这个动画状态机没有任何架构上的意义，你可以不用管它，我只是想突出状态应该要有的enter函数而已，让我的那个更改状态的函数变得不那么蠢
-
-@export var detect_distance : float #侦查范围
-@export var attack_distance : float #攻击范围
-
-func change_state(new_state : STATE) :
-	current_state = new_state
-	match current_state :
-		STATE.PATROL :
-			animation.play(&#34;patrol&#34;)
-		STATE.CHASE :
-			animation.play(&#34;chase&#34;)
-		STATE.ATTACK :
-			animation.play(&#34;attack&#34;)
-			change_state(PATROL)
-
-func _process(delta) :
-	match current_state :
-		STATE.PATROL :
-			if Player.position.distance_to(position) &lt; detect_distance :
-				change_state(STATE.CHASE)
-		STATE.CHASE :
-			if Player.position.distance_to(position) &lt; attack_distance :
-				change_state(STATE.ATTACK)
-
-func _physics_process(delta) :
-	match current_state :
-		#这下面的函数我就不写了，毕竟重心不在实现enemy动作，而是实现状态机的结构
-		STATE.PATROL :
-			random_move()
-		STATE.CHASE :
-			move_to_player(Player)
-		STATE.ATTACK :
-			attack(Player)
-  
-    
-
-  
-
-
-结束了，框架没了，是不是很简单？对，状态机就是这么简单
+      游戏类型：RTS?&#43;塔防?&#43;自走棋?
+画风：国风&#43;水墨风
+一句话总结：有些卖ip的意思，玩法没有很大的创新性，对RTS的简化值得借鉴
+主题：采集资源，建造军队，防御攻击
+（吐槽一下，优化真的烂）
+游戏主玩法
+    游戏玩法流程和RTS是一个模子刻出来的，至少我玩到整个游戏关卡流程的一半还没看到更多的机制或系统
+经济系统
+    游戏中有以下资源种类：
+人口，粮食，水墨，木材，石材，乌薪，产业链（纯纯的败笔）
+其中，除人口和粮食之外，其他资源均以&quot;天&quot;为回合单位，依回合结束时的资源增长数获得
+（每天为15秒）
+人口
+    是一次性生产的少量资源
+游戏中的人口有且仅有住房类建筑能提供，同时住房类建筑会提供水墨，可以理解为水墨增长和人口增长是成正比的
+人口是建造某些生产类建筑所需的资源，如伐木场（木材），猎人小屋（食物），采石场（石材），墨薪采矿场（墨薪）
+是训练军事单位所需的资源
+粮食
+    是一次性生产的少量资源
+游戏中的粮食由&quot;农田&quot;和&quot;猎人小屋&quot;提供
+其中&quot;农田&quot;仅消耗水墨，是游戏开始时必造的主要建筑，&ldquo;猎人小屋&quot;消耗人口，水墨，木材，是游戏中期生产粮食的主要建筑
+对于&quot;农田&rdquo;，游戏中设定了&quot;肥沃度&quot;系统，每一个空地地块都有一个&quot;肥沃度&quot;值，特别地，肥沃度为0的空地即为&quot;荒地&quot;，在只有荒地的地块无法建造农田
+肥沃度仅由地图决定
+对于&quot;猎人小屋&quot;，其存在一个&quot;影响范围&quot;，在该影响范围内的树木会为玩家提供一次性的粮食值，树木量与粮食量关联函数暂未知，反正多多益善
+特殊地，猎人小屋的影响范围不能重叠（要求玩家通过合理城市规划来最大化资源生产）
+是建造住房类建筑的核心资源，前期的资源循环存在于&quot;水墨&quot;-&gt;&ldquo;粮食&rdquo;-&gt;&ldquo;人口&rdquo;&#43;&ldquo;水墨&quot;中
+木材
+    是周期性生产的大量资源
+游戏中的木材由伐木场类建筑提供，同&quot;猎人小屋&rdquo;，只不过其生产资源是周期性的
+石材
+    是周期性生产的少量资源
+游戏中存在&quot;石头&quot;地块，在该地块上建造采石场类建筑，保证石头在采石场影响范围内即可为玩家周期性地提供石材资源
+乌薪
+    完全同&quot;石材&quot;，只不过量更少
+水墨
+    可以广义地理解为&quot;钱&quot;，基本所有建筑建造，单位训练，地图扩张都需要&quot;水墨&quot;
+产业链
+    是一种只有顶级建筑一次性生产，专门用于升级顶级部队的个位数资源
     
   ">
 <meta
@@ -122,63 +86,77 @@ func _physics_process(delta) :
   content="
     article
   ">
-<meta property="og:url" content="http://localhost:1313/game/ai%E5%86%B3%E7%AD%96-%E7%8A%B6%E6%80%81%E6%9C%BA/"><meta property="article:section" content="game">
+<meta property="og:url" content="http://localhost:1313/game/stick_to_an_isolated_city/"><meta property="article:section" content="game">
 
 <meta
   property="article:published_time"
-  content="2025-04-11T00:00:00+00:00">
+  content="2025-11-21T00:00:00+00:00">
 
 
 <meta
   property="article:modified_time"
-  content="2025-04-11T00:00:00+00:00">
+  content="2025-11-21T00:00:00+00:00">
 
 
 
-  <meta itemprop="name" content="AI决策-状态机">
-  <meta itemprop="description" content="1 前言 我在使用godot开发一个RTS游戏的时候，我突然发现游戏中的单位(Unit)有且仅有三个动作（当时没有考虑&#34;状态&#34;，而是直接将这些定义为动作）：静止，移动，攻击，或者他们的组合（比如边移动边攻击，当然，别和我杠边静止边移动）
-然后就诞生了这样一个无限递归函数的流程图：
-可nb了，当时我就觉得，wow，我简直是一个逻辑大王，直到我知道这么做会栈溢出…
-然后就去学了状态机，把上面的逻辑通过状态机写成了这样：
-他们两个看上去逻辑是一样的，但区别就在上面的不能用，下面的能用，所以，状态机有什么用？
-即答：让不能用的东西变得能用！（bushi
-答：让actor个体（你说GameObject或CharacterBody也行，主要是我从虚幻开始学的，用actor习惯了）的行为用状态表示，从而减少逻辑混乱，增强代码可维护性和可扩展性
-2 用硬代码实现状态机 2.1 逻辑 想象一下，我们只有一个enemy场景，和一个附着在enemy根节点上的脚本，这个脚本要全权负责enmey的巡逻，追逐，攻击逻辑（经典的patrol-chase-attack循环），我们该怎么写？
-既然用状态机，那么我们就把这三个变成状态吧，我们有巡逻状态，追逐状态，攻击状态，自然，我们需要一个枚举来存储这个分类，还要有一个变量来存储当前状态，嗯，好，记得要做这两个
-然后我们要处理一下动画，我们得三个状态显然要有不同的动画，那么我们就可以在更改当前状态时同步更改它的动画，那么要记得在更改状态的函数中同步更新动画
-再者让我们想想，我们要怎么样更改状态呢，比如从patrol转到chase？或许你有许多种方法，比如添加一个Area2D然后把它的area_entered信号连接到根节点脚本中，但我们在这里还是只谈脚本中处理的方法
-那么我们就需要知道玩家在哪，敌人在哪，当玩家与敌人近到一定程度时就更改状态，这里我们用硬代码直接在tick里写，当我们的当前状态为patrol时，实时获取玩家与敌人位置，当二者距离小于侦查距离时，转换状态为chase，chase到attack的转换同理，二者距离小于攻击距离时，立刻攻击玩家，然后状态转为patrol
-以上，一个硬代码状态机就实现了，好了，那么纸上谈兵结束了，现在自己对照下面的代码看上面的解释吧
-2.2 实现 那么就用一下硬代码实现一下状态机吧
-这个硬代码是我从YouTube上一个老哥的博客学来的（啥不是学来的嘞，你说是不吼），以下是原帖，我改成了更简单的版本（原版是scanning-firing-charging循环，但我改成我觉得更简单易懂的patrol-chase-attack循环）
-Godot 4 中的启动状态机 - The Shaggy Dev — Starter state machines in Godot 4 - The Shaggy Dev
-（这个文章里同时有硬代码方法和进阶状态机方法，看上半部分就行）
-（记住，不要用硬代码写状态机，除非你敢拿头保证你不会增加很多很复杂的状态或复合状态！）
-extends Node enum STATE { PATROL , CHASE , ATTACK } #在此定义状态机中的所有状态 @export Player : PLAYER #对玩家引用来判断是否在侦查范围内 var current_state : STATE = PATROL #定义&#34;当前状态&#34;并赋初始值为PATROL @export var animation : AnimatedSprite2D #这个动画状态机没有任何架构上的意义，你可以不用管它，我只是想突出状态应该要有的enter函数而已，让我的那个更改状态的函数变得不那么蠢 @export var detect_distance : float #侦查范围 @export var attack_distance : float #攻击范围 func change_state(new_state : STATE) : current_state = new_state match current_state : STATE.PATROL : animation.play(&#34;patrol&#34;) STATE.CHASE : animation.play(&#34;chase&#34;) STATE.ATTACK : animation.play(&#34;attack&#34;) change_state(PATROL) func _process(delta) : match current_state : STATE.PATROL : if Player.position.distance_to(position) &lt; detect_distance : change_state(STATE.CHASE) STATE.CHASE : if Player.position.distance_to(position) &lt; attack_distance : change_state(STATE.ATTACK) func _physics_process(delta) : match current_state : #这下面的函数我就不写了，毕竟重心不在实现enemy动作，而是实现状态机的结构 STATE.PATROL : random_move() STATE.CHASE : move_to_player(Player) STATE.ATTACK : attack(Player) 结束了，框架没了，是不是很简单？对，状态机就是这么简单">
-  <meta itemprop="datePublished" content="2025-04-11T00:00:00+00:00">
-  <meta itemprop="dateModified" content="2025-04-11T00:00:00+00:00">
-  <meta itemprop="wordCount" content="370">
+  <meta itemprop="name" content="墨守孤城">
+  <meta itemprop="description" content="游戏类型：RTS?&#43;塔防?&#43;自走棋?
+画风：国风&#43;水墨风
+一句话总结：有些卖ip的意思，玩法没有很大的创新性，对RTS的简化值得借鉴
+主题：采集资源，建造军队，防御攻击
+（吐槽一下，优化真的烂）
+游戏主玩法 游戏玩法流程和RTS是一个模子刻出来的，至少我玩到整个游戏关卡流程的一半还没看到更多的机制或系统
+经济系统 游戏中有以下资源种类： 人口，粮食，水墨，木材，石材，乌薪，产业链（纯纯的败笔）
+其中，除人口和粮食之外，其他资源均以&#34;天&#34;为回合单位，依回合结束时的资源增长数获得 （每天为15秒）
+人口 是一次性生产的少量资源
+游戏中的人口有且仅有住房类建筑能提供，同时住房类建筑会提供水墨，可以理解为水墨增长和人口增长是成正比的
+人口是建造某些生产类建筑所需的资源，如伐木场（木材），猎人小屋（食物），采石场（石材），墨薪采矿场（墨薪） 是训练军事单位所需的资源
+粮食 是一次性生产的少量资源
+游戏中的粮食由&#34;农田&#34;和&#34;猎人小屋&#34;提供
+其中&#34;农田&#34;仅消耗水墨，是游戏开始时必造的主要建筑，“猎人小屋&#34;消耗人口，水墨，木材，是游戏中期生产粮食的主要建筑
+对于&#34;农田”，游戏中设定了&#34;肥沃度&#34;系统，每一个空地地块都有一个&#34;肥沃度&#34;值，特别地，肥沃度为0的空地即为&#34;荒地&#34;，在只有荒地的地块无法建造农田
+肥沃度仅由地图决定
+对于&#34;猎人小屋&#34;，其存在一个&#34;影响范围&#34;，在该影响范围内的树木会为玩家提供一次性的粮食值，树木量与粮食量关联函数暂未知，反正多多益善
+特殊地，猎人小屋的影响范围不能重叠（要求玩家通过合理城市规划来最大化资源生产）
+是建造住房类建筑的核心资源，前期的资源循环存在于&#34;水墨&#34;-&gt;“粮食”-&gt;“人口”&#43;“水墨&#34;中
+木材 是周期性生产的大量资源
+游戏中的木材由伐木场类建筑提供，同&#34;猎人小屋”，只不过其生产资源是周期性的
+石材 是周期性生产的少量资源
+游戏中存在&#34;石头&#34;地块，在该地块上建造采石场类建筑，保证石头在采石场影响范围内即可为玩家周期性地提供石材资源
+乌薪 完全同&#34;石材&#34;，只不过量更少
+水墨 可以广义地理解为&#34;钱&#34;，基本所有建筑建造，单位训练，地图扩张都需要&#34;水墨&#34;
+产业链 是一种只有顶级建筑一次性生产，专门用于升级顶级部队的个位数资源">
+  <meta itemprop="datePublished" content="2025-11-21T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2025-11-21T00:00:00+00:00">
+  <meta itemprop="wordCount" content="63">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="AI决策-状态机">
-  <meta name="twitter:description" content="1 前言 我在使用godot开发一个RTS游戏的时候，我突然发现游戏中的单位(Unit)有且仅有三个动作（当时没有考虑&#34;状态&#34;，而是直接将这些定义为动作）：静止，移动，攻击，或者他们的组合（比如边移动边攻击，当然，别和我杠边静止边移动）
-然后就诞生了这样一个无限递归函数的流程图：
-可nb了，当时我就觉得，wow，我简直是一个逻辑大王，直到我知道这么做会栈溢出…
-然后就去学了状态机，把上面的逻辑通过状态机写成了这样：
-他们两个看上去逻辑是一样的，但区别就在上面的不能用，下面的能用，所以，状态机有什么用？
-即答：让不能用的东西变得能用！（bushi
-答：让actor个体（你说GameObject或CharacterBody也行，主要是我从虚幻开始学的，用actor习惯了）的行为用状态表示，从而减少逻辑混乱，增强代码可维护性和可扩展性
-2 用硬代码实现状态机 2.1 逻辑 想象一下，我们只有一个enemy场景，和一个附着在enemy根节点上的脚本，这个脚本要全权负责enmey的巡逻，追逐，攻击逻辑（经典的patrol-chase-attack循环），我们该怎么写？
-既然用状态机，那么我们就把这三个变成状态吧，我们有巡逻状态，追逐状态，攻击状态，自然，我们需要一个枚举来存储这个分类，还要有一个变量来存储当前状态，嗯，好，记得要做这两个
-然后我们要处理一下动画，我们得三个状态显然要有不同的动画，那么我们就可以在更改当前状态时同步更改它的动画，那么要记得在更改状态的函数中同步更新动画
-再者让我们想想，我们要怎么样更改状态呢，比如从patrol转到chase？或许你有许多种方法，比如添加一个Area2D然后把它的area_entered信号连接到根节点脚本中，但我们在这里还是只谈脚本中处理的方法
-那么我们就需要知道玩家在哪，敌人在哪，当玩家与敌人近到一定程度时就更改状态，这里我们用硬代码直接在tick里写，当我们的当前状态为patrol时，实时获取玩家与敌人位置，当二者距离小于侦查距离时，转换状态为chase，chase到attack的转换同理，二者距离小于攻击距离时，立刻攻击玩家，然后状态转为patrol
-以上，一个硬代码状态机就实现了，好了，那么纸上谈兵结束了，现在自己对照下面的代码看上面的解释吧
-2.2 实现 那么就用一下硬代码实现一下状态机吧
-这个硬代码是我从YouTube上一个老哥的博客学来的（啥不是学来的嘞，你说是不吼），以下是原帖，我改成了更简单的版本（原版是scanning-firing-charging循环，但我改成我觉得更简单易懂的patrol-chase-attack循环）
-Godot 4 中的启动状态机 - The Shaggy Dev — Starter state machines in Godot 4 - The Shaggy Dev
-（这个文章里同时有硬代码方法和进阶状态机方法，看上半部分就行）
-（记住，不要用硬代码写状态机，除非你敢拿头保证你不会增加很多很复杂的状态或复合状态！）
-extends Node enum STATE { PATROL , CHASE , ATTACK } #在此定义状态机中的所有状态 @export Player : PLAYER #对玩家引用来判断是否在侦查范围内 var current_state : STATE = PATROL #定义&#34;当前状态&#34;并赋初始值为PATROL @export var animation : AnimatedSprite2D #这个动画状态机没有任何架构上的意义，你可以不用管它，我只是想突出状态应该要有的enter函数而已，让我的那个更改状态的函数变得不那么蠢 @export var detect_distance : float #侦查范围 @export var attack_distance : float #攻击范围 func change_state(new_state : STATE) : current_state = new_state match current_state : STATE.PATROL : animation.play(&#34;patrol&#34;) STATE.CHASE : animation.play(&#34;chase&#34;) STATE.ATTACK : animation.play(&#34;attack&#34;) change_state(PATROL) func _process(delta) : match current_state : STATE.PATROL : if Player.position.distance_to(position) &lt; detect_distance : change_state(STATE.CHASE) STATE.CHASE : if Player.position.distance_to(position) &lt; attack_distance : change_state(STATE.ATTACK) func _physics_process(delta) : match current_state : #这下面的函数我就不写了，毕竟重心不在实现enemy动作，而是实现状态机的结构 STATE.PATROL : random_move() STATE.CHASE : move_to_player(Player) STATE.ATTACK : attack(Player) 结束了，框架没了，是不是很简单？对，状态机就是这么简单">
+  <meta name="twitter:title" content="墨守孤城">
+  <meta name="twitter:description" content="游戏类型：RTS?&#43;塔防?&#43;自走棋?
+画风：国风&#43;水墨风
+一句话总结：有些卖ip的意思，玩法没有很大的创新性，对RTS的简化值得借鉴
+主题：采集资源，建造军队，防御攻击
+（吐槽一下，优化真的烂）
+游戏主玩法 游戏玩法流程和RTS是一个模子刻出来的，至少我玩到整个游戏关卡流程的一半还没看到更多的机制或系统
+经济系统 游戏中有以下资源种类： 人口，粮食，水墨，木材，石材，乌薪，产业链（纯纯的败笔）
+其中，除人口和粮食之外，其他资源均以&#34;天&#34;为回合单位，依回合结束时的资源增长数获得 （每天为15秒）
+人口 是一次性生产的少量资源
+游戏中的人口有且仅有住房类建筑能提供，同时住房类建筑会提供水墨，可以理解为水墨增长和人口增长是成正比的
+人口是建造某些生产类建筑所需的资源，如伐木场（木材），猎人小屋（食物），采石场（石材），墨薪采矿场（墨薪） 是训练军事单位所需的资源
+粮食 是一次性生产的少量资源
+游戏中的粮食由&#34;农田&#34;和&#34;猎人小屋&#34;提供
+其中&#34;农田&#34;仅消耗水墨，是游戏开始时必造的主要建筑，“猎人小屋&#34;消耗人口，水墨，木材，是游戏中期生产粮食的主要建筑
+对于&#34;农田”，游戏中设定了&#34;肥沃度&#34;系统，每一个空地地块都有一个&#34;肥沃度&#34;值，特别地，肥沃度为0的空地即为&#34;荒地&#34;，在只有荒地的地块无法建造农田
+肥沃度仅由地图决定
+对于&#34;猎人小屋&#34;，其存在一个&#34;影响范围&#34;，在该影响范围内的树木会为玩家提供一次性的粮食值，树木量与粮食量关联函数暂未知，反正多多益善
+特殊地，猎人小屋的影响范围不能重叠（要求玩家通过合理城市规划来最大化资源生产）
+是建造住房类建筑的核心资源，前期的资源循环存在于&#34;水墨&#34;-&gt;“粮食”-&gt;“人口”&#43;“水墨&#34;中
+木材 是周期性生产的大量资源
+游戏中的木材由伐木场类建筑提供，同&#34;猎人小屋”，只不过其生产资源是周期性的
+石材 是周期性生产的少量资源
+游戏中存在&#34;石头&#34;地块，在该地块上建造采石场类建筑，保证石头在采石场影响范围内即可为玩家周期性地提供石材资源
+乌薪 完全同&#34;石材&#34;，只不过量更少
+水墨 可以广义地理解为&#34;钱&#34;，基本所有建筑建造，单位训练，地图扩张都需要&#34;水墨&#34;
+产业链 是一种只有顶级建筑一次性生产，专门用于升级顶级部队的个位数资源">
 <link href="/css/compiled/main.css" rel="stylesheet" />
     <link href="/css/variables.css" rel="stylesheet" />
     <link href="/css/custom.css" rel="stylesheet" />
@@ -416,31 +394,27 @@ extends Node enum STATE { PATROL , CHASE , ATTACK } #在此定义状态机中的
   >游戏
         <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></span>
     </a><div class="hx:ltr:pr-0 hx:overflow-hidden">
-        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col open"><a
+        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
-    href="/game/ai%E5%86%B3%E7%AD%96-%E7%8A%B6%E6%80%81%E6%9C%BA/"
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/game/ai_decision_tree_state_machine/"
     
   >AI决策-状态机
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col open"><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
+    href="/game/stick_to_an_isolated_city/"
+    
+  >墨守孤城
     </a>
   
     <ul class='hx:flex hx:flex-col hx:gap-1 hx:relative hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:dark:before:bg-neutral-800 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:pr-3 hx:rtl:before:right-0 hx:ltr:ml-3 hx:rtl:mr-3'><li>
               <a
-                href="#1-%e5%89%8d%e8%a8%80"
+                href="#%e6%b8%b8%e6%88%8f%e4%b8%bb%e7%8e%a9%e6%b3%95"
                 class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
-              >1 前言</a>
-            </li>
-          <li>
-              <a
-                href="#2-%e7%94%a8%e7%a1%ac%e4%bb%a3%e7%a0%81%e5%ae%9e%e7%8e%b0%e7%8a%b6%e6%80%81%e6%9c%ba"
-                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
-              >2 用硬代码实现状态机</a>
-            </li>
-          <li>
-              <a
-                href="#3-%e7%94%a8statemachine%e7%88%b6%e8%8a%82%e7%82%b9state%e7%b1%bb%e5%ad%90%e8%8a%82%e7%82%b9%e5%ae%9e%e7%8e%b0%e7%8a%b6%e6%80%81%e6%9c%ba"
-                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
-              >3 用StateMachine父节点&#43;STATE类子节点实现状态机</a>
+              >游戏主玩法</a>
             </li>
           </ul>
   
@@ -448,15 +422,7 @@ extends Node enum STATE { PATROL , CHASE , ATTACK } #在此定义状态机中的
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="/game/%E5%A2%A8%E5%AE%88%E5%AD%A4%E5%9F%8E/"
-    
-  >墨守孤城
-    </a>
-              
-            </li><li class="hx:flex hx:flex-col "><a
-    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="/game/%E4%B9%9D%E7%8E%8B/"
+    href="/game/nine_kings/"
     
   >九王
     </a>
@@ -464,7 +430,7 @@ extends Node enum STATE { PATROL , CHASE , ATTACK } #在此定义状态机中的
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="/game/ai%E5%86%B3%E7%AD%96-%E7%8A%B6%E6%80%81%E6%9C%BA&#43;%E8%A1%8C%E4%B8%BA%E6%A0%91&#43;htn&#43;goap/"
+    href="/game/ai_decision_tree_state_machine_behavior_tree_htn_goap/"
     
   >AI决策-状态机&#43;行为树&#43;HTN&#43;GOAP
     </a>
@@ -491,31 +457,31 @@ extends Node enum STATE { PATROL , CHASE , ATTACK } #在此定义状态机中的
 
     <ul class="hx:flex hx:flex-col hx:gap-1 hx:max-md:hidden">
         
-          <li class="open"><a
-    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
-    href="/game/ai%E5%86%B3%E7%AD%96-%E7%8A%B6%E6%80%81%E6%9C%BA/"
-    
-  >AI决策-状态机
-    </a></li>
           <li class=""><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="/game/%E5%A2%A8%E5%AE%88%E5%AD%A4%E5%9F%8E/"
+    href="/game/ai_decision_tree_state_machine/"
+    
+  >AI决策-状态机
+    </a></li>
+          <li class="open"><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
+    href="/game/stick_to_an_isolated_city/"
     
   >墨守孤城
     </a></li>
           <li class=""><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="/game/%E4%B9%9D%E7%8E%8B/"
+    href="/game/nine_kings/"
     
   >九王
     </a></li>
           <li class=""><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="/game/ai%E5%86%B3%E7%AD%96-%E7%8A%B6%E6%80%81%E6%9C%BA&#43;%E8%A1%8C%E4%B8%BA%E6%A0%91&#43;htn&#43;goap/"
+    href="/game/ai_decision_tree_state_machine_behavior_tree_htn_goap/"
     
   >AI决策-状态机&#43;行为树&#43;HTN&#43;GOAP
     </a></li>
@@ -592,31 +558,59 @@ extends Node enum STATE { PATROL , CHASE , ATTACK } #在此定义状态机中的
 <nav class="hextra-toc hx:order-last hx:hidden hx:w-64 hx:shrink-0 hx:xl:block hx:print:hidden hx:px-4" aria-label="table of contents">
     <div class="hextra-scrollbar hx:sticky hx:top-16 hx:overflow-y-auto hx:pr-4 hx:pt-6 hx:text-sm [hyphens:auto] hx:max-h-[calc(100vh-var(--navbar-height)-env(safe-area-inset-bottom))] hx:ltr:-mr-4 hx:rtl:-ml-4"><p class="hx:mb-4 hx:font-semibold hx:tracking-tight">此页上</p><ul>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#1-%e5%89%8d%e8%a8%80">1 前言
+        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e6%b8%b8%e6%88%8f%e4%b8%bb%e7%8e%a9%e6%b3%95">游戏主玩法
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#2-%e7%94%a8%e7%a1%ac%e4%bb%a3%e7%a0%81%e5%ae%9e%e7%8e%b0%e7%8a%b6%e6%80%81%e6%9c%ba">2 用硬代码实现状态机
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e7%bb%8f%e6%b5%8e%e7%b3%bb%e7%bb%9f">经济系统
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#21-%e9%80%bb%e8%be%91">2.1 逻辑
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e4%ba%ba%e5%8f%a3">人口
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#22-%e5%ae%9e%e7%8e%b0">2.2 实现
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e7%b2%ae%e9%a3%9f">粮食
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#3-%e7%94%a8statemachine%e7%88%b6%e8%8a%82%e7%82%b9state%e7%b1%bb%e5%ad%90%e8%8a%82%e7%82%b9%e5%ae%9e%e7%8e%b0%e7%8a%b6%e6%80%81%e6%9c%ba">3 用StateMachine父节点&#43;STATE类子节点实现状态机
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e6%9c%a8%e6%9d%90">木材
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#31-%e7%ba%a6%e5%ae%9a%e4%bf%97%e6%88%90">3.1 约定俗成
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e7%9f%b3%e6%9d%90">石材
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#32-%e5%ae%9e%e7%8e%b0%e4%b8%8e%e7%90%86%e8%a7%a3">3.2 实现与理解
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e4%b9%8c%e8%96%aa">乌薪
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e6%b0%b4%e5%a2%a8">水墨
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e4%ba%a7%e4%b8%9a%e9%93%be">产业链
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e5%86%9b%e9%98%9f%e7%b3%bb%e7%bb%9f">军队系统
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e5%86%9b%e9%98%9f%e7%9a%84%e5%85%bb%e6%88%90%e7%b3%bb%e7%bb%9f">军队的养成系统
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e5%86%9b%e9%98%9f%e7%9a%84%e7%be%81%e7%bb%8a%e7%b3%bb%e7%bb%9f">军队的羁绊系统
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e7%a7%91%e6%8a%80%e7%a0%94%e7%a9%b6%e7%b3%bb%e7%bb%9f">科技/研究系统
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e5%9c%b0%e5%9b%be%e7%b3%bb%e7%bb%9f">地图系统
         </a>
       </li></ul>
       <div class="hx:mt-8 hx:border-t hx:bg-white hx:pt-8 hx:shadow-[0_-12px_16px_white] hx:dark:bg-dark hx:dark:shadow-[0_-12px_16px_#111] hx:sticky hx:bottom-0 hx:flex hx:flex-col hx:items-start hx:gap-2 hx:pb-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-t hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:border-neutral-400">
@@ -636,278 +630,88 @@ extends Node enum STATE { PATROL , CHASE , ATTACK } #在此定义状态机中的
         <div class="hx:mt-1.5 hx:flex hx:items-center hx:gap-1 hx:overflow-hidden hx:text-sm hx:text-gray-500 hx:dark:text-gray-400 hx:contrast-more:text-current">
         <div class="hx:whitespace-nowrap hx:transition-colors hx:min-w-[24px] hx:overflow-hidden hx:text-ellipsis hx:hover:text-gray-900 hx:dark:hover:text-gray-100">
           <a href="/game/">游戏</a>
-        </div><svg class="hx:w-3.5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg><div class="hx:whitespace-nowrap hx:transition-colors hx:font-medium hx:text-gray-700 hx:contrast-more:font-bold hx:contrast-more:text-current hx:dark:text-gray-100 hx:contrast-more:dark:text-current">AI决策-状态机</div>
+        </div><svg class="hx:w-3.5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg><div class="hx:whitespace-nowrap hx:transition-colors hx:font-medium hx:text-gray-700 hx:contrast-more:font-bold hx:contrast-more:text-current hx:dark:text-gray-100 hx:contrast-more:dark:text-current">墨守孤城</div>
   </div>
 
         <div class="content">
-          <h1>AI决策-状态机</h1>
-          <h2>1 前言<span class="hx:absolute hx:-mt-20" id="1-前言"></span>
-    <a href="#1-%e5%89%8d%e8%a8%80" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>我在使用godot开发一个RTS游戏的时候，我突然发现游戏中的单位(Unit)有且仅有三个动作（当时没有考虑&quot;状态&quot;，而是直接将这些定义为动作）：静止，移动，攻击，或者他们的组合（比如边移动边攻击，当然，别和我杠边静止边移动）</p>
-<p>然后就诞生了这样一个无限递归函数的流程图：</p>
-<p>
-    <img src="../AI%e5%86%b3%e7%ad%96-%e7%8a%b6%e6%80%81%e6%9c%ba1.jpg" alt=""  loading="lazy" /></p>
-<p>可nb了，当时我就觉得，wow，我简直是一个逻辑大王，直到我知道这么做会栈溢出&hellip;</p>
-<p>然后就去学了状态机，把上面的逻辑通过状态机写成了这样：</p>
-<p>
-    <img src="../AI%e5%86%b3%e7%ad%96-%e7%8a%b6%e6%80%81%e6%9c%ba.jpg" alt=""  loading="lazy" /></p>
-<p>他们两个看上去逻辑是一样的，但区别就在上面的不能用，下面的能用，所以，状态机有什么用？</p>
-<p>即答：让不能用的东西变得能用！（bushi</p>
-<p>答：让actor个体（你说GameObject或CharacterBody也行，主要是我从虚幻开始学的，用actor习惯了）的行为用状态表示，从而<strong>减少逻辑混乱，增强代码可维护性和可扩展性</strong></p>
+          <h1>墨守孤城</h1>
+          <p>游戏类型：RTS?+塔防?+自走棋?</p>
+<p>画风：国风+水墨风</p>
+<p>一句话总结：有些卖ip的意思，玩法没有很大的创新性，对RTS的简化值得借鉴</p>
+<p>主题：采集资源，建造军队，防御攻击</p>
+<p>（吐槽一下，优化真的烂）</p>
+<h2>游戏主玩法<span class="hx:absolute hx:-mt-20" id="游戏主玩法"></span>
+    <a href="#%e6%b8%b8%e6%88%8f%e4%b8%bb%e7%8e%a9%e6%b3%95" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>游戏玩法流程和RTS是一个模子刻出来的，至少我玩到整个游戏关卡流程的一半还没看到更多的机制或系统</p>
+<h3>经济系统<span class="hx:absolute hx:-mt-20" id="经济系统"></span>
+    <a href="#%e7%bb%8f%e6%b5%8e%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>游戏中有以下资源种类：
+人口，粮食，水墨，木材，石材，乌薪，产业链（纯纯的败笔）</p>
+<p>其中，除人口和粮食之外，其他资源均以&quot;天&quot;为回合单位，依回合结束时的资源增长数获得
+（每天为15秒）</p>
+<h4>人口<span class="hx:absolute hx:-mt-20" id="人口"></span>
+    <a href="#%e4%ba%ba%e5%8f%a3" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>是一次性生产的少量资源</p>
+<p>游戏中的人口有且仅有住房类建筑能提供，同时住房类建筑会提供水墨，可以理解为水墨增长和人口增长是成正比的</p>
+<p>人口是建造某些生产类建筑所需的资源，如伐木场（木材），猎人小屋（食物），采石场（石材），墨薪采矿场（墨薪）
+是训练军事单位所需的资源</p>
+<h4>粮食<span class="hx:absolute hx:-mt-20" id="粮食"></span>
+    <a href="#%e7%b2%ae%e9%a3%9f" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>是一次性生产的少量资源</p>
+<p>游戏中的粮食由&quot;农田&quot;和&quot;猎人小屋&quot;提供</p>
+<p>其中&quot;农田&quot;仅消耗水墨，是游戏开始时必造的主要建筑，&ldquo;猎人小屋&quot;消耗人口，水墨，木材，是游戏中期生产粮食的主要建筑</p>
+<p>对于&quot;农田&rdquo;，游戏中设定了&quot;肥沃度&quot;系统，每一个空地地块都有一个&quot;肥沃度&quot;值，特别地，肥沃度为0的空地即为&quot;荒地&quot;，在只有荒地的地块无法建造农田</p>
+<p>肥沃度仅由地图决定</p>
+<p>对于&quot;猎人小屋&quot;，其存在一个&quot;影响范围&quot;，在该影响范围内的树木会为玩家提供一次性的粮食值，树木量与粮食量关联函数暂未知，反正多多益善</p>
+<p>特殊地，猎人小屋的影响范围不能重叠（要求玩家通过合理城市规划来最大化资源生产）</p>
+<p>是建造住房类建筑的核心资源，前期的资源循环存在于&quot;水墨&quot;-&gt;&ldquo;粮食&rdquo;-&gt;&ldquo;人口&rdquo;+&ldquo;水墨&quot;中</p>
+<h4>木材<span class="hx:absolute hx:-mt-20" id="木材"></span>
+    <a href="#%e6%9c%a8%e6%9d%90" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>是周期性生产的大量资源</p>
+<p>游戏中的木材由伐木场类建筑提供，同&quot;猎人小屋&rdquo;，只不过其生产资源是周期性的</p>
+<h4>石材<span class="hx:absolute hx:-mt-20" id="石材"></span>
+    <a href="#%e7%9f%b3%e6%9d%90" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>是周期性生产的少量资源</p>
+<p>游戏中存在&quot;石头&quot;地块，在该地块上建造采石场类建筑，保证石头在采石场影响范围内即可为玩家周期性地提供石材资源</p>
+<h4>乌薪<span class="hx:absolute hx:-mt-20" id="乌薪"></span>
+    <a href="#%e4%b9%8c%e8%96%aa" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>完全同&quot;石材&quot;，只不过量更少</p>
+<h4>水墨<span class="hx:absolute hx:-mt-20" id="水墨"></span>
+    <a href="#%e6%b0%b4%e5%a2%a8" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>可以广义地理解为&quot;钱&quot;，基本所有建筑建造，单位训练，地图扩张都需要&quot;水墨&quot;</p>
+<h4>产业链<span class="hx:absolute hx:-mt-20" id="产业链"></span>
+    <a href="#%e4%ba%a7%e4%b8%9a%e9%93%be" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>是一种只有顶级建筑一次性生产，专门用于升级顶级部队的个位数资源</p>
+<p>（这个资源让玩家必须去考虑建造顶级建筑，导致建筑种类实在太多了，而且这些顶级建筑还基本不可复用，占地又大，到了游戏后期根本没有地方放这些东西，又联动了它一个细节：不同类建筑必须间隔1格距离，导致玩家左右为难或许要拆一些建筑，难评）</p>
+<h3>军队系统<span class="hx:absolute hx:-mt-20" id="军队系统"></span>
+    <a href="#%e5%86%9b%e9%98%9f%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>感觉更像3选项肉鸽机制+RTT的结合</p>
+<p>为什么像RTT？游戏中的军队系统更强调&quot;派哪些部队守哪些点&quot;，在游戏中玩家通过拖拽军队的图标指示军队向某些特定的地方移动（特殊地，存在建筑类型的军队，玩家需要通过有冷却无消耗地建造来部署这些建筑），单位会在该地自动攻击并坚守，直到死完或者玩家将他们移动到其他地方（像王座陨落）</p>
+<p>3选项肉鸽机制在哪？游戏中玩家需要消耗资源来&quot;训练&quot;军队，在这个训练系统中，玩家可以招募新的军队/升星已有军队或为已有军队添加buff，这两个动作的出现频率为1：1，即第一次训练时为前者，下一次训练就为后者，以此反复</p>
+<p>游戏中训练的消耗是单调无函数递增的，从&quot;水墨+人口&quot;到&quot;水墨+人口+粮食+木材+石材+墨薪&quot;种类和数量均递增</p>
+<h4>军队的养成系统<span class="hx:absolute hx:-mt-20" id="军队的养成系统"></span>
+    <a href="#%e5%86%9b%e9%98%9f%e7%9a%84%e5%85%bb%e6%88%90%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>类皇室战争卡牌收集与升级</p>
+<p>高级的卡牌（包括建造的建筑和训练的军队的初始数值）会有更好的面板数值</p>
+<p>由于游戏中的建筑只有种类区别不会升级，军队升级只涉及buff，故而这些不会受到该养成系统的影响而增加复杂度</p>
+<h4>军队的羁绊系统<span class="hx:absolute hx:-mt-20" id="军队的羁绊系统"></span>
+    <a href="#%e5%86%9b%e9%98%9f%e7%9a%84%e7%be%81%e7%bb%8a%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>基本照抄自走棋，玩家招募拥有相同羁绊标签的单位达到2，3个时会获得额外收益</p>
+<p>相当于给军队的预设方案和局内招募的选择加了变数</p>
+<h3>科技/研究系统<span class="hx:absolute hx:-mt-20" id="科技研究系统"></span>
+    <a href="#%e7%a7%91%e6%8a%80%e7%a0%94%e7%a9%b6%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>一个用于标志游戏进度，简化原有的复杂的建筑系统，提供及时奖励的系统</p>
+<p>游戏中用于研究的资源为&quot;经验值&quot;，该资源可以通过建造建筑，升级建筑，训练军队，击杀敌人等各种方式获得，且仅用于研究，泛用性和与其他资源的联系程度低，故而在经济系统里没有提到该资源</p>
+<p>研究系统通过城镇中心等级来标志游戏进度，玩家需要更高级的城镇中心来开启研究更多选项</p>
+<p>在游戏外，玩家可以解锁非常多的建筑可供建造（涉及卡牌收集与养成），这些建筑如果一股脑地塞到玩家可建造的列表里，会让玩家直接删除游戏，于是有了这样一个研究系统，玩家只能通过研究系统开启建造更多的建筑，起始玩家可以建造的建筑只有用于早期资源循环的&quot;民宅&quot;和&quot;农田&quot;，在研究后，玩家才能解锁更多诸如&quot;伐木场&quot;，&ldquo;猎人小屋&rdquo;，&ldquo;二级城镇中心&rdquo;，&ldquo;采石场&quot;及各类城墙的建造，这些可研究选项的生成是根据当前科技树不完全随机出来的，选项个数不固定，有1（必选研究）~6项不等，有些科技需要前置科技或前置建筑才能刷出来或研究</p>
+<p>科技研究中有一个获得资源的选项，相当于玩家可以放弃本次科技研究选择获得一些资源用于应急</p>
+<h3>地图系统<span class="hx:absolute hx:-mt-20" id="地图系统"></span>
+    <a href="#%e5%9c%b0%e5%9b%be%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>游戏中的地图仅涉及到&quot;探索&quot;这一机制</p>
+<p>游戏中的地图不是程序化生成的，而是固定的地图</p>
+<p>不涉及RTS中的&quot;视野&rdquo;，所有探索过的地图常亮</p>
+<p>在游戏开始时，玩家会有一片照亮城镇中心的已探索区域，玩家可以消耗水墨从任何已探索区域临接区域向外探索（该水墨消耗根据将探索的地块数量无规则递增，在游戏初始阶段这个值会很小，即使要探索的区域很大），探索会点亮一定数量的地块，这个地块的区域大小是程序化生成的，但其内容不是（因为地图永远是固定的），该地块会在玩家将要探索时用虚线指示出来（参照海岛奇兵）</p>
 <hr>
-<h2>2 用硬代码实现状态机<span class="hx:absolute hx:-mt-20" id="2-用硬代码实现状态机"></span>
-    <a href="#2-%e7%94%a8%e7%a1%ac%e4%bb%a3%e7%a0%81%e5%ae%9e%e7%8e%b0%e7%8a%b6%e6%80%81%e6%9c%ba" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><h3>2.1 逻辑<span class="hx:absolute hx:-mt-20" id="21-逻辑"></span>
-    <a href="#21-%e9%80%bb%e8%be%91" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>想象一下，我们只有一个enemy场景，和一个附着在enemy根节点上的脚本，这个脚本要全权负责enmey的巡逻，追逐，攻击逻辑（经典的patrol-chase-attack循环），我们该怎么写？</p>
-<p>既然用状态机，那么我们就把这三个变成状态吧，我们有巡逻状态，追逐状态，攻击状态，自然，我们需要一个<strong>枚举</strong>来存储这个分类，还要有一个变量来存储<strong>当前状态</strong>，嗯，好，记得要做这两个</p>
-<p>然后我们要处理一下动画，我们得三个状态显然要有不同的动画，那么我们就可以在更改当前状态时同步更改它的动画，那么要记得<strong>在更改状态的函数中同步更新动画</strong></p>
-<p>再者让我们想想，我们要怎么样更改状态呢，比如从patrol转到chase？或许你有许多种方法，比如添加一个Area2D然后把它的area_entered信号连接到根节点脚本中，但我们在这里还是只谈脚本中处理的方法</p>
-<p>那么我们就需要知道玩家在哪，敌人在哪，当玩家与敌人近到一定程度时就更改状态，这里我们用硬代码直接在tick里写，<strong>当我们的当前状态为patrol时，实时获取玩家与敌人位置，当二者距离小于侦查距离时，转换状态为chase</strong>，chase到attack的转换同理，<strong>二者距离小于攻击距离时，立刻攻击玩家，然后状态转为patrol</strong></p>
-<p>以上，一个硬代码状态机就实现了，好了，那么纸上谈兵结束了，现在自己对照下面的代码看上面的解释吧</p>
-<h3>2.2 实现<span class="hx:absolute hx:-mt-20" id="22-实现"></span>
-    <a href="#22-%e5%ae%9e%e7%8e%b0" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>那么就用一下硬代码实现一下状态机吧</p>
-<p>这个硬代码是我从YouTube上一个老哥的博客学来的（啥不是学来的嘞，你说是不吼），以下是原帖，我改成了更简单的版本（原版是scanning-firing-charging循环，但我改成我觉得更简单易懂的patrol-chase-attack循环）</p>
-<p><a href="https://shaggydev.com/2023/10/08/godot-4-state-machines/"target="_blank" rel="noopener">Godot 4 中的启动状态机 - The Shaggy Dev &mdash; Starter state machines in Godot 4 - The Shaggy Dev</a></p>
-<p>（这个文章里同时有硬代码方法和进阶状态机方法，看上半部分就行）</p>
-<p>（记住，不要用硬代码写状态机，除非你敢拿头保证你不会增加很多很复杂的状态或复合状态！）</p>
-<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
-
-<div><pre><code>extends Node
-
-enum STATE {
-PATROL ,
-CHASE ,
-ATTACK
-} #在此定义状态机中的所有状态
-
-@export Player : PLAYER #对玩家引用来判断是否在侦查范围内
-
-var current_state : STATE = PATROL #定义&#34;当前状态&#34;并赋初始值为PATROL
-@export var animation : AnimatedSprite2D #这个动画状态机没有任何架构上的意义，你可以不用管它，我只是想突出状态应该要有的enter函数而已，让我的那个更改状态的函数变得不那么蠢
-
-@export var detect_distance : float #侦查范围
-@export var attack_distance : float #攻击范围
-
-func change_state(new_state : STATE) :
-	current_state = new_state
-	match current_state :
-		STATE.PATROL :
-			animation.play(&#34;patrol&#34;)
-		STATE.CHASE :
-			animation.play(&#34;chase&#34;)
-		STATE.ATTACK :
-			animation.play(&#34;attack&#34;)
-			change_state(PATROL)
-
-func _process(delta) :
-	match current_state :
-		STATE.PATROL :
-			if Player.position.distance_to(position) &lt; detect_distance :
-				change_state(STATE.CHASE)
-		STATE.CHASE :
-			if Player.position.distance_to(position) &lt; attack_distance :
-				change_state(STATE.ATTACK)
-
-func _physics_process(delta) :
-	match current_state :
-		#这下面的函数我就不写了，毕竟重心不在实现enemy动作，而是实现状态机的结构
-		STATE.PATROL :
-			random_move()
-		STATE.CHASE :
-			move_to_player(Player)
-		STATE.ATTACK :
-			attack(Player)</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
-  <button
-    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
-    title="复制代码"
-  >
-    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
-<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
-  </button>
-</div>
-</div>
-<p>结束了，框架没了，是不是很简单？对，状态机就是这么简单</p>
-<hr>
-<h2>3 用StateMachine父节点+STATE类子节点实现状态机<span class="hx:absolute hx:-mt-20" id="3-用statemachine父节点state类子节点实现状态机"></span>
-    <a href="#3-%e7%94%a8statemachine%e7%88%b6%e8%8a%82%e7%82%b9state%e7%b1%bb%e5%ad%90%e8%8a%82%e7%82%b9%e5%ae%9e%e7%8e%b0%e7%8a%b6%e6%80%81%e6%9c%ba" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><h3>3.1 约定俗成<span class="hx:absolute hx:-mt-20" id="31-约定俗成"></span>
-    <a href="#31-%e7%ba%a6%e5%ae%9a%e4%bf%97%e6%88%90" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>知道了上面硬代码实现状态机的方法，有一些东西我就不重复了，知识直接extends过来就ok</p>
-<p>现在我们讲讲一个<strong>状态</strong>应该有什么</p>
-<p>什么？什么叫应该有什么？这是什么意思？意思就是<strong>状态</strong>这个东西的规范形式</p>
-<p>它会有四个函数，分别是</p>
-<ul>
-<li>
-<p>Enter()
-在状态改变为当前状态时调用，抽象理解为godot中的_enter_tree()</p>
-</li>
-<li>
-<p>Exit()
-在离开该状态时调用，理解为_exit_tree()</p>
-</li>
-<li>
-<p>Update()
-与_process()绑定调用，用于处理渲染</p>
-</li>
-<li>
-<p>Physics_Update()
-与_physics_process()绑定调用，用于处理逻辑</p>
-</li>
-</ul>
-<p>以上都是约定俗成，但我觉得它们应该能对你理解接下来的代码有点帮助</p>
-<h3>3.2 实现与理解<span class="hx:absolute hx:-mt-20" id="32-实现与理解"></span>
-    <a href="#32-%e5%ae%9e%e7%8e%b0%e4%b8%8e%e7%90%86%e8%a7%a3" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>以下是我适应的在godot中使用的状态机写法</p>
-<p>原帖</p>
-<p><a href="https://www.youtube.com/watch?v=ow_Lum-Agbs"target="_blank" rel="noopener">Finite State Machines in Godot 4 in Under 10 Minutes - YouTube</a></p>
-<p>首先定义STATE这个东西，我们得知道STATE是什么，有什么默认函数（定义STATE类）</p>
-<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
-
-<div><pre><code>#STATE.gd
-
-extends Node
-class_name STATE #这里就是定义STATE
-
-signal ChangeState #在要更改状态时发出信号，这个信号将附带有将要转向的状态的字符串形式，然后我们在状态机中用字符串查找到的状态来替换当前状态
-
-func Enter() :  #这个函数将在进入该状态时调用
-	pass
-
-func Exit() : #在退出该状态时调用
-	pass
-
-func Update(delta) : #和_process绑定，用于处理渲染tick
-	pass
-
-func Physics_Update(delta) : #和_physics_process绑定，用于处理逻辑tick
-	pass</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
-  <button
-    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
-    title="复制代码"
-  >
-    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
-<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
-  </button>
-</div>
-</div>
-<p>为什么上面的函数都是空的？</p>
-<p>因为后面会根据状态不同直接覆盖这些函数</p>
-<p>然后就是状态机了，先想想状态机应该有什么？</p>
-<p>状态机得：</p>
-<ol>
-<li>初始化状态（如果有）</li>
-<li>知道能有几种状态（状态的字典）</li>
-<li>知道当前状态是什么（知道当前要执行哪个状态的函数）</li>
-<li>能改变状态（有改变状态的函数）</li>
-</ol>
-<p>没了！那就写吧！</p>
-<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
-
-<div><pre><code>#StateMachine.gd
-
-extends Node
-class_name state_machine
-
-var state_dictionary := {} #这里是2
-var current_state : STATE #这里是3
-@export var init_state : STATE #这里是1
-
-
-func _ready() :
-	
-	#这里是2
-	for child in get_children() :
-		if child is STATE :
-			state_dictionary[child.name.to_lower()] = child #状态字典，键为状态的小写字符串形式，值为状态（子节点），这里的小写是用于保证代码安全的写法，避免因为大小写不同而检索不到相应的状态名
-			child.change_state.connect(_change_state) #绑定信号到函数
-			
-	#这里是1
-	if init_state :
-		current_state = init_state
-		current_state.Enter()
-
-#这里是3
-func _process(delta) :
-	if current_state :
-		current_state.Update(delta)
-
-func _physics_process(delta) :
-	if current_state :
-		current_state.Physics_Update(delta)
-
-#这里是4
-func _change_state(new_state) :
-	if current_state :
-		current_state.Exit()
-	current_state = state_dictionary[new_state]
-	current_state.Enter()</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
-  <button
-    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
-    title="复制代码"
-  >
-    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
-<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
-  </button>
-</div>
-</div>
-<p>接下来用patrol-chase-attack循环来演示状态节点</p>
-<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
-
-<div><pre><code>#patrol.gd
-
-extends STATE
-class_name PATROL
-
-@export var enemy : ENEMY #这里是用引用的方法来让根节点实现当前状态的逻辑的
-@export var player : PLAYER #引用Player检测玩家是否进入侦查距离
-
-var detect_distance : float #侦查距离，当玩家与敌人的距离小于这一距离时，更改状态为chase
-var wander_time : float #为了不用强制多线程的timer，这里用最朴素的方法写计时器
-var current_wander_time : float
-
-func random_move() :
-	pass
-	#这里我就不演示了，反正就是enemy的运动逻辑
-
-func Enter() :
-	random_move()
-
-func Update(delta) :
-	if wander_time &gt; 0 :
-		current_wander_time -= delta
-	else :
-		random_move()
-		current_wander_time = wander_time
-
-func _Physics_Update(delta) :
-	#当玩家与敌人距离比侦查距离小时，将状态转换为chase
-	if player.position.distance_to(position) &lt; detect_distance :
-		change_state.emit(&#34;chase&#34;)</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
-  <button
-    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
-    title="复制代码"
-  >
-    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
-<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
-  </button>
-</div>
-</div>
 <p>以上</p>
-<p>这个状态机的思路就是：</p>
-<ul>
-<li>给根节点一个节点StateMachine</li>
-<li>在StateMachine下添加STATE类节点</li>
-<li>StateMachine实时调用current_state的逻辑</li>
-<li>STATE节点获得对StateMachine的引用实现更改current_state逻辑</li>
-<li>STATE节点获得对根节点的引用实现STATE逻辑</li>
-</ul>
-<hr>
-<p>下面写一个进阶的状态机写法</p>
-<p>ToDo（希望不鸽）</p>
 
         </div>
         
-    <div class="hx:mt-12 hx:mb-8 hx:block hx:text-xs hx:text-gray-500 hx:ltr:text-right hx:rtl:text-left hx:dark:text-gray-400">最后更新于 <time datetime="2025-04-11T00:00:00.000Z">2025年4月11日</time></div>
+    <div class="hx:mt-12 hx:mb-8 hx:block hx:text-xs hx:text-gray-500 hx:ltr:text-right hx:rtl:text-left hx:dark:text-gray-400">最后更新于 <time datetime="2025-11-21T00:00:00.000Z">2025年11月21日</time></div>
         <div class="hx:mb-8 hx:flex hx:items-center hx:border-t hx:pt-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-neutral-400 hx:dark:contrast-more:border-neutral-400 hx:print:hidden"><a
-        href="/game/%E5%A2%A8%E5%AE%88%E5%AD%A4%E5%9F%8E/"
-        title="墨守孤城"
+        href="/game/ai_decision_tree_state_machine/"
+        title="AI决策-状态机"
+        class="hx:flex hx:max-w-[50%] hx:items-center hx:gap-1 hx:py-4 hx:text-base hx:font-medium hx:text-gray-600 hx:transition-colors [word-break:break-word] hx:hover:text-primary-600 hx:dark:text-gray-300 hx:md:text-lg hx:ltr:pr-4 hx:rtl:pl-4"
+      ><svg class="hx:inline hx:h-5 hx:shrink-0 hx:ltr:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>AI决策-状态机</a><a
+        href="/game/nine_kings/"
+        title="九王"
         class="hx:flex hx:max-w-[50%] hx:items-center hx:gap-1 hx:py-4 hx:text-base hx:font-medium hx:text-gray-600 hx:transition-colors [word-break:break-word] hx:hover:text-primary-600 hx:dark:text-gray-300 hx:md:text-lg hx:ltr:ml-auto hx:ltr:pl-4 hx:ltr:text-right hx:rtl:mr-auto hx:rtl:pr-4 hx:rtl:text-left"
-      >墨守孤城<svg class="hx:inline hx:h-5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a></div>
+      >九王<svg class="hx:inline hx:h-5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a></div>
         
       </main>
     </article>

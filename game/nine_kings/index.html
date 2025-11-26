@@ -8,77 +8,100 @@
 <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
 <link fetchpriority="low" href="/site.webmanifest" rel="manifest" />
-<title>墨守孤城 – 乂轶·轶名-0verDay</title>
-  <meta name="description" content="游戏类型：RTS?&#43;塔防?&#43;自走棋?
-画风：国风&#43;水墨风
-一句话总结：有些卖ip的意思，玩法没有很大的创新性，对RTS的简化值得借鉴
-主题：采集资源，建造军队，防御攻击
-（吐槽一下，优化真的烂）
-游戏主玩法 游戏玩法流程和RTS是一个模子刻出来的，至少我玩到整个游戏关卡流程的一半还没看到更多的机制或系统
-经济系统 游戏中有以下资源种类： 人口，粮食，水墨，木材，石材，乌薪，产业链（纯纯的败笔）
-其中，除人口和粮食之外，其他资源均以&#34;天&#34;为回合单位，依回合结束时的资源增长数获得 （每天为15秒）
-人口 是一次性生产的少量资源
-游戏中的人口有且仅有住房类建筑能提供，同时住房类建筑会提供水墨，可以理解为水墨增长和人口增长是成正比的
-人口是建造某些生产类建筑所需的资源，如伐木场（木材），猎人小屋（食物），采石场（石材），墨薪采矿场（墨薪） 是训练军事单位所需的资源
-粮食 是一次性生产的少量资源
-游戏中的粮食由&#34;农田&#34;和&#34;猎人小屋&#34;提供
-其中&#34;农田&#34;仅消耗水墨，是游戏开始时必造的主要建筑，“猎人小屋&#34;消耗人口，水墨，木材，是游戏中期生产粮食的主要建筑
-对于&#34;农田”，游戏中设定了&#34;肥沃度&#34;系统，每一个空地地块都有一个&#34;肥沃度&#34;值，特别地，肥沃度为0的空地即为&#34;荒地&#34;，在只有荒地的地块无法建造农田
-肥沃度仅由地图决定
-对于&#34;猎人小屋&#34;，其存在一个&#34;影响范围&#34;，在该影响范围内的树木会为玩家提供一次性的粮食值，树木量与粮食量关联函数暂未知，反正多多益善
-特殊地，猎人小屋的影响范围不能重叠（要求玩家通过合理城市规划来最大化资源生产）
-是建造住房类建筑的核心资源，前期的资源循环存在于&#34;水墨&#34;-&gt;“粮食”-&gt;“人口”&#43;“水墨&#34;中
-木材 是周期性生产的大量资源
-游戏中的木材由伐木场类建筑提供，同&#34;猎人小屋”，只不过其生产资源是周期性的
-石材 是周期性生产的少量资源
-游戏中存在&#34;石头&#34;地块，在该地块上建造采石场类建筑，保证石头在采石场影响范围内即可为玩家周期性地提供石材资源
-乌薪 完全同&#34;石材&#34;，只不过量更少
-水墨 可以广义地理解为&#34;钱&#34;，基本所有建筑建造，单位训练，地图扩张都需要&#34;水墨&#34;
-产业链 是一种只有顶级建筑一次性生产，专门用于升级顶级部队的个位数资源" /><link rel="canonical" href="http://localhost:1313/game/%E5%A2%A8%E5%AE%88%E5%AD%A4%E5%9F%8E/" itemprop="url" />
+<title>九王 – 乂轶·轶名-0verDay</title>
+  <meta name="description" content="游戏类型：肉鸽&#43;回合制卡牌&#43;自走棋（&#43;城市规划？）
+画风：像素风
+一句话总结：像小丑牌一样，很让人爽，但没有长时间深入玩的意愿，有尽爽游
+基本玩法 游戏是回合制，以手牌数=2标志本回合结束，回合结束时会有交战，交战后玩家会从三张卡牌中自选一张，回合中玩家需要使用卡牌强化自己的实力，再迎接下一次交战，以此为游戏主循环
+流程图 核心系统 游戏中共有：
+单位： 军队，构筑物（建筑）两种可以放在格子中的单位
+手牌： 军队牌，构筑物牌，buff牌三种手牌
+“九&#34;格系统 游戏中最核心的系统，其实就是格子系统，游戏中称&#34;地块”，玩家只有一种手段主动强化自己的势力，就是将手牌使用到至多5x5个地块中（初始为3x3个地块，故而称&#34;九&#34;格，但可以通过各种手段扩展地块，上限是5x5，敌人会无止境增强，且增强速度会在某时大于玩家增强速度，所以玩家注定会失败）
+所有手牌均是一次性的，使用单位牌会在该地块上创造一个单位群（游戏中的单位数量较多），使用构筑物牌会在该地块上创造一个相应的构筑物，使用buff会给该地块上的单位/构筑物加上一个永久buff，直到失去该地块上的单位/构筑物（游戏中有可以摧毁地块上的单位/构筑物的牌）
+特殊地，每个单位和构筑物均有三个等级，玩家可以通过将与某个地块相同的牌作用到该地块上来升级该地块，升级会带来面板增益，该增益不会失去，地块升级到三级后不可继续升级，buff牌可以无限叠加到一个地块上
+特殊地，游戏中存在一张可以降低等级数的buff牌（类似于小丑牌的&#34;负片&#34;效果）
+格子只会增多，不会减少，解锁的格子可以不相邻 格子的&#34;相邻&#34;是四连通
+位置相关举例： 设游戏中有一3x3格
+农田 军队A 军队E 军队B 墓地 军队C 森林 军队D 铁匠铺 其中，
+墓地：相邻地块单位死亡时，在原位生成一个&#34;小鬼&#34;（可以理解为炮灰级部队）
+农田：每回合结束时，给随机相邻军队增加一个单位
+森林：每回合结束时，相邻军队生命值&#43;2%
+铁匠铺：每回合结束时，相邻军队伤害&#43;2%
+军队E：当相邻军队增加单位时，自己增加相应数量的单位
+则军队ABCD每回合都分别有农田森林铁匠铺的一次次强化，军队E在军队A获得农田增员加成时也获得加成
+势力系统 游戏中共有9个可选势力和1个不可选的彩虹势力，每个势力均有9张牌（彩虹势力不知道，但应该也有9张）
+其中每个势力（除彩虹势力外）固定有一个主城
+游戏开始时玩家固定获得该势力的主城卡，在玩家使用该主城卡后（即在初始格中建造主城），玩家将获得3张随机的该牌开始第一轮游戏（这个数字可以通过养成而改变），随后开始循环，直到失败
+战斗系统 作用于回合结束时（即手牌数=2时）" /><link rel="canonical" href="http://localhost:1313/game/nine_kings/" itemprop="url" />
 
-<meta property="og:title" content="墨守孤城">
+<meta property="og:title" content="九王">
 <meta
   property="og:description"
   content="
     
-      游戏类型：RTS?&#43;塔防?&#43;自走棋?
-画风：国风&#43;水墨风
-一句话总结：有些卖ip的意思，玩法没有很大的创新性，对RTS的简化值得借鉴
-主题：采集资源，建造军队，防御攻击
-（吐槽一下，优化真的烂）
-游戏主玩法
-    游戏玩法流程和RTS是一个模子刻出来的，至少我玩到整个游戏关卡流程的一半还没看到更多的机制或系统
-经济系统
-    游戏中有以下资源种类：
-人口，粮食，水墨，木材，石材，乌薪，产业链（纯纯的败笔）
-其中，除人口和粮食之外，其他资源均以&quot;天&quot;为回合单位，依回合结束时的资源增长数获得
-（每天为15秒）
-人口
-    是一次性生产的少量资源
-游戏中的人口有且仅有住房类建筑能提供，同时住房类建筑会提供水墨，可以理解为水墨增长和人口增长是成正比的
-人口是建造某些生产类建筑所需的资源，如伐木场（木材），猎人小屋（食物），采石场（石材），墨薪采矿场（墨薪）
-是训练军事单位所需的资源
-粮食
-    是一次性生产的少量资源
-游戏中的粮食由&quot;农田&quot;和&quot;猎人小屋&quot;提供
-其中&quot;农田&quot;仅消耗水墨，是游戏开始时必造的主要建筑，&ldquo;猎人小屋&quot;消耗人口，水墨，木材，是游戏中期生产粮食的主要建筑
-对于&quot;农田&rdquo;，游戏中设定了&quot;肥沃度&quot;系统，每一个空地地块都有一个&quot;肥沃度&quot;值，特别地，肥沃度为0的空地即为&quot;荒地&quot;，在只有荒地的地块无法建造农田
-肥沃度仅由地图决定
-对于&quot;猎人小屋&quot;，其存在一个&quot;影响范围&quot;，在该影响范围内的树木会为玩家提供一次性的粮食值，树木量与粮食量关联函数暂未知，反正多多益善
-特殊地，猎人小屋的影响范围不能重叠（要求玩家通过合理城市规划来最大化资源生产）
-是建造住房类建筑的核心资源，前期的资源循环存在于&quot;水墨&quot;-&gt;&ldquo;粮食&rdquo;-&gt;&ldquo;人口&rdquo;&#43;&ldquo;水墨&quot;中
-木材
-    是周期性生产的大量资源
-游戏中的木材由伐木场类建筑提供，同&quot;猎人小屋&rdquo;，只不过其生产资源是周期性的
-石材
-    是周期性生产的少量资源
-游戏中存在&quot;石头&quot;地块，在该地块上建造采石场类建筑，保证石头在采石场影响范围内即可为玩家周期性地提供石材资源
-乌薪
-    完全同&quot;石材&quot;，只不过量更少
-水墨
-    可以广义地理解为&quot;钱&quot;，基本所有建筑建造，单位训练，地图扩张都需要&quot;水墨&quot;
-产业链
-    是一种只有顶级建筑一次性生产，专门用于升级顶级部队的个位数资源
+      游戏类型：肉鸽&#43;回合制卡牌&#43;自走棋（&#43;城市规划？）
+画风：像素风
+一句话总结：像小丑牌一样，很让人爽，但没有长时间深入玩的意愿，有尽爽游
+基本玩法
+    游戏是回合制，以手牌数=2标志本回合结束，回合结束时会有交战，交战后玩家会从三张卡牌中自选一张，回合中玩家需要使用卡牌强化自己的实力，再迎接下一次交战，以此为游戏主循环
+流程图
+    
+    
+核心系统
+    游戏中共有：
+单位：
+军队，构筑物（建筑）两种可以放在格子中的单位
+手牌：
+军队牌，构筑物牌，buff牌三种手牌
+&ldquo;九&quot;格系统
+    游戏中最核心的系统，其实就是格子系统，游戏中称&quot;地块&rdquo;，玩家只有一种手段主动强化自己的势力，就是将手牌使用到至多5x5个地块中（初始为3x3个地块，故而称&quot;九&quot;格，但可以通过各种手段扩展地块，上限是5x5，敌人会无止境增强，且增强速度会在某时大于玩家增强速度，所以玩家注定会失败）
+所有手牌均是一次性的，使用单位牌会在该地块上创造一个单位群（游戏中的单位数量较多），使用构筑物牌会在该地块上创造一个相应的构筑物，使用buff会给该地块上的单位/构筑物加上一个永久buff，直到失去该地块上的单位/构筑物（游戏中有可以摧毁地块上的单位/构筑物的牌）
+特殊地，每个单位和构筑物均有三个等级，玩家可以通过将与某个地块相同的牌作用到该地块上来升级该地块，升级会带来面板增益，该增益不会失去，地块升级到三级后不可继续升级，buff牌可以无限叠加到一个地块上
+特殊地，游戏中存在一张可以降低等级数的buff牌（类似于小丑牌的&quot;负片&quot;效果）
+格子只会增多，不会减少，解锁的格子可以不相邻
+格子的&quot;相邻&quot;是四连通
+
+位置相关举例：
+设游戏中有一3x3格
+
+  
+      
+          
+          
+          
+      
+  
+  
+      
+          农田
+          军队A
+          军队E
+      
+      
+          军队B
+          墓地
+          军队C
+      
+      
+          森林
+          军队D
+          铁匠铺
+      
+  
+
+其中，
+墓地：相邻地块单位死亡时，在原位生成一个&quot;小鬼&quot;（可以理解为炮灰级部队）
+农田：每回合结束时，给随机相邻军队增加一个单位
+森林：每回合结束时，相邻军队生命值&#43;2%
+铁匠铺：每回合结束时，相邻军队伤害&#43;2%
+军队E：当相邻军队增加单位时，自己增加相应数量的单位
+则军队ABCD每回合都分别有农田森林铁匠铺的一次次强化，军队E在军队A获得农田增员加成时也获得加成
+势力系统
+    游戏中共有9个可选势力和1个不可选的彩虹势力，每个势力均有9张牌（彩虹势力不知道，但应该也有9张）
+其中每个势力（除彩虹势力外）固定有一个主城
+游戏开始时玩家固定获得该势力的主城卡，在玩家使用该主城卡后（即在初始格中建造主城），玩家将获得3张随机的该牌开始第一轮游戏（这个数字可以通过养成而改变），随后开始循环，直到失败
+战斗系统
+    作用于回合结束时（即手牌数=2时）
     
   ">
 <meta
@@ -86,77 +109,73 @@
   content="
     article
   ">
-<meta property="og:url" content="http://localhost:1313/game/%E5%A2%A8%E5%AE%88%E5%AD%A4%E5%9F%8E/"><meta property="article:section" content="game">
+<meta property="og:url" content="http://localhost:1313/game/nine_kings/"><meta property="article:section" content="game">
 
 <meta
   property="article:published_time"
-  content="2025-11-21T00:00:00+00:00">
+  content="2025-11-24T00:00:00+00:00">
 
 
 <meta
   property="article:modified_time"
-  content="2025-11-21T00:00:00+00:00">
+  content="2025-11-24T00:00:00+00:00">
 
 
 
-  <meta itemprop="name" content="墨守孤城">
-  <meta itemprop="description" content="游戏类型：RTS?&#43;塔防?&#43;自走棋?
-画风：国风&#43;水墨风
-一句话总结：有些卖ip的意思，玩法没有很大的创新性，对RTS的简化值得借鉴
-主题：采集资源，建造军队，防御攻击
-（吐槽一下，优化真的烂）
-游戏主玩法 游戏玩法流程和RTS是一个模子刻出来的，至少我玩到整个游戏关卡流程的一半还没看到更多的机制或系统
-经济系统 游戏中有以下资源种类： 人口，粮食，水墨，木材，石材，乌薪，产业链（纯纯的败笔）
-其中，除人口和粮食之外，其他资源均以&#34;天&#34;为回合单位，依回合结束时的资源增长数获得 （每天为15秒）
-人口 是一次性生产的少量资源
-游戏中的人口有且仅有住房类建筑能提供，同时住房类建筑会提供水墨，可以理解为水墨增长和人口增长是成正比的
-人口是建造某些生产类建筑所需的资源，如伐木场（木材），猎人小屋（食物），采石场（石材），墨薪采矿场（墨薪） 是训练军事单位所需的资源
-粮食 是一次性生产的少量资源
-游戏中的粮食由&#34;农田&#34;和&#34;猎人小屋&#34;提供
-其中&#34;农田&#34;仅消耗水墨，是游戏开始时必造的主要建筑，“猎人小屋&#34;消耗人口，水墨，木材，是游戏中期生产粮食的主要建筑
-对于&#34;农田”，游戏中设定了&#34;肥沃度&#34;系统，每一个空地地块都有一个&#34;肥沃度&#34;值，特别地，肥沃度为0的空地即为&#34;荒地&#34;，在只有荒地的地块无法建造农田
-肥沃度仅由地图决定
-对于&#34;猎人小屋&#34;，其存在一个&#34;影响范围&#34;，在该影响范围内的树木会为玩家提供一次性的粮食值，树木量与粮食量关联函数暂未知，反正多多益善
-特殊地，猎人小屋的影响范围不能重叠（要求玩家通过合理城市规划来最大化资源生产）
-是建造住房类建筑的核心资源，前期的资源循环存在于&#34;水墨&#34;-&gt;“粮食”-&gt;“人口”&#43;“水墨&#34;中
-木材 是周期性生产的大量资源
-游戏中的木材由伐木场类建筑提供，同&#34;猎人小屋”，只不过其生产资源是周期性的
-石材 是周期性生产的少量资源
-游戏中存在&#34;石头&#34;地块，在该地块上建造采石场类建筑，保证石头在采石场影响范围内即可为玩家周期性地提供石材资源
-乌薪 完全同&#34;石材&#34;，只不过量更少
-水墨 可以广义地理解为&#34;钱&#34;，基本所有建筑建造，单位训练，地图扩张都需要&#34;水墨&#34;
-产业链 是一种只有顶级建筑一次性生产，专门用于升级顶级部队的个位数资源">
-  <meta itemprop="datePublished" content="2025-11-21T00:00:00+00:00">
-  <meta itemprop="dateModified" content="2025-11-21T00:00:00+00:00">
-  <meta itemprop="wordCount" content="63">
+  <meta itemprop="name" content="九王">
+  <meta itemprop="description" content="游戏类型：肉鸽&#43;回合制卡牌&#43;自走棋（&#43;城市规划？）
+画风：像素风
+一句话总结：像小丑牌一样，很让人爽，但没有长时间深入玩的意愿，有尽爽游
+基本玩法 游戏是回合制，以手牌数=2标志本回合结束，回合结束时会有交战，交战后玩家会从三张卡牌中自选一张，回合中玩家需要使用卡牌强化自己的实力，再迎接下一次交战，以此为游戏主循环
+流程图 核心系统 游戏中共有：
+单位： 军队，构筑物（建筑）两种可以放在格子中的单位
+手牌： 军队牌，构筑物牌，buff牌三种手牌
+“九&#34;格系统 游戏中最核心的系统，其实就是格子系统，游戏中称&#34;地块”，玩家只有一种手段主动强化自己的势力，就是将手牌使用到至多5x5个地块中（初始为3x3个地块，故而称&#34;九&#34;格，但可以通过各种手段扩展地块，上限是5x5，敌人会无止境增强，且增强速度会在某时大于玩家增强速度，所以玩家注定会失败）
+所有手牌均是一次性的，使用单位牌会在该地块上创造一个单位群（游戏中的单位数量较多），使用构筑物牌会在该地块上创造一个相应的构筑物，使用buff会给该地块上的单位/构筑物加上一个永久buff，直到失去该地块上的单位/构筑物（游戏中有可以摧毁地块上的单位/构筑物的牌）
+特殊地，每个单位和构筑物均有三个等级，玩家可以通过将与某个地块相同的牌作用到该地块上来升级该地块，升级会带来面板增益，该增益不会失去，地块升级到三级后不可继续升级，buff牌可以无限叠加到一个地块上
+特殊地，游戏中存在一张可以降低等级数的buff牌（类似于小丑牌的&#34;负片&#34;效果）
+格子只会增多，不会减少，解锁的格子可以不相邻 格子的&#34;相邻&#34;是四连通
+位置相关举例： 设游戏中有一3x3格
+农田 军队A 军队E 军队B 墓地 军队C 森林 军队D 铁匠铺 其中，
+墓地：相邻地块单位死亡时，在原位生成一个&#34;小鬼&#34;（可以理解为炮灰级部队）
+农田：每回合结束时，给随机相邻军队增加一个单位
+森林：每回合结束时，相邻军队生命值&#43;2%
+铁匠铺：每回合结束时，相邻军队伤害&#43;2%
+军队E：当相邻军队增加单位时，自己增加相应数量的单位
+则军队ABCD每回合都分别有农田森林铁匠铺的一次次强化，军队E在军队A获得农田增员加成时也获得加成
+势力系统 游戏中共有9个可选势力和1个不可选的彩虹势力，每个势力均有9张牌（彩虹势力不知道，但应该也有9张）
+其中每个势力（除彩虹势力外）固定有一个主城
+游戏开始时玩家固定获得该势力的主城卡，在玩家使用该主城卡后（即在初始格中建造主城），玩家将获得3张随机的该牌开始第一轮游戏（这个数字可以通过养成而改变），随后开始循环，直到失败
+战斗系统 作用于回合结束时（即手牌数=2时）">
+  <meta itemprop="datePublished" content="2025-11-24T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2025-11-24T00:00:00+00:00">
+  <meta itemprop="wordCount" content="86">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="墨守孤城">
-  <meta name="twitter:description" content="游戏类型：RTS?&#43;塔防?&#43;自走棋?
-画风：国风&#43;水墨风
-一句话总结：有些卖ip的意思，玩法没有很大的创新性，对RTS的简化值得借鉴
-主题：采集资源，建造军队，防御攻击
-（吐槽一下，优化真的烂）
-游戏主玩法 游戏玩法流程和RTS是一个模子刻出来的，至少我玩到整个游戏关卡流程的一半还没看到更多的机制或系统
-经济系统 游戏中有以下资源种类： 人口，粮食，水墨，木材，石材，乌薪，产业链（纯纯的败笔）
-其中，除人口和粮食之外，其他资源均以&#34;天&#34;为回合单位，依回合结束时的资源增长数获得 （每天为15秒）
-人口 是一次性生产的少量资源
-游戏中的人口有且仅有住房类建筑能提供，同时住房类建筑会提供水墨，可以理解为水墨增长和人口增长是成正比的
-人口是建造某些生产类建筑所需的资源，如伐木场（木材），猎人小屋（食物），采石场（石材），墨薪采矿场（墨薪） 是训练军事单位所需的资源
-粮食 是一次性生产的少量资源
-游戏中的粮食由&#34;农田&#34;和&#34;猎人小屋&#34;提供
-其中&#34;农田&#34;仅消耗水墨，是游戏开始时必造的主要建筑，“猎人小屋&#34;消耗人口，水墨，木材，是游戏中期生产粮食的主要建筑
-对于&#34;农田”，游戏中设定了&#34;肥沃度&#34;系统，每一个空地地块都有一个&#34;肥沃度&#34;值，特别地，肥沃度为0的空地即为&#34;荒地&#34;，在只有荒地的地块无法建造农田
-肥沃度仅由地图决定
-对于&#34;猎人小屋&#34;，其存在一个&#34;影响范围&#34;，在该影响范围内的树木会为玩家提供一次性的粮食值，树木量与粮食量关联函数暂未知，反正多多益善
-特殊地，猎人小屋的影响范围不能重叠（要求玩家通过合理城市规划来最大化资源生产）
-是建造住房类建筑的核心资源，前期的资源循环存在于&#34;水墨&#34;-&gt;“粮食”-&gt;“人口”&#43;“水墨&#34;中
-木材 是周期性生产的大量资源
-游戏中的木材由伐木场类建筑提供，同&#34;猎人小屋”，只不过其生产资源是周期性的
-石材 是周期性生产的少量资源
-游戏中存在&#34;石头&#34;地块，在该地块上建造采石场类建筑，保证石头在采石场影响范围内即可为玩家周期性地提供石材资源
-乌薪 完全同&#34;石材&#34;，只不过量更少
-水墨 可以广义地理解为&#34;钱&#34;，基本所有建筑建造，单位训练，地图扩张都需要&#34;水墨&#34;
-产业链 是一种只有顶级建筑一次性生产，专门用于升级顶级部队的个位数资源">
+  <meta name="twitter:title" content="九王">
+  <meta name="twitter:description" content="游戏类型：肉鸽&#43;回合制卡牌&#43;自走棋（&#43;城市规划？）
+画风：像素风
+一句话总结：像小丑牌一样，很让人爽，但没有长时间深入玩的意愿，有尽爽游
+基本玩法 游戏是回合制，以手牌数=2标志本回合结束，回合结束时会有交战，交战后玩家会从三张卡牌中自选一张，回合中玩家需要使用卡牌强化自己的实力，再迎接下一次交战，以此为游戏主循环
+流程图 核心系统 游戏中共有：
+单位： 军队，构筑物（建筑）两种可以放在格子中的单位
+手牌： 军队牌，构筑物牌，buff牌三种手牌
+“九&#34;格系统 游戏中最核心的系统，其实就是格子系统，游戏中称&#34;地块”，玩家只有一种手段主动强化自己的势力，就是将手牌使用到至多5x5个地块中（初始为3x3个地块，故而称&#34;九&#34;格，但可以通过各种手段扩展地块，上限是5x5，敌人会无止境增强，且增强速度会在某时大于玩家增强速度，所以玩家注定会失败）
+所有手牌均是一次性的，使用单位牌会在该地块上创造一个单位群（游戏中的单位数量较多），使用构筑物牌会在该地块上创造一个相应的构筑物，使用buff会给该地块上的单位/构筑物加上一个永久buff，直到失去该地块上的单位/构筑物（游戏中有可以摧毁地块上的单位/构筑物的牌）
+特殊地，每个单位和构筑物均有三个等级，玩家可以通过将与某个地块相同的牌作用到该地块上来升级该地块，升级会带来面板增益，该增益不会失去，地块升级到三级后不可继续升级，buff牌可以无限叠加到一个地块上
+特殊地，游戏中存在一张可以降低等级数的buff牌（类似于小丑牌的&#34;负片&#34;效果）
+格子只会增多，不会减少，解锁的格子可以不相邻 格子的&#34;相邻&#34;是四连通
+位置相关举例： 设游戏中有一3x3格
+农田 军队A 军队E 军队B 墓地 军队C 森林 军队D 铁匠铺 其中，
+墓地：相邻地块单位死亡时，在原位生成一个&#34;小鬼&#34;（可以理解为炮灰级部队）
+农田：每回合结束时，给随机相邻军队增加一个单位
+森林：每回合结束时，相邻军队生命值&#43;2%
+铁匠铺：每回合结束时，相邻军队伤害&#43;2%
+军队E：当相邻军队增加单位时，自己增加相应数量的单位
+则军队ABCD每回合都分别有农田森林铁匠铺的一次次强化，军队E在军队A获得农田增员加成时也获得加成
+势力系统 游戏中共有9个可选势力和1个不可选的彩虹势力，每个势力均有9张牌（彩虹势力不知道，但应该也有9张）
+其中每个势力（除彩虹势力外）固定有一个主城
+游戏开始时玩家固定获得该势力的主城卡，在玩家使用该主城卡后（即在初始格中建造主城），玩家将获得3张随机的该牌开始第一轮游戏（这个数字可以通过养成而改变），随后开始循环，直到失败
+战斗系统 作用于回合结束时（即手牌数=2时）">
 <link href="/css/compiled/main.css" rel="stylesheet" />
     <link href="/css/variables.css" rel="stylesheet" />
     <link href="/css/custom.css" rel="stylesheet" />
@@ -397,24 +416,44 @@
         <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="/game/ai%E5%86%B3%E7%AD%96-%E7%8A%B6%E6%80%81%E6%9C%BA/"
+    href="/game/ai_decision_tree_state_machine/"
     
   >AI决策-状态机
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/game/stick_to_an_isolated_city/"
+    
+  >墨守孤城
     </a>
               
             </li><li class="hx:flex hx:flex-col open"><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
-    href="/game/%E5%A2%A8%E5%AE%88%E5%AD%A4%E5%9F%8E/"
+    href="/game/nine_kings/"
     
-  >墨守孤城
+  >九王
     </a>
   
     <ul class='hx:flex hx:flex-col hx:gap-1 hx:relative hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:dark:before:bg-neutral-800 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:pr-3 hx:rtl:before:right-0 hx:ltr:ml-3 hx:rtl:mr-3'><li>
               <a
-                href="#%e6%b8%b8%e6%88%8f%e4%b8%bb%e7%8e%a9%e6%b3%95"
+                href="#%e5%9f%ba%e6%9c%ac%e7%8e%a9%e6%b3%95"
                 class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
-              >游戏主玩法</a>
+              >基本玩法</a>
+            </li>
+          <li>
+              <a
+                href="#%e6%b5%81%e7%a8%8b%e5%9b%be"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >流程图</a>
+            </li>
+          <li>
+              <a
+                href="#%e6%a0%b8%e5%bf%83%e7%b3%bb%e7%bb%9f"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >核心系统</a>
             </li>
           </ul>
   
@@ -422,15 +461,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="/game/%E4%B9%9D%E7%8E%8B/"
-    
-  >九王
-    </a>
-              
-            </li><li class="hx:flex hx:flex-col "><a
-    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="/game/ai%E5%86%B3%E7%AD%96-%E7%8A%B6%E6%80%81%E6%9C%BA&#43;%E8%A1%8C%E4%B8%BA%E6%A0%91&#43;htn&#43;goap/"
+    href="/game/ai_decision_tree_state_machine_behavior_tree_htn_goap/"
     
   >AI决策-状态机&#43;行为树&#43;HTN&#43;GOAP
     </a>
@@ -460,28 +491,28 @@
           <li class=""><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="/game/ai%E5%86%B3%E7%AD%96-%E7%8A%B6%E6%80%81%E6%9C%BA/"
+    href="/game/ai_decision_tree_state_machine/"
     
   >AI决策-状态机
-    </a></li>
-          <li class="open"><a
-    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
-    href="/game/%E5%A2%A8%E5%AE%88%E5%AD%A4%E5%9F%8E/"
-    
-  >墨守孤城
     </a></li>
           <li class=""><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="/game/%E4%B9%9D%E7%8E%8B/"
+    href="/game/stick_to_an_isolated_city/"
+    
+  >墨守孤城
+    </a></li>
+          <li class="open"><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
+    href="/game/nine_kings/"
     
   >九王
     </a></li>
           <li class=""><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="/game/ai%E5%86%B3%E7%AD%96-%E7%8A%B6%E6%80%81%E6%9C%BA&#43;%E8%A1%8C%E4%B8%BA%E6%A0%91&#43;htn&#43;goap/"
+    href="/game/ai_decision_tree_state_machine_behavior_tree_htn_goap/"
     
   >AI决策-状态机&#43;行为树&#43;HTN&#43;GOAP
     </a></li>
@@ -558,7 +589,31 @@
 <nav class="hextra-toc hx:order-last hx:hidden hx:w-64 hx:shrink-0 hx:xl:block hx:print:hidden hx:px-4" aria-label="table of contents">
     <div class="hextra-scrollbar hx:sticky hx:top-16 hx:overflow-y-auto hx:pr-4 hx:pt-6 hx:text-sm [hyphens:auto] hx:max-h-[calc(100vh-var(--navbar-height)-env(safe-area-inset-bottom))] hx:ltr:-mr-4 hx:rtl:-ml-4"><p class="hx:mb-4 hx:font-semibold hx:tracking-tight">此页上</p><ul>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e6%b8%b8%e6%88%8f%e4%b8%bb%e7%8e%a9%e6%b3%95">游戏主玩法
+        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e5%9f%ba%e6%9c%ac%e7%8e%a9%e6%b3%95">基本玩法
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e6%b5%81%e7%a8%8b%e5%9b%be">流程图
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e6%a0%b8%e5%bf%83%e7%b3%bb%e7%bb%9f">核心系统
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e4%b9%9d%e6%a0%bc%e7%b3%bb%e7%bb%9f">“九&#34;格系统
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e5%8a%bf%e5%8a%9b%e7%b3%bb%e7%bb%9f">势力系统
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e6%88%98%e6%96%97%e7%b3%bb%e7%bb%9f">战斗系统
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e6%88%98%e6%96%97%e7%bb%93%e6%9d%9f%e5%90%8e%e7%9a%84%e4%b8%89%e9%80%89%e9%a1%b9%e9%80%89%e7%89%8c">战斗结束后的三选项选牌
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
@@ -566,51 +621,11 @@
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e4%ba%ba%e5%8f%a3">人口
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e5%b9%b4%e4%bb%bd%e7%b3%bb%e7%bb%9f">年份系统
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e7%b2%ae%e9%a3%9f">粮食
-        </a>
-      </li>
-      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e6%9c%a8%e6%9d%90">木材
-        </a>
-      </li>
-      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e7%9f%b3%e6%9d%90">石材
-        </a>
-      </li>
-      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e4%b9%8c%e8%96%aa">乌薪
-        </a>
-      </li>
-      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e6%b0%b4%e5%a2%a8">水墨
-        </a>
-      </li>
-      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e4%ba%a7%e4%b8%9a%e9%93%be">产业链
-        </a>
-      </li>
-      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e5%86%9b%e9%98%9f%e7%b3%bb%e7%bb%9f">军队系统
-        </a>
-      </li>
-      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e5%86%9b%e9%98%9f%e7%9a%84%e5%85%bb%e6%88%90%e7%b3%bb%e7%bb%9f">军队的养成系统
-        </a>
-      </li>
-      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e5%86%9b%e9%98%9f%e7%9a%84%e7%be%81%e7%bb%8a%e7%b3%bb%e7%bb%9f">军队的羁绊系统
-        </a>
-      </li>
-      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e7%a7%91%e6%8a%80%e7%a0%94%e7%a9%b6%e7%b3%bb%e7%bb%9f">科技/研究系统
-        </a>
-      </li>
-      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e5%9c%b0%e5%9b%be%e7%b3%bb%e7%bb%9f">地图系统
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e5%85%bb%e6%88%90%e7%b3%bb%e7%bb%9f%e7%89%b9%e6%9d%83%e7%b3%bb%e7%bb%9f">养成系统（特权系统）
         </a>
       </li></ul>
       <div class="hx:mt-8 hx:border-t hx:bg-white hx:pt-8 hx:shadow-[0_-12px_16px_white] hx:dark:bg-dark hx:dark:shadow-[0_-12px_16px_#111] hx:sticky hx:bottom-0 hx:flex hx:flex-col hx:items-start hx:gap-2 hx:pb-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-t hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:border-neutral-400">
@@ -630,88 +645,159 @@
         <div class="hx:mt-1.5 hx:flex hx:items-center hx:gap-1 hx:overflow-hidden hx:text-sm hx:text-gray-500 hx:dark:text-gray-400 hx:contrast-more:text-current">
         <div class="hx:whitespace-nowrap hx:transition-colors hx:min-w-[24px] hx:overflow-hidden hx:text-ellipsis hx:hover:text-gray-900 hx:dark:hover:text-gray-100">
           <a href="/game/">游戏</a>
-        </div><svg class="hx:w-3.5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg><div class="hx:whitespace-nowrap hx:transition-colors hx:font-medium hx:text-gray-700 hx:contrast-more:font-bold hx:contrast-more:text-current hx:dark:text-gray-100 hx:contrast-more:dark:text-current">墨守孤城</div>
+        </div><svg class="hx:w-3.5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg><div class="hx:whitespace-nowrap hx:transition-colors hx:font-medium hx:text-gray-700 hx:contrast-more:font-bold hx:contrast-more:text-current hx:dark:text-gray-100 hx:contrast-more:dark:text-current">九王</div>
   </div>
 
         <div class="content">
-          <h1>墨守孤城</h1>
-          <p>游戏类型：RTS?+塔防?+自走棋?</p>
-<p>画风：国风+水墨风</p>
-<p>一句话总结：有些卖ip的意思，玩法没有很大的创新性，对RTS的简化值得借鉴</p>
-<p>主题：采集资源，建造军队，防御攻击</p>
-<p>（吐槽一下，优化真的烂）</p>
-<h2>游戏主玩法<span class="hx:absolute hx:-mt-20" id="游戏主玩法"></span>
-    <a href="#%e6%b8%b8%e6%88%8f%e4%b8%bb%e7%8e%a9%e6%b3%95" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>游戏玩法流程和RTS是一个模子刻出来的，至少我玩到整个游戏关卡流程的一半还没看到更多的机制或系统</p>
+          <h1>九王</h1>
+          <p>游戏类型：肉鸽+回合制卡牌+自走棋（+城市规划？）</p>
+<p>画风：像素风</p>
+<p>一句话总结：像小丑牌一样，很让人爽，但没有长时间深入玩的意愿，有尽爽游</p>
+<h2>基本玩法<span class="hx:absolute hx:-mt-20" id="基本玩法"></span>
+    <a href="#%e5%9f%ba%e6%9c%ac%e7%8e%a9%e6%b3%95" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>游戏是回合制，以手牌数=2标志本回合结束，回合结束时会有交战，交战后玩家会从三张卡牌中自选一张，回合中玩家需要使用卡牌强化自己的实力，再迎接下一次交战，以此为游戏主循环</p>
+<h2>流程图<span class="hx:absolute hx:-mt-20" id="流程图"></span>
+    <a href="#%e6%b5%81%e7%a8%8b%e5%9b%be" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>
+    <img src="../%e4%b9%9d%e7%8e%8b.png" alt=""  loading="lazy" /></p>
+<h2>核心系统<span class="hx:absolute hx:-mt-20" id="核心系统"></span>
+    <a href="#%e6%a0%b8%e5%bf%83%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>游戏中共有：</p>
+<p>单位：
+军队，构筑物（建筑）两种可以放在格子中的单位</p>
+<p>手牌：
+军队牌，构筑物牌，buff牌三种手牌</p>
+<h3>&ldquo;九&quot;格系统<span class="hx:absolute hx:-mt-20" id="九格系统"></span>
+    <a href="#%e4%b9%9d%e6%a0%bc%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>游戏中最核心的系统，其实就是格子系统，游戏中称&quot;地块&rdquo;，玩家只有一种手段主动强化自己的势力，就是将手牌使用到至多5x5个地块中（初始为3x3个地块，故而称&quot;九&quot;格，但可以通过各种手段扩展地块，上限是5x5，敌人会无止境增强，且增强速度会在某时大于玩家增强速度，所以玩家注定会失败）</p>
+<p>所有手牌均是一次性的，使用单位牌会在该地块上创造一个单位群（游戏中的单位数量较多），使用构筑物牌会在该地块上创造一个相应的构筑物，使用buff会给该地块上的单位/构筑物加上一个永久buff，直到失去该地块上的单位/构筑物（游戏中有可以摧毁地块上的单位/构筑物的牌）</p>
+<p>特殊地，每个单位和构筑物均有三个等级，玩家可以通过将与某个地块相同的牌作用到该地块上来升级该地块，升级会带来面板增益，该增益不会失去，地块升级到三级后不可继续升级，buff牌可以无限叠加到一个地块上</p>
+<p>特殊地，游戏中存在一张可以降低等级数的buff牌（类似于小丑牌的&quot;负片&quot;效果）</p>
+<p>格子只会增多，不会减少，解锁的格子可以不相邻
+格子的&quot;相邻&quot;是四连通</p>
+<hr>
+<p>位置相关举例：
+设游戏中有一3x3格</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left"></th>
+          <th style="text-align: left"></th>
+          <th style="text-align: left"></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">农田</td>
+          <td style="text-align: left">军队A</td>
+          <td style="text-align: left">军队E</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">军队B</td>
+          <td style="text-align: left">墓地</td>
+          <td style="text-align: left">军队C</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">森林</td>
+          <td style="text-align: left">军队D</td>
+          <td style="text-align: left">铁匠铺</td>
+      </tr>
+  </tbody>
+</table>
+<p>其中，</p>
+<p>墓地：相邻地块单位死亡时，在原位生成一个&quot;小鬼&quot;（可以理解为炮灰级部队）</p>
+<p>农田：每回合结束时，给随机相邻军队增加一个单位</p>
+<p>森林：每回合结束时，相邻军队生命值+2%</p>
+<p>铁匠铺：每回合结束时，相邻军队伤害+2%</p>
+<p>军队E：当相邻军队增加单位时，自己增加相应数量的单位</p>
+<p>则军队ABCD每回合都分别有农田森林铁匠铺的一次次强化，军队E在军队A获得农田增员加成时也获得加成</p>
+<h3>势力系统<span class="hx:absolute hx:-mt-20" id="势力系统"></span>
+    <a href="#%e5%8a%bf%e5%8a%9b%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>游戏中共有9个可选势力和1个不可选的彩虹势力，每个势力均有9张牌（彩虹势力不知道，但应该也有9张）</p>
+<p>其中每个势力（除彩虹势力外）固定有一个主城</p>
+<p>游戏开始时玩家固定获得该势力的主城卡，在玩家使用该主城卡后（即在初始格中建造主城），玩家将获得3张随机的该牌开始第一轮游戏（这个数字可以通过养成而改变），随后开始循环，直到失败</p>
+<h3>战斗系统<span class="hx:absolute hx:-mt-20" id="战斗系统"></span>
+    <a href="#%e6%88%98%e6%96%97%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>作用于回合结束时（即手牌数=2时）</p>
+<p>游戏中的战斗是全自动的，玩家能直接影响到战局的手段只有&quot;主城&quot;的效果（如虚无之王的主城效果是有冷却地往玩家鼠标指示处丢出落石，死亡之王的主城效果是有上限地在玩家鼠标指示处召唤作战单位，玩家只会有一个主城）</p>
+<p>在回合结束时，玩家场上的单位会往战场自动排兵布阵（肉盾往前，输出往后），在战场上的另一边会出现一队某个势力的军队（玩家可以提前知道是哪个势力，但不可提前知道军队的具体信息，这个靠背板，即某个势力会固定出某些种类的军队，只不过数量和面板数值不同），双方自动战斗，当敌方军队全灭，玩家胜利，当敌方军队攻进玩家主城，玩家失败，失去1生命值（玩家初始有3生命值，生命值为0时本轮游戏结束）</p>
+<p>特殊地，玩家场上的构筑物有防御塔类时，这些防御塔也会帮助玩家攻击（但没有血量）</p>
+<h4>战斗结束后的三选项选牌<span class="hx:absolute hx:-mt-20" id="战斗结束后的三选项选牌"></span>
+    <a href="#%e6%88%98%e6%96%97%e7%bb%93%e6%9d%9f%e5%90%8e%e7%9a%84%e4%b8%89%e9%80%89%e9%a1%b9%e9%80%89%e7%89%8c" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>（战斗结束后立刻生效）
+玩家会获得3个卡牌选项（可以通过某些手段提高这个数），这些卡牌来自于战斗中交战的势力（也是充分利用到了其余势力的牌嗷），玩家可自选其中一项获得（有某些手段可以让玩家失去选择机会而随机获得两张牌）</p>
+<p>特殊地，玩家有消耗&quot;金币&quot;重掷的选项</p>
 <h3>经济系统<span class="hx:absolute hx:-mt-20" id="经济系统"></span>
-    <a href="#%e7%bb%8f%e6%b5%8e%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>游戏中有以下资源种类：
-人口，粮食，水墨，木材，石材，乌薪，产业链（纯纯的败笔）</p>
-<p>其中，除人口和粮食之外，其他资源均以&quot;天&quot;为回合单位，依回合结束时的资源增长数获得
-（每天为15秒）</p>
-<h4>人口<span class="hx:absolute hx:-mt-20" id="人口"></span>
-    <a href="#%e4%ba%ba%e5%8f%a3" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>是一次性生产的少量资源</p>
-<p>游戏中的人口有且仅有住房类建筑能提供，同时住房类建筑会提供水墨，可以理解为水墨增长和人口增长是成正比的</p>
-<p>人口是建造某些生产类建筑所需的资源，如伐木场（木材），猎人小屋（食物），采石场（石材），墨薪采矿场（墨薪）
-是训练军事单位所需的资源</p>
-<h4>粮食<span class="hx:absolute hx:-mt-20" id="粮食"></span>
-    <a href="#%e7%b2%ae%e9%a3%9f" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>是一次性生产的少量资源</p>
-<p>游戏中的粮食由&quot;农田&quot;和&quot;猎人小屋&quot;提供</p>
-<p>其中&quot;农田&quot;仅消耗水墨，是游戏开始时必造的主要建筑，&ldquo;猎人小屋&quot;消耗人口，水墨，木材，是游戏中期生产粮食的主要建筑</p>
-<p>对于&quot;农田&rdquo;，游戏中设定了&quot;肥沃度&quot;系统，每一个空地地块都有一个&quot;肥沃度&quot;值，特别地，肥沃度为0的空地即为&quot;荒地&quot;，在只有荒地的地块无法建造农田</p>
-<p>肥沃度仅由地图决定</p>
-<p>对于&quot;猎人小屋&quot;，其存在一个&quot;影响范围&quot;，在该影响范围内的树木会为玩家提供一次性的粮食值，树木量与粮食量关联函数暂未知，反正多多益善</p>
-<p>特殊地，猎人小屋的影响范围不能重叠（要求玩家通过合理城市规划来最大化资源生产）</p>
-<p>是建造住房类建筑的核心资源，前期的资源循环存在于&quot;水墨&quot;-&gt;&ldquo;粮食&rdquo;-&gt;&ldquo;人口&rdquo;+&ldquo;水墨&quot;中</p>
-<h4>木材<span class="hx:absolute hx:-mt-20" id="木材"></span>
-    <a href="#%e6%9c%a8%e6%9d%90" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>是周期性生产的大量资源</p>
-<p>游戏中的木材由伐木场类建筑提供，同&quot;猎人小屋&rdquo;，只不过其生产资源是周期性的</p>
-<h4>石材<span class="hx:absolute hx:-mt-20" id="石材"></span>
-    <a href="#%e7%9f%b3%e6%9d%90" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>是周期性生产的少量资源</p>
-<p>游戏中存在&quot;石头&quot;地块，在该地块上建造采石场类建筑，保证石头在采石场影响范围内即可为玩家周期性地提供石材资源</p>
-<h4>乌薪<span class="hx:absolute hx:-mt-20" id="乌薪"></span>
-    <a href="#%e4%b9%8c%e8%96%aa" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>完全同&quot;石材&quot;，只不过量更少</p>
-<h4>水墨<span class="hx:absolute hx:-mt-20" id="水墨"></span>
-    <a href="#%e6%b0%b4%e5%a2%a8" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>可以广义地理解为&quot;钱&quot;，基本所有建筑建造，单位训练，地图扩张都需要&quot;水墨&quot;</p>
-<h4>产业链<span class="hx:absolute hx:-mt-20" id="产业链"></span>
-    <a href="#%e4%ba%a7%e4%b8%9a%e9%93%be" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>是一种只有顶级建筑一次性生产，专门用于升级顶级部队的个位数资源</p>
-<p>（这个资源让玩家必须去考虑建造顶级建筑，导致建筑种类实在太多了，而且这些顶级建筑还基本不可复用，占地又大，到了游戏后期根本没有地方放这些东西，又联动了它一个细节：不同类建筑必须间隔1格距离，导致玩家左右为难或许要拆一些建筑，难评）</p>
-<h3>军队系统<span class="hx:absolute hx:-mt-20" id="军队系统"></span>
-    <a href="#%e5%86%9b%e9%98%9f%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>感觉更像3选项肉鸽机制+RTT的结合</p>
-<p>为什么像RTT？游戏中的军队系统更强调&quot;派哪些部队守哪些点&quot;，在游戏中玩家通过拖拽军队的图标指示军队向某些特定的地方移动（特殊地，存在建筑类型的军队，玩家需要通过有冷却无消耗地建造来部署这些建筑），单位会在该地自动攻击并坚守，直到死完或者玩家将他们移动到其他地方（像王座陨落）</p>
-<p>3选项肉鸽机制在哪？游戏中玩家需要消耗资源来&quot;训练&quot;军队，在这个训练系统中，玩家可以招募新的军队/升星已有军队或为已有军队添加buff，这两个动作的出现频率为1：1，即第一次训练时为前者，下一次训练就为后者，以此反复</p>
-<p>游戏中训练的消耗是单调无函数递增的，从&quot;水墨+人口&quot;到&quot;水墨+人口+粮食+木材+石材+墨薪&quot;种类和数量均递增</p>
-<h4>军队的养成系统<span class="hx:absolute hx:-mt-20" id="军队的养成系统"></span>
-    <a href="#%e5%86%9b%e9%98%9f%e7%9a%84%e5%85%bb%e6%88%90%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>类皇室战争卡牌收集与升级</p>
-<p>高级的卡牌（包括建造的建筑和训练的军队的初始数值）会有更好的面板数值</p>
-<p>由于游戏中的建筑只有种类区别不会升级，军队升级只涉及buff，故而这些不会受到该养成系统的影响而增加复杂度</p>
-<h4>军队的羁绊系统<span class="hx:absolute hx:-mt-20" id="军队的羁绊系统"></span>
-    <a href="#%e5%86%9b%e9%98%9f%e7%9a%84%e7%be%81%e7%bb%8a%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>基本照抄自走棋，玩家招募拥有相同羁绊标签的单位达到2，3个时会获得额外收益</p>
-<p>相当于给军队的预设方案和局内招募的选择加了变数</p>
-<h3>科技/研究系统<span class="hx:absolute hx:-mt-20" id="科技研究系统"></span>
-    <a href="#%e7%a7%91%e6%8a%80%e7%a0%94%e7%a9%b6%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>一个用于标志游戏进度，简化原有的复杂的建筑系统，提供及时奖励的系统</p>
-<p>游戏中用于研究的资源为&quot;经验值&quot;，该资源可以通过建造建筑，升级建筑，训练军队，击杀敌人等各种方式获得，且仅用于研究，泛用性和与其他资源的联系程度低，故而在经济系统里没有提到该资源</p>
-<p>研究系统通过城镇中心等级来标志游戏进度，玩家需要更高级的城镇中心来开启研究更多选项</p>
-<p>在游戏外，玩家可以解锁非常多的建筑可供建造（涉及卡牌收集与养成），这些建筑如果一股脑地塞到玩家可建造的列表里，会让玩家直接删除游戏，于是有了这样一个研究系统，玩家只能通过研究系统开启建造更多的建筑，起始玩家可以建造的建筑只有用于早期资源循环的&quot;民宅&quot;和&quot;农田&quot;，在研究后，玩家才能解锁更多诸如&quot;伐木场&quot;，&ldquo;猎人小屋&rdquo;，&ldquo;二级城镇中心&rdquo;，&ldquo;采石场&quot;及各类城墙的建造，这些可研究选项的生成是根据当前科技树不完全随机出来的，选项个数不固定，有1（必选研究）~6项不等，有些科技需要前置科技或前置建筑才能刷出来或研究</p>
-<p>科技研究中有一个获得资源的选项，相当于玩家可以放弃本次科技研究选择获得一些资源用于应急</p>
-<h3>地图系统<span class="hx:absolute hx:-mt-20" id="地图系统"></span>
-    <a href="#%e5%9c%b0%e5%9b%be%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>游戏中的地图仅涉及到&quot;探索&quot;这一机制</p>
-<p>游戏中的地图不是程序化生成的，而是固定的地图</p>
-<p>不涉及RTS中的&quot;视野&rdquo;，所有探索过的地图常亮</p>
-<p>在游戏开始时，玩家会有一片照亮城镇中心的已探索区域，玩家可以消耗水墨从任何已探索区域临接区域向外探索（该水墨消耗根据将探索的地块数量无规则递增，在游戏初始阶段这个值会很小，即使要探索的区域很大），探索会点亮一定数量的地块，这个地块的区域大小是程序化生成的，但其内容不是（因为地图永远是固定的），该地块会在玩家将要探索时用虚线指示出来（参照海岛奇兵）</p>
+    <a href="#%e7%bb%8f%e6%b5%8e%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>游戏中的经济系统很小</p>
+<p>只有以下常规手段获取金币：</p>
+<ul>
+<li>
+<p>有&quot;击败敌人时有2%的概率获得1金币&quot;buff的军队击败敌人（该buff也是一张牌，需要附加到自己的军队上）</p>
+</li>
+<li>
+<p>构筑物&quot;金库&quot;：每回合获得3金币</p>
+</li>
+<li>
+<p>每回合固定收入</p>
+</li>
+</ul>
+<p>只有以下常规手段消耗金币：</p>
+<ul>
+<li>
+<p>年份效果为&quot;商店&quot;时消耗金币购买卡牌或重掷卡牌</p>
+</li>
+<li>
+<p>消耗金币重掷战斗结束时的三选项卡牌</p>
+</li>
+<li>
+<p>无限肉鸽阶段消耗金币解锁地块</p>
+</li>
+</ul>
+<p>特殊地，游戏中存在与金币相关的buff（如每获得1金币则获得n增益），为扩展，此处不赘述</p>
+<h3>年份系统<span class="hx:absolute hx:-mt-20" id="年份系统"></span>
+    <a href="#%e5%b9%b4%e4%bb%bd%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>作用于战斗结束时
+每一个回合相当于一年，有些年份会有特殊效果，在年份开始时（可以简单理解为回合开始时），这个效果将会生效（均为一次性效果）</p>
+<p>举例：</p>
+<ul>
+<li>
+<p>祈福：在n年后会有某些效果
+（如：9年后某地块的军队生命值翻倍，9年后某地块的军队数量翻倍）</p>
+</li>
+<li>
+<p>政策：玩家从三个效果中选择一个生效
+（如：部队暴击效果增加50%，立即解锁三个地块，获得99金币，恢复玩家生命值）</p>
+</li>
+<li>
+<p>解锁地块（玩家选择一个地块解锁）</p>
+</li>
+<li>
+<p>商店（玩家消耗金币购买卡牌）</p>
+</li>
+</ul>
+<h3>养成系统（特权系统）<span class="hx:absolute hx:-mt-20" id="养成系统特权系统"></span>
+    <a href="#%e5%85%bb%e6%88%90%e7%b3%bb%e7%bb%9f%e7%89%b9%e6%9d%83%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>游戏外初始只能选择一个国王（代表势力），随着玩家达到某些目标（如消灭9999军队，建造99建筑等），某些国王会相应地解锁，可选国王有9个</p>
+<p>游戏中养成系统主要在&quot;特权&quot;中，玩家在游玩一轮游戏结算时，会为本轮使用的国王增加经验，经验用于升级，升级会获得&quot;专属特权&quot;和&quot;通用特权&quot;两种特权，其中通用特权为每个国王均可使用，专属特权为仅该国王使用</p>
+<p>（类似于铭文系统）</p>
+<p>玩家需要在进入一轮游戏前配置所选国王的特权，每个国王限9个特权</p>
+<p>举例：</p>
+<ul>
+<li>通用特权：所有军队攻击速度+10%</li>
+<li>通用特权：游戏开始时随机解锁一个位置的地块</li>
+<li>通用特权：获得3次免费重掷次数</li>
+<li>通用特权：所有通用特权效果x2</li>
+<li>专属特权：游戏开始时随机在一个地块里生成&quot;恶魔祭坛&quot;（某个国王的构筑牌）</li>
+<li>专属特权：游戏开始时获得一张&quot;小鬼&quot;（某个国王的军队牌）</li>
+</ul>
+<p>特殊地，有的特权会根据位置影响其他特权，为扩展，此处不赘述
+（如：此特权的相邻纵向特权效果x2）</p>
 <hr>
 <p>以上</p>
 
         </div>
         
-    <div class="hx:mt-12 hx:mb-8 hx:block hx:text-xs hx:text-gray-500 hx:ltr:text-right hx:rtl:text-left hx:dark:text-gray-400">最后更新于 <time datetime="2025-11-21T00:00:00.000Z">2025年11月21日</time></div>
+    <div class="hx:mt-12 hx:mb-8 hx:block hx:text-xs hx:text-gray-500 hx:ltr:text-right hx:rtl:text-left hx:dark:text-gray-400">最后更新于 <time datetime="2025-11-24T00:00:00.000Z">2025年11月24日</time></div>
         <div class="hx:mb-8 hx:flex hx:items-center hx:border-t hx:pt-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-neutral-400 hx:dark:contrast-more:border-neutral-400 hx:print:hidden"><a
-        href="/game/ai%E5%86%B3%E7%AD%96-%E7%8A%B6%E6%80%81%E6%9C%BA/"
-        title="AI决策-状态机"
+        href="/game/stick_to_an_isolated_city/"
+        title="墨守孤城"
         class="hx:flex hx:max-w-[50%] hx:items-center hx:gap-1 hx:py-4 hx:text-base hx:font-medium hx:text-gray-600 hx:transition-colors [word-break:break-word] hx:hover:text-primary-600 hx:dark:text-gray-300 hx:md:text-lg hx:ltr:pr-4 hx:rtl:pl-4"
-      ><svg class="hx:inline hx:h-5 hx:shrink-0 hx:ltr:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>AI决策-状态机</a><a
-        href="/game/%E4%B9%9D%E7%8E%8B/"
-        title="九王"
+      ><svg class="hx:inline hx:h-5 hx:shrink-0 hx:ltr:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>墨守孤城</a><a
+        href="/game/ai_decision_tree_state_machine_behavior_tree_htn_goap/"
+        title="AI决策-状态机&#43;行为树&#43;HTN&#43;GOAP"
         class="hx:flex hx:max-w-[50%] hx:items-center hx:gap-1 hx:py-4 hx:text-base hx:font-medium hx:text-gray-600 hx:transition-colors [word-break:break-word] hx:hover:text-primary-600 hx:dark:text-gray-300 hx:md:text-lg hx:ltr:ml-auto hx:ltr:pl-4 hx:ltr:text-right hx:rtl:mr-auto hx:rtl:pr-4 hx:rtl:text-left"
-      >九王<svg class="hx:inline hx:h-5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a></div>
+      >AI决策-状态机&#43;行为树&#43;HTN&#43;GOAP<svg class="hx:inline hx:h-5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a></div>
         
       </main>
     </article>
