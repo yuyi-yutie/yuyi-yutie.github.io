@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr"><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="robots" content="noindex, nofollow" />
+  <link rel="icon shortcut" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" id="favicon-svg" />
+<link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
+<link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+<link fetchpriority="low" href="/site.webmanifest" rel="manifest" />
+<title>AI决策-状态机&#43;行为树&#43;HTN&#43;GOAP – 乂轶·轶名-0verDay</title>
+  <meta name="description" content="1 前言 先放一下b站上games104关于简单ai的介绍视频
+16.游戏引擎Gameplay玩法系统：基础AI (Part 2) | GAMES104-现代游戏引擎：从入门到实践
+17.游戏引擎Gameplay玩法系统：高级AI (Part 1) | GAMES104-现代游戏引擎：从入门到实践
+本篇是基于该games104视频内容的笔记性质的总结，根本目的是为本人理顺其中略微混乱的内容，具体内容以该视频为准（手动叠甲）
+再放一篇大佬的帖子🙏受益匪浅
+# GOAP与游戏AI简述 —— 技术篇
+2 主观概述 简单ai中最古老最基础也是最容易理解的就是状态机，状态机的写法要求开发者给ai体设置多个&#34;状态&#34;，具体表现为——规定ai体在某个&#34;状态&#34;下执行的动作，为状态之间的转换设置条件
+其中需要明确的是，
+在任何时刻下的ai体都需要处于某&#34;状态&#34;中（可以不止一个，详见&#34;并发状态机&#34;） 任何状态都需要有被转换和转换为其他状态的条件（否则就相当于走进死胡同了） 状态的转换条件需要是可量化的（不然机器读不懂） 我对状态机的理解是特殊的循环，还有进阶一点的分层和并发状态机此处不赘述
+状态机概念图 但当外界情况复杂起来，ai体有大量状态时（或许可以用分层状态机简化，但这里假设分层之后仍复杂），常规的状态机写起来就会让人头大，毕竟新的状态很可能要飞很多根线连到原先的状态，这个时候我们就得用到行为树了（提一嘴，视频里提到行为树起源于03-04年间的halo）
+我主观认为基础行为树是可以脱离状态机来理解的（因为我玩UE的时候是先接触了行为树再接触状态机的💦）
+我对行为树的理解是特殊的遍历&#43;if-else，至于有多特殊就等下展开
+行为树概念图 到后面的HTN（Hierarchical Tasks Network 层次任务网络）和GOAP（Goal-Oriented Action Planning 目标导向行为规划）就必须要提到，前面的状态机和行为树像是条件反射般地执行开发者设定的任务，而这两个ai就更像是开发者给ai设定一系列可选的行为，ai通过感知这个世界自己设定目的，然后根据开发者所给来选择要做的事
+我们可以简记为：前两者是条件反射，后两者是目标导向
+HTN概念图 GOAP概念图 2.1 全篇速览举例 （这个例子看不懂的话就是不会接下来要讲的东西）
+此处举一个比较直观的例子：我们需要做一个项羽和一个刘邦
+2.1.1 用状态机的写法 项羽有&#34;巡逻&#34;，“冲锋”，“开大”，这三个的转换关系分别是，默认处于巡逻状态，在看到敌人后向其冲锋，当与敌人距离小于某个值时开大，随后直接进入巡逻状态，以此反复
+刘邦就有&#34;待命&#34;，“摇人”，“撤退”，这三个的转换关系分别是，默认处于待命状态，看到敌人后进入摇人状态，随后直接进入撤退状态，在看不到敌人后进入待命状态，以此反复" /><link rel="canonical" href="http://localhost:1313/game/ai%E5%86%B3%E7%AD%96-%E7%8A%B6%E6%80%81%E6%9C%BA&#43;%E8%A1%8C%E4%B8%BA%E6%A0%91&#43;htn&#43;goap/" itemprop="url" />
+
+<meta property="og:title" content="AI决策-状态机&#43;行为树&#43;HTN&#43;GOAP">
+<meta
+  property="og:description"
+  content="
+    
+      1 前言
+    先放一下b站上games104关于简单ai的介绍视频
+16.游戏引擎Gameplay玩法系统：基础AI (Part 2) | GAMES104-现代游戏引擎：从入门到实践
+17.游戏引擎Gameplay玩法系统：高级AI (Part 1) | GAMES104-现代游戏引擎：从入门到实践
+本篇是基于该games104视频内容的笔记性质的总结，根本目的是为本人理顺其中略微混乱的内容，具体内容以该视频为准（手动叠甲）
+再放一篇大佬的帖子🙏受益匪浅
+# GOAP与游戏AI简述 —— 技术篇
+
+2 主观概述
+    简单ai中最古老最基础也是最容易理解的就是状态机，状态机的写法要求开发者给ai体设置多个&quot;状态&quot;，具体表现为——规定ai体在某个&quot;状态&quot;下执行的动作，为状态之间的转换设置条件
+其中需要明确的是，
+
+在任何时刻下的ai体都需要处于某&quot;状态&quot;中（可以不止一个，详见&quot;并发状态机&quot;）
+任何状态都需要有被转换和转换为其他状态的条件（否则就相当于走进死胡同了）
+状态的转换条件需要是可量化的（不然机器读不懂）
+
+我对状态机的理解是特殊的循环，还有进阶一点的分层和并发状态机此处不赘述
+
+    
+    
+    状态机概念图
+  
+但当外界情况复杂起来，ai体有大量状态时（或许可以用分层状态机简化，但这里假设分层之后仍复杂），常规的状态机写起来就会让人头大，毕竟新的状态很可能要飞很多根线连到原先的状态，这个时候我们就得用到行为树了（提一嘴，视频里提到行为树起源于03-04年间的halo）
+我主观认为基础行为树是可以脱离状态机来理解的（因为我玩UE的时候是先接触了行为树再接触状态机的💦）
+我对行为树的理解是特殊的遍历&#43;if-else，至于有多特殊就等下展开
+
+    
+    
+    行为树概念图
+  
+到后面的HTN（Hierarchical Tasks Network 层次任务网络）和GOAP（Goal-Oriented Action Planning 目标导向行为规划）就必须要提到，前面的状态机和行为树像是条件反射般地执行开发者设定的任务，而这两个ai就更像是开发者给ai设定一系列可选的行为，ai通过感知这个世界自己设定目的，然后根据开发者所给来选择要做的事
+我们可以简记为：前两者是条件反射，后两者是目标导向
+
+    
+    
+    HTN概念图
+  
+
+    
+    
+    GOAP概念图
+  
+2.1 全篇速览举例
+    （这个例子看不懂的话就是不会接下来要讲的东西）
+此处举一个比较直观的例子：我们需要做一个项羽和一个刘邦
+2.1.1 用状态机的写法
+    项羽有&quot;巡逻&quot;，&ldquo;冲锋&rdquo;，&ldquo;开大&rdquo;，这三个的转换关系分别是，默认处于巡逻状态，在看到敌人后向其冲锋，当与敌人距离小于某个值时开大，随后直接进入巡逻状态，以此反复
+刘邦就有&quot;待命&quot;，&ldquo;摇人&rdquo;，&ldquo;撤退&rdquo;，这三个的转换关系分别是，默认处于待命状态，看到敌人后进入摇人状态，随后直接进入撤退状态，在看不到敌人后进入待命状态，以此反复
+    
+  ">
+<meta
+  property="og:type"
+  content="
+    article
+  ">
+<meta property="og:url" content="http://localhost:1313/game/ai%E5%86%B3%E7%AD%96-%E7%8A%B6%E6%80%81%E6%9C%BA&#43;%E8%A1%8C%E4%B8%BA%E6%A0%91&#43;htn&#43;goap/"><meta property="article:section" content="game">
+
+<meta
+  property="article:published_time"
+  content="2025-11-25T00:00:00+00:00">
+
+
+<meta
+  property="article:modified_time"
+  content="2025-11-25T00:00:00+00:00">
+
+
+
+  <meta itemprop="name" content="AI决策-状态机&#43;行为树&#43;HTN&#43;GOAP">
+  <meta itemprop="description" content="1 前言 先放一下b站上games104关于简单ai的介绍视频
+16.游戏引擎Gameplay玩法系统：基础AI (Part 2) | GAMES104-现代游戏引擎：从入门到实践
+17.游戏引擎Gameplay玩法系统：高级AI (Part 1) | GAMES104-现代游戏引擎：从入门到实践
+本篇是基于该games104视频内容的笔记性质的总结，根本目的是为本人理顺其中略微混乱的内容，具体内容以该视频为准（手动叠甲）
+再放一篇大佬的帖子🙏受益匪浅
+# GOAP与游戏AI简述 —— 技术篇
+2 主观概述 简单ai中最古老最基础也是最容易理解的就是状态机，状态机的写法要求开发者给ai体设置多个&#34;状态&#34;，具体表现为——规定ai体在某个&#34;状态&#34;下执行的动作，为状态之间的转换设置条件
+其中需要明确的是，
+在任何时刻下的ai体都需要处于某&#34;状态&#34;中（可以不止一个，详见&#34;并发状态机&#34;） 任何状态都需要有被转换和转换为其他状态的条件（否则就相当于走进死胡同了） 状态的转换条件需要是可量化的（不然机器读不懂） 我对状态机的理解是特殊的循环，还有进阶一点的分层和并发状态机此处不赘述
+状态机概念图 但当外界情况复杂起来，ai体有大量状态时（或许可以用分层状态机简化，但这里假设分层之后仍复杂），常规的状态机写起来就会让人头大，毕竟新的状态很可能要飞很多根线连到原先的状态，这个时候我们就得用到行为树了（提一嘴，视频里提到行为树起源于03-04年间的halo）
+我主观认为基础行为树是可以脱离状态机来理解的（因为我玩UE的时候是先接触了行为树再接触状态机的💦）
+我对行为树的理解是特殊的遍历&#43;if-else，至于有多特殊就等下展开
+行为树概念图 到后面的HTN（Hierarchical Tasks Network 层次任务网络）和GOAP（Goal-Oriented Action Planning 目标导向行为规划）就必须要提到，前面的状态机和行为树像是条件反射般地执行开发者设定的任务，而这两个ai就更像是开发者给ai设定一系列可选的行为，ai通过感知这个世界自己设定目的，然后根据开发者所给来选择要做的事
+我们可以简记为：前两者是条件反射，后两者是目标导向
+HTN概念图 GOAP概念图 2.1 全篇速览举例 （这个例子看不懂的话就是不会接下来要讲的东西）
+此处举一个比较直观的例子：我们需要做一个项羽和一个刘邦
+2.1.1 用状态机的写法 项羽有&#34;巡逻&#34;，“冲锋”，“开大”，这三个的转换关系分别是，默认处于巡逻状态，在看到敌人后向其冲锋，当与敌人距离小于某个值时开大，随后直接进入巡逻状态，以此反复
+刘邦就有&#34;待命&#34;，“摇人”，“撤退”，这三个的转换关系分别是，默认处于待命状态，看到敌人后进入摇人状态，随后直接进入撤退状态，在看不到敌人后进入待命状态，以此反复">
+  <meta itemprop="datePublished" content="2025-11-25T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2025-11-25T00:00:00+00:00">
+  <meta itemprop="wordCount" content="549">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="AI决策-状态机&#43;行为树&#43;HTN&#43;GOAP">
+  <meta name="twitter:description" content="1 前言 先放一下b站上games104关于简单ai的介绍视频
+16.游戏引擎Gameplay玩法系统：基础AI (Part 2) | GAMES104-现代游戏引擎：从入门到实践
+17.游戏引擎Gameplay玩法系统：高级AI (Part 1) | GAMES104-现代游戏引擎：从入门到实践
+本篇是基于该games104视频内容的笔记性质的总结，根本目的是为本人理顺其中略微混乱的内容，具体内容以该视频为准（手动叠甲）
+再放一篇大佬的帖子🙏受益匪浅
+# GOAP与游戏AI简述 —— 技术篇
+2 主观概述 简单ai中最古老最基础也是最容易理解的就是状态机，状态机的写法要求开发者给ai体设置多个&#34;状态&#34;，具体表现为——规定ai体在某个&#34;状态&#34;下执行的动作，为状态之间的转换设置条件
+其中需要明确的是，
+在任何时刻下的ai体都需要处于某&#34;状态&#34;中（可以不止一个，详见&#34;并发状态机&#34;） 任何状态都需要有被转换和转换为其他状态的条件（否则就相当于走进死胡同了） 状态的转换条件需要是可量化的（不然机器读不懂） 我对状态机的理解是特殊的循环，还有进阶一点的分层和并发状态机此处不赘述
+状态机概念图 但当外界情况复杂起来，ai体有大量状态时（或许可以用分层状态机简化，但这里假设分层之后仍复杂），常规的状态机写起来就会让人头大，毕竟新的状态很可能要飞很多根线连到原先的状态，这个时候我们就得用到行为树了（提一嘴，视频里提到行为树起源于03-04年间的halo）
+我主观认为基础行为树是可以脱离状态机来理解的（因为我玩UE的时候是先接触了行为树再接触状态机的💦）
+我对行为树的理解是特殊的遍历&#43;if-else，至于有多特殊就等下展开
+行为树概念图 到后面的HTN（Hierarchical Tasks Network 层次任务网络）和GOAP（Goal-Oriented Action Planning 目标导向行为规划）就必须要提到，前面的状态机和行为树像是条件反射般地执行开发者设定的任务，而这两个ai就更像是开发者给ai设定一系列可选的行为，ai通过感知这个世界自己设定目的，然后根据开发者所给来选择要做的事
+我们可以简记为：前两者是条件反射，后两者是目标导向
+HTN概念图 GOAP概念图 2.1 全篇速览举例 （这个例子看不懂的话就是不会接下来要讲的东西）
+此处举一个比较直观的例子：我们需要做一个项羽和一个刘邦
+2.1.1 用状态机的写法 项羽有&#34;巡逻&#34;，“冲锋”，“开大”，这三个的转换关系分别是，默认处于巡逻状态，在看到敌人后向其冲锋，当与敌人距离小于某个值时开大，随后直接进入巡逻状态，以此反复
+刘邦就有&#34;待命&#34;，“摇人”，“撤退”，这三个的转换关系分别是，默认处于待命状态，看到敌人后进入摇人状态，随后直接进入撤退状态，在看不到敌人后进入待命状态，以此反复">
+<link href="/css/compiled/main.css" rel="stylesheet" />
+    <link href="/css/variables.css" rel="stylesheet" />
+    <link href="/css/custom.css" rel="stylesheet" />
+
+  
+<script src="/js/main-head.js" integrity=""></script>
+
+  
+  
+  </head>
+<body>
+<div class="hextra-banner hx:max-md:sticky hx:top-0 hx:z-20 hx:px-6 hx:text-center hx:text-slate-50 hx:dark:text-white hx:bg-neutral-900 hx:dark:bg-neutral-800 hx:print:[display:none]">
+  <div class="hx:relative hx:flex hx:items-center hx:justify-center hx:font-medium hx:text-sm hx:py-2.5"><div style="white-space: pre-wrap" class="hx:px-8">Welcome!</div><button
+      class="hextra-banner-close-button hx:cursor-pointer hx:absolute hx:right-0 hx:text-white hx:font-bold hx:leading-none hx:hover:opacity-75 hx:transition hx:w-10 hx:h-10 hx:-mr-2 hx:md:mr-0 hx:flex hx:items-center hx:justify-center"
+    ><svg height=16 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button>
+  </div>
+</div><div class="hextra-nav-container hx:sticky hx:top-0 hx:z-20 hx:w-full hx:bg-transparent hx:print:hidden">
+  <div
+    class="hextra-nav-container-blur hx:pointer-events-none hx:absolute hx:z-[-1] hx:h-full hx:w-full hx:bg-white hx:dark:bg-dark hx:shadow-[0_2px_4px_rgba(0,0,0,.02),0_1px_0_rgba(0,0,0,.06)] hx:contrast-more:shadow-[0_0_0_1px_#000] hx:dark:shadow-[0_-1px_0_rgba(255,255,255,.1)_inset] hx:contrast-more:dark:shadow-[0_0_0_1px_#fff]"
+  ></div>
+
+  <nav class="hextra-max-navbar-width hx:mx-auto hx:flex hx:items-center hx:justify-end hx:gap-2 hx:h-16 hx:px-6">
+    <a class="hx:flex hx:items-center hx:hover:opacity-75 hx:ltr:mr-auto hx:rtl:ml-auto" href="/">
+    <img class="hx:mr-2 hx:block hx:dark:hidden" src="/images/logo.svg" alt="Logo" height="20" width="20" />
+    <img class="hx:mr-2 hx:hidden hx:dark:block" src="/images/logo.svg" alt="Dark Logo" height="20" width="20" />
+    <span class="hx:mr-2 hx:font-extrabold hx:inline hx:select-none" title="乂轶·轶名-0verDay">乂轶·轶名-0verDay</span>
+</a>
+<a
+  title=""
+  href="/essay"
+  
+  class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-flex hx:items-center hx:gap-1 hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"
+><span class="hx:text-center">随笔</span>
+</a><div class="hx:relative hx:hidden hx:md:inline-block">
+  <button
+    title="长篇"
+    data-state="closed"
+    class="hextra-nav-menu-toggle hx:cursor-pointer hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:whitespace-nowrap hx:p-2 hx:flex hx:items-center hx:gap-1 hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"
+    type="button"
+    aria-label="长篇"
+  ><span class="hx:text-center">长篇</span><svg height=12 class="hx:transition-transform hx:duration-200 hx:ease-in-out" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg></button>
+  <ul
+    class="hextra-nav-menu-items hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-md hx:ring-1 hx:ring-black/5 hx:bg-white hx:py-1 hx:text-sm hx:shadow-lg hx:dark:ring-white/20 hx:dark:bg-neutral-800"
+    style="min-width: 100px;"
+  >
+    <li class="hextra-nav-menu-item hx:flex hx:flex-col">
+      <a
+        href="/dae"
+        
+        class="hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:flex hx:items-center hx:gap-1"
+      >王朝与帝国</a>
+    </li><li class="hextra-nav-menu-item hx:flex hx:flex-col">
+      <a
+        href="/before18"
+        
+        class="hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:flex hx:items-center hx:gap-1"
+      >自传：18岁前的"我"们</a>
+    </li></ul>
+</div><a
+  title=""
+  href="/game"
+  
+  class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-flex hx:items-center hx:gap-1 hx:font-medium"
+><span class="hx:text-center">游戏</span>
+</a><a
+  title=""
+  href="/about"
+  
+  class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-flex hx:items-center hx:gap-1 hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"
+><span class="hx:text-center">关于</span>
+</a><div class="hextra-search-wrapper hx:relative hx:md:w-64">
+  <div class="hx:relative hx:flex hx:items-center hx:text-gray-900 hx:contrast-more:text-gray-800 hx:dark:text-gray-300 hx:contrast-more:dark:text-gray-300">
+    <input
+      placeholder="搜索文档..."
+      class="hextra-search-input hx:focus:hextra-focus hx:block hx:w-full hx:appearance-none hx:rounded-lg hx:px-3 hx:py-2 hx:transition-colors hx:text-base hx:leading-tight hx:md:text-sm hx:bg-black/[.05] hx:dark:bg-gray-50/10 hx:focus:bg-white hx:dark:focus:bg-dark hx:placeholder:text-gray-500 hx:dark:placeholder:text-gray-400 hx:contrast-more:border hx:contrast-more:border-current"
+      type="search"
+      value=""
+      spellcheck="false"
+    />
+    <kbd
+      class="hx:absolute hx:my-1.5 hx:select-none hx:ltr:right-1.5 hx:rtl:left-1.5 hx:h-5 hx:rounded-sm hx:bg-white hx:px-1.5 hx:font-mono hx:text-[10px] hx:font-medium hx:text-gray-500 hx:border hx:border-gray-200 hx:dark:border-gray-100/20 hx:dark:bg-dark/50 hx:contrast-more:border-current hx:contrast-more:text-current hx:contrast-more:dark:border-current hx:items-center hx:gap-1 hx:transition-opacity hx:pointer-events-none hx:hidden hx:sm:flex"
+    >
+      CTRL K
+    </kbd>
+  </div>
+
+  <div>
+    <ul
+      class="hextra-search-results hextra-scrollbar hx:hidden hx:border hx:border-gray-200 hx:bg-white hx:text-gray-100 hx:dark:border-neutral-800 hx:dark:bg-neutral-900 hx:absolute hx:top-full hx:z-20 hx:mt-2 hx:overflow-auto hx:overscroll-contain hx:rounded-xl hx:py-2.5 hx:shadow-xl hx:max-h-[min(calc(50vh-11rem-env(safe-area-inset-bottom)),400px)] hx:md:max-h-[min(calc(100vh-5rem-env(safe-area-inset-bottom)),400px)] hx:inset-x-0 hx:ltr:md:left-auto hx:rtl:md:right-auto hx:contrast-more:border hx:contrast-more:border-gray-900 hx:contrast-more:dark:border-gray-50 hx:w-screen hx:min-h-[100px] hx:max-w-[min(calc(100vw-2rem),calc(100%+20rem))]"
+      style="transition: max-height 0.2s ease 0s;"
+    ></ul>
+  </div>
+</div>
+
+          <a class="hx:p-2 hx:text-current" target="_blank" rel="noreferrer" href="https://github.com/yuyi-yutie" title="GitHub"><svg height=24 fill="currentColor" viewBox="3 3 18 18">
+  <path d="M12 3C7.0275 3 3 7.12937 3 12.2276C3 16.3109 5.57625 19.7597 9.15374 20.9824C9.60374 21.0631 9.77249 20.7863 9.77249 20.5441C9.77249 20.3249 9.76125 19.5982 9.76125 18.8254C7.5 19.2522 6.915 18.2602 6.735 17.7412C6.63375 17.4759 6.19499 16.6569 5.8125 16.4378C5.4975 16.2647 5.0475 15.838 5.80124 15.8264C6.51 15.8149 7.01625 16.4954 7.18499 16.7723C7.99499 18.1679 9.28875 17.7758 9.80625 17.5335C9.885 16.9337 10.1212 16.53 10.38 16.2993C8.3775 16.0687 6.285 15.2728 6.285 11.7432C6.285 10.7397 6.63375 9.9092 7.20749 9.26326C7.1175 9.03257 6.8025 8.08674 7.2975 6.81794C7.2975 6.81794 8.05125 6.57571 9.77249 7.76377C10.4925 7.55615 11.2575 7.45234 12.0225 7.45234C12.7875 7.45234 13.5525 7.55615 14.2725 7.76377C15.9937 6.56418 16.7475 6.81794 16.7475 6.81794C17.2424 8.08674 16.9275 9.03257 16.8375 9.26326C17.4113 9.9092 17.76 10.7281 17.76 11.7432C17.76 15.2843 15.6563 16.0687 13.6537 16.2993C13.98 16.5877 14.2613 17.1414 14.2613 18.0065C14.2613 19.2407 14.25 20.2326 14.25 20.5441C14.25 20.7863 14.4188 21.0746 14.8688 20.9824C16.6554 20.364 18.2079 19.1866 19.3078 17.6162C20.4077 16.0457 20.9995 14.1611 21 12.2276C21 7.12937 16.9725 3 12 3Z"></path>
+</svg>
+<span class="hx:sr-only">GitHub</span>
+          </a><button type="button" aria-label="Menu" class="hextra-hamburger-menu hx:cursor-pointer hx:-mr-2 hx:rounded-sm hx:p-2 hx:active:bg-gray-400/20 hx:md:hidden"><svg height=24 fill="none" viewBox="0 0 24 24" stroke="currentColor"><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8H20"></path></g><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16H20"></path></g></svg></button>
+  </nav>
+</div>
+
+  <div class='hx:mx-auto hx:flex hextra-max-page-width'>
+    <aside class="hextra-sidebar-container hx:flex hx:flex-col hx:print:hidden hx:md:top-16 hx:md:shrink-0 hx:md:w-64 hx:md:self-start hx:max-md:[transform:translate3d(0,-100%,0)] hx:md:sticky">
+  
+  <div class="hx:px-4 hx:pt-4 hx:md:hidden">
+    <div class="hextra-search-wrapper hx:relative hx:md:w-64">
+  <div class="hx:relative hx:flex hx:items-center hx:text-gray-900 hx:contrast-more:text-gray-800 hx:dark:text-gray-300 hx:contrast-more:dark:text-gray-300">
+    <input
+      placeholder="搜索文档..."
+      class="hextra-search-input hx:focus:hextra-focus hx:block hx:w-full hx:appearance-none hx:rounded-lg hx:px-3 hx:py-2 hx:transition-colors hx:text-base hx:leading-tight hx:md:text-sm hx:bg-black/[.05] hx:dark:bg-gray-50/10 hx:focus:bg-white hx:dark:focus:bg-dark hx:placeholder:text-gray-500 hx:dark:placeholder:text-gray-400 hx:contrast-more:border hx:contrast-more:border-current"
+      type="search"
+      value=""
+      spellcheck="false"
+    />
+    <kbd
+      class="hx:absolute hx:my-1.5 hx:select-none hx:ltr:right-1.5 hx:rtl:left-1.5 hx:h-5 hx:rounded-sm hx:bg-white hx:px-1.5 hx:font-mono hx:text-[10px] hx:font-medium hx:text-gray-500 hx:border hx:border-gray-200 hx:dark:border-gray-100/20 hx:dark:bg-dark/50 hx:contrast-more:border-current hx:contrast-more:text-current hx:contrast-more:dark:border-current hx:items-center hx:gap-1 hx:transition-opacity hx:pointer-events-none hx:hidden hx:sm:flex"
+    >
+      CTRL K
+    </kbd>
+  </div>
+
+  <div>
+    <ul
+      class="hextra-search-results hextra-scrollbar hx:hidden hx:border hx:border-gray-200 hx:bg-white hx:text-gray-100 hx:dark:border-neutral-800 hx:dark:bg-neutral-900 hx:absolute hx:top-full hx:z-20 hx:mt-2 hx:overflow-auto hx:overscroll-contain hx:rounded-xl hx:py-2.5 hx:shadow-xl hx:max-h-[min(calc(50vh-11rem-env(safe-area-inset-bottom)),400px)] hx:md:max-h-[min(calc(100vh-5rem-env(safe-area-inset-bottom)),400px)] hx:inset-x-0 hx:ltr:md:left-auto hx:rtl:md:right-auto hx:contrast-more:border hx:contrast-more:border-gray-900 hx:contrast-more:dark:border-gray-50 hx:w-screen hx:min-h-[100px] hx:max-w-[min(calc(100vw-2rem),calc(100%+20rem))]"
+      style="transition: max-height 0.2s ease 0s;"
+    ></ul>
+  </div>
+</div>
+
+  </div>
+  <div class="hextra-scrollbar hx:overflow-y-auto hx:overflow-x-hidden hx:p-4 hx:grow hx:md:h-[calc(100vh-var(--navbar-height)-var(--menu-height))]">
+    <ul class="hx:flex hx:flex-col hx:gap-1 hx:md:hidden">
+      
+      
+          <li class=""><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/about/"
+    
+  >关于
+    </a></li>
+          <li class=""><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/essay/"
+    
+  >随笔
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></span>
+    </a><div class="hx:ltr:pr-0 hx:overflow-hidden">
+        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/essay/%E7%99%BD%E7%9C%BC%E7%8B%BC%E4%BC%A0/"
+    
+  >白眼狼传
+    </a>
+              
+            </li></ul>
+      </div></li>
+          <li class=""><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/dae/"
+    
+  >王朝与帝国
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></span>
+    </a><div class="hx:ltr:pr-0 hx:overflow-hidden">
+        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/dae/xu/"
+    
+  >序：台土
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col open"><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/dae/century1normal/"
+    
+  >初世纪正篇：帝王不孤
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></span>
+    </a>
+              <div class="hx:ltr:pr-0 hx:overflow-hidden">
+        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/dae/century1normal/passage1/"
+    
+  >（一）·《王朝轩辕衍公世家（一）》
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/dae/century1normal/passage2/"
+    
+  >（二）·《东帝国：乂字军欧荣·海德生平（一）》
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/dae/century1normal/passage3/"
+    
+  >（三）·《王朝司马相宜公世家（一）》
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/dae/century1normal/passage4/"
+    
+  >（四）·《王朝轩辕衍公世家（二）》
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/dae/century1normal/passage5/"
+    
+  >（五）·《东帝国：乂字军欧荣·海德生平（二）》
+    </a>
+              
+            </li></ul>
+      </div>
+            </li></ul>
+      </div></li>
+          <li class="open"><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/game/"
+    
+  >游戏
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></span>
+    </a><div class="hx:ltr:pr-0 hx:overflow-hidden">
+        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/game/ai%E5%86%B3%E7%AD%96-%E7%8A%B6%E6%80%81%E6%9C%BA/"
+    
+  >AI决策-状态机
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/game/%E5%A2%A8%E5%AE%88%E5%AD%A4%E5%9F%8E/"
+    
+  >墨守孤城
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/game/%E4%B9%9D%E7%8E%8B/"
+    
+  >九王
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col open"><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
+    href="/game/ai%E5%86%B3%E7%AD%96-%E7%8A%B6%E6%80%81%E6%9C%BA&#43;%E8%A1%8C%E4%B8%BA%E6%A0%91&#43;htn&#43;goap/"
+    
+  >AI决策-状态机&#43;行为树&#43;HTN&#43;GOAP
+    </a>
+  
+    <ul class='hx:flex hx:flex-col hx:gap-1 hx:relative hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:dark:before:bg-neutral-800 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:pr-3 hx:rtl:before:right-0 hx:ltr:ml-3 hx:rtl:mr-3'><li>
+              <a
+                href="#1-%e5%89%8d%e8%a8%80"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >1 前言</a>
+            </li>
+          <li>
+              <a
+                href="#2-%e4%b8%bb%e8%a7%82%e6%a6%82%e8%bf%b0"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >2 主观概述</a>
+            </li>
+          <li>
+              <a
+                href="#3-%e7%8a%b6%e6%80%81%e6%9c%ba"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >3 状态机</a>
+            </li>
+          <li>
+              <a
+                href="#4-%e8%a1%8c%e4%b8%ba%e6%a0%91"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >4 行为树</a>
+            </li>
+          <li>
+              <a
+                href="#5-htn%e5%92%8cgoap"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >5 HTN和GOAP</a>
+            </li>
+          </ul>
+  
+              
+            </li></ul>
+      </div></li>
+      <li class="[word-break:break-word] hx:mt-5 hx:mb-2 hx:px-2 hx:py-1.5 hx:text-sm hx:font-semibold hx:text-gray-900 hx:first:mt-0 hx:dark:text-gray-100">
+        <span class="hx:cursor-default">更多</span>
+      </li>
+    <li><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/about"
+    
+  >关于</a></li>
+    <li><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="https://github.com/yuyi-yutie/yuyi-yutie.github.io"
+    target="_blank" rel="noreferrer"
+  >GitHub源码 ↗</a></li>
+    
+    </ul>
+
+    <ul class="hx:flex hx:flex-col hx:gap-1 hx:max-md:hidden">
+        
+          <li class=""><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/game/ai%E5%86%B3%E7%AD%96-%E7%8A%B6%E6%80%81%E6%9C%BA/"
+    
+  >AI决策-状态机
+    </a></li>
+          <li class=""><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/game/%E5%A2%A8%E5%AE%88%E5%AD%A4%E5%9F%8E/"
+    
+  >墨守孤城
+    </a></li>
+          <li class=""><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/game/%E4%B9%9D%E7%8E%8B/"
+    
+  >九王
+    </a></li>
+          <li class="open"><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
+    href="/game/ai%E5%86%B3%E7%AD%96-%E7%8A%B6%E6%80%81%E6%9C%BA&#43;%E8%A1%8C%E4%B8%BA%E6%A0%91&#43;htn&#43;goap/"
+    
+  >AI决策-状态机&#43;行为树&#43;HTN&#43;GOAP
+    </a></li>
+        
+      <li class="[word-break:break-word] hx:mt-5 hx:mb-2 hx:px-2 hx:py-1.5 hx:text-sm hx:font-semibold hx:text-gray-900 hx:first:mt-0 hx:dark:text-gray-100">
+        <span class="hx:cursor-default">更多</span>
+      </li>
+    <li><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/about"
+    
+  >关于</a></li>
+    <li><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="https://github.com/yuyi-yutie/yuyi-yutie.github.io"
+    target="_blank" rel="noreferrer"
+  >GitHub源码 ↗</a></li>
+    
+      </ul>
+    </div>
+  
+  
+    <div class="  hx:sticky hx:bottom-0 hx:max-h-(--menu-height) hx:bg-white hx:dark:bg-dark hx:mx-4 hx:py-4 hx:shadow-[0_-12px_16px_#fff] hx:flex hx:items-center hx:gap-2 hx:border-gray-200 hx:dark:border-neutral-800 hx:dark:shadow-[0_-12px_16px_#111] hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:shadow-none hx:border-t" data-toggle-animation="show"><div class="hx:flex hx:grow hx:flex-col"><div class="hx:flex hx:justify-items-start hx:group" data-theme="light">
+  <button
+    title="切换主题"
+    data-state="closed"
+    data-location="bottom"
+    class="hextra-theme-toggle hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:h-7 hx:px-2 hx:text-xs hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:font-medium hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:grow"
+    type="button"
+    aria-label="切换主题"
+  >
+    <div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height=12 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden">浅色</span><svg height=12 class="hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><span class="hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden">深色</span><svg height=12 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"  fill="currentColor">
+  <path d="M 11.996094,2 C 6.4986225,2.0192368 2.03125,6.5024993 2.03125,12 c 0,5.497501 4.4673725,9.980763 9.964844,10 H 12 12.0039 c 5.497471,-0.01924 9.964844,-4.502499 9.964844,-10 0,-5.4975007 -4.467373,-9.9807632 -9.964844,-10 H 12 Z M 12,4 c 4.417218,0.017598 7.96875,3.5822356 7.96875,8 0,4.417764 -3.551532,7.982402 -7.96875,8 z" />
+</svg>
+<span class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden">跟随系统</span></div>
+  </button>
+  <ul
+    class="hextra-theme-toggle-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-md hx:ring-1 hx:ring-black/5 hx:bg-white hx:py-1 hx:text-sm hx:shadow-lg hx:dark:ring-white/20 hx:dark:bg-neutral-800"
+    style="position: fixed; inset: auto auto 0px 0px; margin: 0px; min-width: 100px;"
+    data-theme="light"
+  >
+    <li class="hx:flex hx:flex-col">
+      <p
+        data-item="light"
+        class="hx:text-gray-800 hx:dark:text-gray-100 hx:hover:bg-primary-50 hx:hover:text-primary-600 hx:hover:dark:bg-primary-500/10 hx:hover:dark:text-primary-600 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9"
+      >
+        浅色
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </p>
+    </li>
+    <li class="hx:flex hx:flex-col">
+      <p
+        data-item="dark"
+        class="hx:text-gray-800 hx:dark:text-gray-100 hx:hover:bg-primary-50 hx:hover:text-primary-600 hx:hover:dark:bg-primary-500/10 hx:hover:dark:text-primary-600 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9"
+      >
+        深色
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </p>
+    </li>
+    <li class="hx:flex hx:flex-col">
+      <p
+        data-item="system"
+        class="hx:text-gray-800 hx:dark:text-gray-100 hx:hover:bg-primary-50 hx:hover:text-primary-600 hx:hover:dark:bg-primary-500/10 hx:hover:dark:text-primary-600 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9"
+      >
+        跟随系统
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </p>
+    </li>
+  </ul>
+</div></div></div></aside>
+    
+<nav class="hextra-toc hx:order-last hx:hidden hx:w-64 hx:shrink-0 hx:xl:block hx:print:hidden hx:px-4" aria-label="table of contents">
+    <div class="hextra-scrollbar hx:sticky hx:top-16 hx:overflow-y-auto hx:pr-4 hx:pt-6 hx:text-sm [hyphens:auto] hx:max-h-[calc(100vh-var(--navbar-height)-env(safe-area-inset-bottom))] hx:ltr:-mr-4 hx:rtl:-ml-4"><p class="hx:mb-4 hx:font-semibold hx:tracking-tight">此页上</p><ul>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#1-%e5%89%8d%e8%a8%80">1 前言
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#2-%e4%b8%bb%e8%a7%82%e6%a6%82%e8%bf%b0">2 主观概述
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#21-%e5%85%a8%e7%af%87%e9%80%9f%e8%a7%88%e4%b8%be%e4%be%8b">2.1 全篇速览举例
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#211-%e7%94%a8%e7%8a%b6%e6%80%81%e6%9c%ba%e7%9a%84%e5%86%99%e6%b3%95">2.1.1 用状态机的写法
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#212-%e7%94%a8%e8%a1%8c%e4%b8%ba%e6%a0%91%e7%9a%84%e5%86%99%e6%b3%95">2.1.2 用行为树的写法
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#213-%e7%94%a8htn%e7%9a%84%e5%86%99%e6%b3%95">2.1.3 用HTN的写法
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#214-%e7%94%a8goap%e7%9a%84%e5%86%99%e6%b3%95">2.1.4 用GOAP的写法
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#3-%e7%8a%b6%e6%80%81%e6%9c%ba">3 状态机
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#4-%e8%a1%8c%e4%b8%ba%e6%a0%91">4 行为树
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#41-%e6%9e%84%e6%88%90">4.1 构成
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#42-execution-node%e5%8f%af%e6%89%a7%e8%a1%8c%e8%8a%82%e7%82%b9%e8%a1%8c%e4%b8%ba%e6%a0%91%e4%b8%ad%e7%9a%84%e5%8f%b6%e8%8a%82%e7%82%b9">4.2 Execution Node（可执行节点，行为树中的叶节点）
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#421-condition-node">4.2.1 Condition Node
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#422-action-node">4.2.2 Action Node
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#43-control-node%e6%8e%a7%e5%88%b6%e8%8a%82%e7%82%b9">4.3 Control Node（控制节点）
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#431-sequence">4.3.1 Sequence
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#432-selector">4.3.2 Selector
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#433-parallel">4.3.3 Parallel
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#434-decorator">4.3.4 Decorator
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#44-%e8%8a%82%e7%82%b9%e6%80%bb%e7%bb%93">4.4 节点总结
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#45-%e9%bb%91%e6%9d%bfblackboard">4.5 黑板Blackboard
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#46-%e8%a1%8c%e4%b8%ba%e6%a0%91%e6%89%a9%e5%b1%95">4.6 行为树扩展
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#461-%e8%a1%8c%e4%b8%ba%e6%a0%91tick">4.6.1 行为树Tick
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#462-%e8%a1%8c%e4%b8%ba%e6%a0%91%e4%bc%98%e5%8c%96-precondition">4.6.2 行为树优化-precondition
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#5-htn%e5%92%8cgoap">5 HTN和GOAP
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#51-htn%e6%a0%b8%e5%bf%83%e6%80%9d%e6%83%b3">5.1 HTN核心思想
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#511-htn%e9%80%9f%e8%a7%88%e4%b8%be%e4%be%8b">5.1.1 HTN速览举例
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#52-htn%e7%9a%84primitive-task">5.2 HTN的Primitive Task
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#53-htn%e7%9a%84compound-task">5.3 HTN的Compound Task
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#531-priority">5.3.1 priority
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#532-method">5.3.2 method
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#54-htn%e7%9a%84tick%e5%92%8cworld-state">5.4 HTN的tick和World State
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#55-htn%e7%9a%84planning">5.5 HTN的Planning
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#56-htn%e7%9a%84replanning">5.6 HTN的Replanning
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#57-goap%e7%9b%b8%e5%af%b9%e4%ba%8ehtn%e7%9a%84%e7%bb%93%e6%9e%84%e5%8f%98%e5%8c%96">5.7 GOAP相对于HTN的结构变化
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#571-goal-set">5.7.1 Goal Set
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#572-action-set">5.7.2 Action Set
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#58-goap%e7%9a%84planning">5.8 GOAP的Planning
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#59-goap%e5%9b%be">5.9 GOAP图
+        </a>
+      </li></ul>
+      <div class="hx:mt-8 hx:border-t hx:bg-white hx:pt-8 hx:shadow-[0_-12px_16px_white] hx:dark:bg-dark hx:dark:shadow-[0_-12px_16px_#111] hx:sticky hx:bottom-0 hx:flex hx:flex-col hx:items-start hx:gap-2 hx:pb-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-t hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:border-neutral-400">
+        <button aria-hidden="true" id="backToTop" onClick="scrollUp();" class="hx:cursor-pointer hx:transition-all hx:duration-75 hx:opacity-0 hx:text-xs hx:font-medium hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50">
+          <span>返回顶部</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="hx:inline hx:ltr:ml-1 hx:rtl:mr-1 hx:h-3.5 hx:w-3.5 hx:rounded-full hx:border hx:border-gray-500 hx:hover:border-gray-900 hx:dark:border-gray-400 hx:dark:hover:border-gray-100 hx:contrast-more:border-gray-800 hx:contrast-more:dark:border-gray-50">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+
+    <article class="hx:w-full hx:break-words hx:flex hx:min-h-[calc(100vh-var(--navbar-height))] hx:min-w-0 hx:justify-center hx:pb-8 hx:pr-[calc(env(safe-area-inset-right)-1.5rem)]">
+      <main class="hx:w-full hx:min-w-0 hx:max-w-6xl hx:px-6 hx:pt-4 hx:md:px-12">
+        <div class="hx:mt-1.5 hx:flex hx:items-center hx:gap-1 hx:overflow-hidden hx:text-sm hx:text-gray-500 hx:dark:text-gray-400 hx:contrast-more:text-current">
+        <div class="hx:whitespace-nowrap hx:transition-colors hx:min-w-[24px] hx:overflow-hidden hx:text-ellipsis hx:hover:text-gray-900 hx:dark:hover:text-gray-100">
+          <a href="/game/">游戏</a>
+        </div><svg class="hx:w-3.5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg><div class="hx:whitespace-nowrap hx:transition-colors hx:font-medium hx:text-gray-700 hx:contrast-more:font-bold hx:contrast-more:text-current hx:dark:text-gray-100 hx:contrast-more:dark:text-current">AI决策-状态机&#43;行为树&#43;HTN&#43;GOAP</div>
+  </div>
+
+        <div class="content">
+          <h1>AI决策-状态机&#43;行为树&#43;HTN&#43;GOAP</h1>
+          <h2>1 前言<span class="hx:absolute hx:-mt-20" id="1-前言"></span>
+    <a href="#1-%e5%89%8d%e8%a8%80" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>先放一下b站上games104关于简单ai的介绍视频</p>
+<p><a href="https://www.bilibili.com/video/BV1r34y1J7Sg/?share_source=copy_web&amp;vd_source=ff55028a1f378d23599a756d4f11c840"target="_blank" rel="noopener">16.游戏引擎Gameplay玩法系统：基础AI (Part 2) | GAMES104-现代游戏引擎：从入门到实践</a></p>
+<p><a href="https://www.bilibili.com/video/BV1iG4y1i78Q/?share_source=copy_web&amp;vd_source=ff55028a1f378d23599a756d4f11c840"target="_blank" rel="noopener">17.游戏引擎Gameplay玩法系统：高级AI (Part 1) | GAMES104-现代游戏引擎：从入门到实践</a></p>
+<p>本篇是基于该games104视频内容的笔记性质的总结，根本目的是为本人理顺其中略微混乱的内容，具体内容以该视频为准（手动叠甲）</p>
+<p>再放一篇大佬的帖子🙏受益匪浅</p>
+<p><a href="http://blog.cyasylum.top/index.php/2024/10/07/brief-description-of-goap-and-game-ai-technical-articles-ff4ha/"target="_blank" rel="noopener"># GOAP与游戏AI简述 —— 技术篇</a></p>
+<hr>
+<h2>2 主观概述<span class="hx:absolute hx:-mt-20" id="2-主观概述"></span>
+    <a href="#2-%e4%b8%bb%e8%a7%82%e6%a6%82%e8%bf%b0" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>简单ai中最古老最基础也是最容易理解的就是状态机，状态机的写法要求开发者给ai体设置多个&quot;状态&quot;，具体表现为——规定ai体在某个&quot;状态&quot;下执行的动作，为状态之间的转换设置条件</p>
+<p>其中需要明确的是，</p>
+<ol>
+<li>在任何时刻下的ai体都需要处于某&quot;状态&quot;中（可以不止一个，详见&quot;并发状态机&quot;）</li>
+<li>任何状态都需要有被转换和转换为其他状态的条件（否则就相当于走进死胡同了）</li>
+<li>状态的转换条件需要是可量化的（不然机器读不懂）</li>
+</ol>
+<p>我对状态机的理解是特殊的循环，还有进阶一点的分层和并发状态机此处不赘述</p>
+<p>
+    <figure>
+    <img src="../%e7%8a%b6%e6%80%81%e6%9c%ba%e6%a6%82%e5%bf%b5%e5%9b%be.png" title="状态机概念图" alt=""  loading="lazy" />
+    <figcaption>状态机概念图</figcaption>
+  </figure></p>
+<p>但当外界情况复杂起来，ai体有大量状态时（或许可以用分层状态机简化，但这里假设分层之后仍复杂），常规的状态机写起来就会让人头大，毕竟新的状态很可能要飞很多根线连到原先的状态，这个时候我们就得用到行为树了（提一嘴，视频里提到行为树起源于03-04年间的halo）</p>
+<p>我主观认为基础行为树是可以脱离状态机来理解的（因为我玩UE的时候是先接触了行为树再接触状态机的💦）</p>
+<p>我对行为树的理解是特殊的遍历+if-else，至于有多特殊就等下展开</p>
+<p>
+    <figure>
+    <img src="../%e8%a1%8c%e4%b8%ba%e6%a0%91%e6%a6%82%e5%bf%b5%e5%9b%be.png" title="行为树概念图" alt=""  loading="lazy" />
+    <figcaption>行为树概念图</figcaption>
+  </figure></p>
+<p>到后面的HTN（Hierarchical Tasks Network 层次任务网络）和GOAP（Goal-Oriented Action Planning 目标导向行为规划）就必须要提到，前面的状态机和行为树像是条件反射般地执行开发者设定的任务，而这两个ai就更像是开发者给ai设定一系列可选的行为，ai通过感知这个世界自己设定目的，然后根据开发者所给来选择要做的事</p>
+<p>我们可以简记为：前两者是条件反射，后两者是目标导向</p>
+<p>
+    <figure>
+    <img src="../HTN%e6%a6%82%e5%bf%b5%e5%9b%be.png" title="HTN概念图" alt=""  loading="lazy" />
+    <figcaption>HTN概念图</figcaption>
+  </figure></p>
+<p>
+    <figure>
+    <img src="../GOAP%e6%a6%82%e5%bf%b5%e5%9b%be.png" title="GOAP概念图" alt=""  loading="lazy" />
+    <figcaption>GOAP概念图</figcaption>
+  </figure></p>
+<h3>2.1 全篇速览举例<span class="hx:absolute hx:-mt-20" id="21-全篇速览举例"></span>
+    <a href="#21-%e5%85%a8%e7%af%87%e9%80%9f%e8%a7%88%e4%b8%be%e4%be%8b" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>（这个例子看不懂的话就是不会接下来要讲的东西）</p>
+<p>此处举一个比较直观的例子：我们需要做一个项羽和一个刘邦</p>
+<h4>2.1.1 用状态机的写法<span class="hx:absolute hx:-mt-20" id="211-用状态机的写法"></span>
+    <a href="#211-%e7%94%a8%e7%8a%b6%e6%80%81%e6%9c%ba%e7%9a%84%e5%86%99%e6%b3%95" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>项羽有&quot;巡逻&quot;，&ldquo;冲锋&rdquo;，&ldquo;开大&rdquo;，这三个的转换关系分别是，默认处于巡逻状态，在看到敌人后向其冲锋，当与敌人距离小于某个值时开大，随后直接进入巡逻状态，以此反复</p>
+<p>刘邦就有&quot;待命&quot;，&ldquo;摇人&rdquo;，&ldquo;撤退&rdquo;，这三个的转换关系分别是，默认处于待命状态，看到敌人后进入摇人状态，随后直接进入撤退状态，在看不到敌人后进入待命状态，以此反复</p>
+<h4>2.1.2 用行为树的写法<span class="hx:absolute hx:-mt-20" id="212-用行为树的写法"></span>
+    <a href="#212-%e7%94%a8%e8%a1%8c%e4%b8%ba%e6%a0%91%e7%9a%84%e5%86%99%e6%b3%95" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>每隔一段时间执行一次行为树</p>
+<p>项羽：若看不到敌人就巡逻，若看到敌人就冲锋，冲锋后若敌人在身旁就开大</p>
+<p>刘邦：若看不到敌人就待命，若看到敌人就摇人，然后撤退</p>
+<p>其中是否看到敌人就是状态节点，其余逻辑就是动作节点，根节点是Sequence</p>
+<h4>2.1.3 用HTN的写法<span class="hx:absolute hx:-mt-20" id="213-用htn的写法"></span>
+    <a href="#213-%e7%94%a8htn%e7%9a%84%e5%86%99%e6%b3%95" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>（以下仅以项羽举例）</p>
+<p>在HTN Domain中定义以下Node：</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">precondition</th>
+          <th style="text-align: left">action</th>
+          <th style="text-align: left">effect</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">看到敌人 &amp;&amp; 不在敌人身边</td>
+          <td style="text-align: left">冲锋</td>
+          <td style="text-align: left">在敌人身边</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">看到敌人 &amp;&amp; 在敌人身边</td>
+          <td style="text-align: left">开大</td>
+          <td style="text-align: left">无（造成伤害）</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">看不到敌人</td>
+          <td style="text-align: left">巡逻</td>
+          <td style="text-align: left">无（移动）</td>
+      </tr>
+  </tbody>
+</table>
+<h4>2.1.4 用GOAP的写法<span class="hx:absolute hx:-mt-20" id="214-用goap的写法"></span>
+    <a href="#214-%e7%94%a8goap%e7%9a%84%e5%86%99%e6%b3%95" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>（以下仅以项羽举例）</p>
+<p>在Goal Set中定义以下Node：</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">precondition</th>
+          <th style="text-align: left">goal</th>
+          <th style="text-align: left">state</th>
+          <th style="text-align: left">priority</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">看到敌人 &amp;&amp; 在敌人身边</td>
+          <td style="text-align: left">攻击敌人</td>
+          <td style="text-align: left">无（造成伤害）</td>
+          <td style="text-align: left">1</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">看到敌人 &amp;&amp; 不在敌人身边</td>
+          <td style="text-align: left">靠近敌人</td>
+          <td style="text-align: left">在敌人身边</td>
+          <td style="text-align: left">2</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">看不到敌人</td>
+          <td style="text-align: left">巡逻</td>
+          <td style="text-align: left">无（移动）</td>
+          <td style="text-align: left">3</td>
+      </tr>
+  </tbody>
+</table>
+<p>在Action Set中定义以下Node：</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">precondition</th>
+          <th style="text-align: left">action</th>
+          <th style="text-align: left">effect</th>
+          <th style="text-align: left">cost（这一栏需要根据情况定）</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">攻击敌人</td>
+          <td style="text-align: left">开大</td>
+          <td style="text-align: left">无（造成伤害）</td>
+          <td style="text-align: left">？</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">靠近敌人</td>
+          <td style="text-align: left">冲锋</td>
+          <td style="text-align: left">在敌人身边</td>
+          <td style="text-align: left">？</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">巡逻</td>
+          <td style="text-align: left">巡逻（具体逻辑）</td>
+          <td style="text-align: left">无（移动）</td>
+          <td style="text-align: left">？</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2>3 状态机<span class="hx:absolute hx:-mt-20" id="3-状态机"></span>
+    <a href="#3-%e7%8a%b6%e6%80%81%e6%9c%ba" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><div class="hextra-cards hx:mt-4 hx:gap-4 hx:grid not-prose" style="--hextra-cards-grid-cols: 1;">
+  <a
+    class="hextra-card hx:group hx:flex hx:flex-col hx:justify-start hx:overflow-hidden hx:rounded-lg hx:border hx:border-gray-200 hx:text-current hx:no-underline hx:dark:shadow-none hx:hover:shadow-gray-100 hx:dark:hover:shadow-none hx:shadow-gray-100 hx:active:shadow-sm hx:active:shadow-gray-200 hx:transition-all hx:duration-200 hx:hover:border-gray-300 hx:bg-transparent hx:shadow-xs hx:dark:border-neutral-800 hx:hover:bg-slate-50 hx:hover:shadow-md hx:dark:hover:border-neutral-700 hx:dark:hover:bg-neutral-900"href="../AI%e5%86%b3%e7%ad%96-%e7%8a%b6%e6%80%81%e6%9c%ba"
+      ><span class="hextra-card-icon hx:flex hx:font-semibold hx:items-start hx:gap-2 hx:p-4 hx:text-gray-700 hx:hover:text-gray-900 hx:dark:text-neutral-200 hx:dark:hover:text-neutral-50">AI决策-状态机</span><div class="hextra-badge hextra-card-tag">
+    <div class="hx:inline-flex hx:gap-1 hx:items-center hx:rounded-full hx:px-2.5 hx:leading-6 hx:text-[.65rem] hx:border hx:border-red-200 hx:bg-red-100 hx:text-red-900 hx:dark:border-red-200/30 hx:dark:bg-red-900/30 hx:dark:text-red-200">游戏程序</div>
+  </div></a>
+</div>
+
+<p>（基础状态机请见我之前的帖子，那是基于YouTube教程的总结，此处不展开）</p>
+<h2>4 行为树<span class="hx:absolute hx:-mt-20" id="4-行为树"></span>
+    <a href="#4-%e8%a1%8c%e4%b8%ba%e6%a0%91" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>（要了解行为树，我会推荐看看UE蓝图行为树是怎么样的）</p>
+<p>原教程用这样一句话来引入行为树：&ldquo;人的思考是分支性思考&rdquo;</p>
+<p>行为树就是如此，用自然语言来描述一个行为树时，我们会这样说：当有作业要写时，我会看看我的手上/桌子上/抽屉里有没有纸笔，有的话就拿过来开写，没有的话就去教室/图书馆/失物招领处找纸笔，假如还没找到就去文具店买纸笔（有纸笔后再次执行行为树，就会跳到有纸笔的分支执行写作业的逻辑）——这就是一个极简的行为树</p>
+<h3>4.1 构成<span class="hx:absolute hx:-mt-20" id="41-构成"></span>
+    <a href="#41-%e6%9e%84%e6%88%90" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>行为树由Node构成，节点分为Execution Node和Control Node</p>
+<p>Execution Node分为Condition Node和Action Node</p>
+<p>Control Node分为Sequence，Selector，Parallel，Decorator共3+1种（Decorator比较另类）</p>
+<h3>4.2 Execution Node（可执行节点，行为树中的叶节点）<span class="hx:absolute hx:-mt-20" id="42-execution-node可执行节点行为树中的叶节点"></span>
+    <a href="#42-execution-node%e5%8f%af%e6%89%a7%e8%a1%8c%e8%8a%82%e7%82%b9%e8%a1%8c%e4%b8%ba%e6%a0%91%e4%b8%ad%e7%9a%84%e5%8f%b6%e8%8a%82%e7%82%b9" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><h4>4.2.1 Condition Node<span class="hx:absolute hx:-mt-20" id="421-condition-node"></span>
+    <a href="#421-condition-node" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>（视频翻译为条件节点）</p>
+<p>条件节点是一次对当前情况的判断，如：判断自己是否处于Powerful的状态？判断是否有Ghost正在追击？</p>
+<p>返回值为true/false</p>
+<p>我的理解中条件节点是一个门，当行为树执行到这个门时进行判断，向上返回true/false决定控制节点是否继续执行下去</p>
+<p>比如Sequence可以先执行几个动作节点，在这些动作节点同行的后方加上条件节点，在执行条件节点后若返回true就继续执行后面的动作节点，若返回false就中断本次行为树的执行</p>
+<h4>4.2.2 Action Node<span class="hx:absolute hx:-mt-20" id="422-action-node"></span>
+    <a href="#422-action-node" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>（视频翻译为动作节点）</p>
+<p>动作节点是对具体动作逻辑的实现，比如执行移动，攻击的函数</p>
+<p>返回值为success/failure/running</p>
+<p>返回值的作用是告诉上方节点该动作的状态</p>
+<h3>4.3 Control Node（控制节点）<span class="hx:absolute hx:-mt-20" id="43-control-node控制节点"></span>
+    <a href="#43-control-node%e6%8e%a7%e5%88%b6%e8%8a%82%e7%82%b9" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>我的理解是这类节点就像是行为树上树枝分叉的地方</p>
+<h4>4.3.1 Sequence<span class="hx:absolute hx:-mt-20" id="431-sequence"></span>
+    <a href="#431-sequence" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>标志着&quot;顺序执行&quot;</p>
+<p>当行为树执行到该节点时，会依次执行其下所有子树，直到条件节点返回false或动作节点返回failure，当动作节点返回running时，会等待该动作节点执行，直到返回其余两值其一</p>
+<p>例：
+Sequence -&gt; 状态节点：门是锁着的？ -&gt; 动作节点：解锁门 -&gt; 动作节点：开门 -&gt; 动作节点：进门</p>
+<p>任何一个Sequence向上反馈的是和动作节点相同的状态类型，即success，failure，running，这个反馈取决于它执行的动作节点的返回值</p>
+<p>比如：</p>
+<ul>
+<li>Sequence执行的动作节点返回running，那么Sequence就返回running，让这片区域的行为树停止一轮</li>
+<li>假如Sequence执行的动作节点返回failure，就可以向上反馈说这套动作失败了，需要重新执行行为树</li>
+</ul>
+<p>（看到这里不妨想一想状态机要怎么实现反馈失败动作并重新执行的，是不是就得飞根线回到初始的状态，是不是麻烦，行为树就简单了）</p>
+<h4>4.3.2 Selector<span class="hx:absolute hx:-mt-20" id="432-selector"></span>
+    <a href="#432-selector" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>标志着&quot;优先执行&quot;</p>
+<p>当行为树执行到该节点时，会依次执行其下所有子树，直到第一个动作节点返回success（就是依次执行动作，只要有一个成功了就不往下执行了）</p>
+<p>（当然，开发者也可以定义特殊的Selector，比如要求至少得到2个success才返回，这个就自由发挥了）</p>
+<p>理解了Sequence就很好类推到Selector了，它的返回也和Sequence一样的，不赘述</p>
+<h4>4.3.3 Parallel<span class="hx:absolute hx:-mt-20" id="433-parallel"></span>
+    <a href="#433-parallel" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>标志着&quot;并行执行&quot;，就好比是移动射击，是两个行为叠加在一起的</p>
+<p>视频里只有一张ppt上有parallel伪代码实现但并没有展开讲，此处给出的是其他地方的理论</p>
+<p>Parallel的关键词是&quot;并发 tick、记录状态、阈值判断&quot;</p>
+<ol>
+<li>并发tick</li>
+</ol>
+<p>这里和并发状态机类似，并发状态机简单来讲就是在一个根节点的tick中执行多个状态机的update，这里parallel也是同理，它将同时执行所有子节点的逻辑</p>
+<p>比如：parallel -&gt; 移动 -&gt; 射击 -&gt; 跳跃</p>
+<p>这样就会出现巴西跳扫(bushi</p>
+<ol start="2">
+<li>记录状态与阈值判断</li>
+</ol>
+<p>执行所有子节点不是一股脑执行就完事的，还需要收集它们所有的返回值（success，failure，running），同时parallel也会存储一个或多个阈值（通常来说只有success和failure的阈值），当子节点的返回值达到某个阈值时，就向上反馈自身状况（success，failure，running）并终止执行</p>
+<p>比如：（还是前面那个跳扫的例子）当手上的枪没子弹时，射击就会返回failure，这时假如该parallel的failure的阈值为1，那么就会立刻终止running的移动（跳跃应该是success），同时请求重新执行行为树，这时候大概就会换到另一个换弹的子树上去</p>
+<p>通过调节阈值，可以实现各种复杂的并行行为策略，例如&quot;等待至少两个条件满足&quot;，&ldquo;所有任务都必须完成，但其中一个失败则立即放弃&quot;等</p>
+<h4>4.3.4 Decorator<span class="hx:absolute hx:-mt-20" id="434-decorator"></span>
+    <a href="#434-decorator" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>作为修饰而存在的节点</p>
+<p>当开发者想要执行一个这样的行为：移动 -&gt; 暂停1s -&gt; 反向移动 -&gt; 1s ，我们当然可以把暂停1s写成一个Action Node，也当然可以把暂停1s写进移动的Action Node里面，但没必要，于是就有了Decorator，可以简便地在每个Action Node前添加小段逻辑（而不必要多new一个Action Node类）</p>
+<h3>4.4 节点总结<span class="hx:absolute hx:-mt-20" id="44-节点总结"></span>
+    <a href="#44-%e8%8a%82%e7%82%b9%e6%80%bb%e7%bb%93" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>前五节点如下表（原视频这里有两行是反的，在此更正了）</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Node Type</th>
+          <th style="text-align: left">Symbol</th>
+          <th style="text-align: left">Succeeds</th>
+          <th style="text-align: left">Fails</th>
+          <th style="text-align: left">Running</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">Sequence</td>
+          <td style="text-align: left">→</td>
+          <td style="text-align: left">If all children succeed</td>
+          <td style="text-align: left">If one child fails</td>
+          <td style="text-align: left">If one child returns Running</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Selector</td>
+          <td style="text-align: left">?</td>
+          <td style="text-align: left">If one child succeeds</td>
+          <td style="text-align: left">If all children fail</td>
+          <td style="text-align: left">If one child returns Running</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Parallel</td>
+          <td style="text-align: left">⇄</td>
+          <td style="text-align: left">If ≥ M children succeed</td>
+          <td style="text-align: left">If &gt; N - M children fail</td>
+          <td style="text-align: left">else</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Condition</td>
+          <td style="text-align: left">text</td>
+          <td style="text-align: left">If true</td>
+          <td style="text-align: left">If false</td>
+          <td style="text-align: left">Never</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Action</td>
+          <td style="text-align: left">text</td>
+          <td style="text-align: left">Upon completion</td>
+          <td style="text-align: left">If impossible to complete</td>
+          <td style="text-align: left">During completion</td>
+      </tr>
+  </tbody>
+</table>
+<h3>4.5 黑板Blackboard<span class="hx:absolute hx:-mt-20" id="45-黑板blackboard"></span>
+    <a href="#45-%e9%bb%91%e6%9d%bfblackboard" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>是存储行为树输入输出数据的地方</p>
+<p>我们当然可以散装存储ai体感知到的各种数据，但黑板的存在就是为了更方便地调用它，实现数据库分离那啥的思想嘛</p>
+<p>当环境发生变化时，黑板中的数据会通过ai体的感知随之改变，ai体行为树中的状态节点都是读取黑板中的数据进行判断，动作节点也会在特定时间修改黑板上的数据，这一点也是在后面的HTN和GOAP的Sensor和World State的基础</p>
+<h3>4.6 行为树扩展<span class="hx:absolute hx:-mt-20" id="46-行为树扩展"></span>
+    <a href="#46-%e8%a1%8c%e4%b8%ba%e6%a0%91%e6%89%a9%e5%b1%95" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><h4>4.6.1 行为树Tick<span class="hx:absolute hx:-mt-20" id="461-行为树tick"></span>
+    <a href="#461-%e8%a1%8c%e4%b8%ba%e6%a0%91tick" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>行为树在每个周期都需要从根节点开始tick（所以当行为树和状态机都很大的时候，看着更复杂没条理的是状态机，用着性能开销大的是行为树），所以，当外界环境发生突变时，行为树也能很好地应对，如正在巡逻时发现了敌人，那么下一周期的行为树将停止running的巡逻，转而到负责攻击的子树的parallel或sequence啥的里面去（移动+攻击）</p>
+<p>这里有一个扩展的部分，即event优化行为树tick，此处不展开，因为视频里也不主要讲这个</p>
+<h4>4.6.2 行为树优化-precondition<span class="hx:absolute hx:-mt-20" id="462-行为树优化-precondition"></span>
+    <a href="#462-%e8%a1%8c%e4%b8%ba%e6%a0%91%e4%bc%98%e5%8c%96-precondition" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>本质上是作为简化逻辑存在的</p>
+<p>有一些子树，如：sequence -&gt; 状态节点：门是锁着的？-&gt; 动作节点：回头</p>
+<p>它的存在就显得行为树有些臃肿，那么我们就可以把它简化成一个带有precondition的Action Node，只需要在回头这个动作节点的最前面加上一个判断门是否上锁就行了，写进类里面就是precondition</p>
+<h2>5 HTN和GOAP<span class="hx:absolute hx:-mt-20" id="5-htn和goap"></span>
+    <a href="#5-htn%e5%92%8cgoap" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>HTN和GOAP在框架上其实是很类似的，所以在此放到一起来讲，我在此先写HTN的架构，再说GOAP从HTN上面换了些什么</p>
+<h3>5.1 HTN核心思想<span class="hx:absolute hx:-mt-20" id="51-htn核心思想"></span>
+    <a href="#51-htn%e6%a0%b8%e5%bf%83%e6%80%9d%e6%83%b3" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>&ldquo;从目标出发&rdquo;，即先立靶子，然后打靶</p>
+<p>
+    <figure>
+    <img src="../HTN%e6%a6%82%e5%bf%b5%e5%9b%be.png" title="HTN概念图" alt=""  loading="lazy" />
+    <figcaption>HTN概念图</figcaption>
+  </figure></p>
+<p>如上图，ai体会通过Sensor量化出World State（通常为bool），再依据World State从HTN Domain中获取任务，在Planner中将获取到的任务排成队列，然后在Plan Runner中依次执行</p>
+<h4>5.1.1 HTN速览举例<span class="hx:absolute hx:-mt-20" id="511-htn速览举例"></span>
+    <a href="#511-htn%e9%80%9f%e8%a7%88%e4%b8%be%e4%be%8b" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>比如我是一个小兵，我的大招很厉害，那么我的HTN Domain中就会有一个Node是这样的：</p>
+<p>precondition：敌人很多(true)</p>
+<p>action：开大</p>
+<p>effect：敌人不多(false)</p>
+<p>那么怎么触发这个Node呢？</p>
+<ol>
+<li>首先我会通过Sensor感知外部环境，这一步通常是用碰撞或区域检测完成的，即有多少个敌人在我的视野范围内，这些是Sensor的向World State传递的内容</li>
+<li>随后我会根据这个返回值判断敌人多不多，比如有一个阈值，大于这个值就多，小于这个值就少，随后就在World State中写入关于敌人多不多的bool值</li>
+<li>在Planner中依次判断World State是否符合HTN Domain里任务的precondition，假如符合就把它放入队列中</li>
+<li>最后在Plan Runner中执行任务并根据effect修改World State</li>
+</ol>
+<h3>5.2 HTN的Primitive Task<span class="hx:absolute hx:-mt-20" id="52-htn的primitive-task"></span>
+    <a href="#52-htn%e7%9a%84primitive-task" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>基本构成为：precondition+action+effect</p>
+<p>其中，</p>
+<ol>
+<li>precondiotion用于判断该任务可否执行，通常为对从World State中返回值的判断（bool）</li>
+<li>action为任务的执行逻辑，比如执行移动函数，执行攻击函数什么的</li>
+<li>effect为任务对World State的反馈，通常为改变World State中的值</li>
+</ol>
+<p>比如视频中举例的解毒Primitive Task，precondition为中毒(true)且有解毒药水(true)，action为使用解毒药水，effect为失去中毒(false)和无解毒药水(false)（假设最多存储一个解毒药水，用了就没有了）</p>
+<h3>5.3 HTN的Compound Task<span class="hx:absolute hx:-mt-20" id="53-htn的compound-task"></span>
+    <a href="#53-htn%e7%9a%84compound-task" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>听前面的课程的时候其实我云里雾里的，因为光靠这样的任务只能构成一个糟糕的ai逻辑，我们的小兵会在和敌人战斗的时候突然收刀喝药或者喝药喝到一半突然翻滚然后不喝药了转而去打架什么的，这时候就得用上Compound Task了</p>
+<h4>5.3.1 priority<span class="hx:absolute hx:-mt-20" id="531-priority"></span>
+    <a href="#531-priority" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>首先引入priority（优先级）的概念，这个概念很好理解，就像行为树里的Selector一样</p>
+<p>我能这样干就不那样干，体现在ai逻辑里就是，我能喝解毒药，抗火药，红药，蓝药就不去喝万能药（假设万能药可以回满状态）</p>
+<h4>5.3.2 method<span class="hx:absolute hx:-mt-20" id="532-method"></span>
+    <a href="#532-method" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>再引入method（方法）的概念，即我可以有一个连串的动作去完成一个既定的目标</p>
+<p>比如我现在中毒了，手上只有万能药喝制作解毒药的材料，我就可以去做解毒药然后喝解毒药，这时就可以说，&ldquo;喝万能药&quot;和&quot;做解毒药并喝&quot;是两个method，再根据上面优先级的概念，&ldquo;做解毒药并喝&quot;的优先级显然大于&quot;喝万能药&rdquo;，那么前者就会被Planner放入队列中，被Plan Runner执行了</p>
+<p>但在这里，前者的method将由两个Primitive Task组成，即</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left"></th>
+          <th style="text-align: left">Primitive Task1</th>
+          <th style="text-align: left">Primitive Task 2</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">precondition</td>
+          <td style="text-align: left">中毒(true) &amp;&amp; 无解毒药(false) &amp;&amp; 有做解毒药的材料(true)</td>
+          <td style="text-align: left">中毒(true) &amp;&amp; 有解毒药(true)</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">action</td>
+          <td style="text-align: left">做解毒药</td>
+          <td style="text-align: left">喝解毒药</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">effect</td>
+          <td style="text-align: left">失去材料(false) &amp;&amp; 有解毒药(true)</td>
+          <td style="text-align: left">失去中毒(false) &amp;&amp; 无解毒药(false)</td>
+      </tr>
+  </tbody>
+</table>
+<p>视频里更简单的理解是Selector + Sequence的组合，没错，就是这个感觉</p>
+<h3>5.4 HTN的tick和World State<span class="hx:absolute hx:-mt-20" id="54-htn的tick和world-state"></span>
+    <a href="#54-htn%e7%9a%84tick%e5%92%8cworld-state" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>到此就得讲一下HTN的tick形式了，首先会议一下状态机的tick形式是状态变化时tick，行为树的tick形式是每一帧tick，而HTN的tick形式则是World State改变时tick</p>
+<p>对于World State，视频中的解释是，HTN和GOAP的ai像是把世界以自己的方式抄下来，比如看到10个敌人就抄为&quot;看到很多敌人&rdquo;(true)，有1个草药和1个空瓶（假设是制作解毒药的材料）就抄为&quot;有制作解毒药的材料&rdquo;(true)</p>
+<h3>5.5 HTN的Planning<span class="hx:absolute hx:-mt-20" id="55-htn的planning"></span>
+    <a href="#55-htn%e7%9a%84planning" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>现在就得开始做规划了，我们需要在这里把ai体接下来要做的事情排成一个队列（可以理解为排列要执行的Task）</p>
+<p>首先遍历HTN Domain中的method，看World State是否满足它的precondition，找到满足的，就把它放入将要执行的任务队列里</p>
+<p>这里的遍历要怎么遍历呢？就是把method里的Task一层层展开，直到最底层的Premitive Task，随后比对其中的precondition，假如有不符合的就放弃这个method转而去下一个method</p>
+<p>这里有一个至关重要的细节，那就是当ai体遍历到了可执行的Primitive Task后，需要把它的effect同步更新到World State里，假如后续决定不执行这个Primitive Task，再把effect更新回去</p>
+<p>举上面解毒药的例子，Compound Task由两个Primitive Task组成，假如在遍历Primitive Task 1时不更新World State，那么就不可能满足Primitive Task 2的precondition</p>
+<p>如此这般之后，planning就结束了，我们会获得一个仅以Primitive Task按优先级顺序形成的队列（Compound Task会被拆成Primitive Task）</p>
+<h3>5.6 HTN的Replanning<span class="hx:absolute hx:-mt-20" id="56-htn的replanning"></span>
+    <a href="#56-htn%e7%9a%84replanning" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>众所周知，做任何事情都需要时间，那么当ai体执行plan队列时外部环境发生变化，ai要怎么办？状态机会根据状态转换跳到其他状态，行为树每一帧都tick不需要考虑这个，HTN要怎么办？</p>
+<p>其实就是重新规划</p>
+<p>首先Sensor会告诉World State外部环境发生变化，此时会直接中断正在执行的Plan Runner再转回Planner中重新做计划</p>
+<p>再比如说，我的某个动作失败了，ai要怎么办？比如我的某个Primitive Task是打开某门，我在规划时有钥匙，但这把钥匙在路上被偷走了，那么此时World State就会发生变化，就会强制中断Plan Runner的开锁计划，转到其他的method里去</p>
+<h3>5.7 GOAP相对于HTN的结构变化<span class="hx:absolute hx:-mt-20" id="57-goap相对于htn的结构变化"></span>
+    <a href="#57-goap%e7%9b%b8%e5%af%b9%e4%ba%8ehtn%e7%9a%84%e7%bb%93%e6%9e%84%e5%8f%98%e5%8c%96" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>最明显的莫过于将HTN Domain换成了Goal Set + Action Set</p>
+<p>Goal Set称目标集，包含所有ai体可达成的目标（仅用数学方法表述），Action Set称动作集，含所有ai体可执行的动作</p>
+<p>我们可以直观地理解为，HTN更像是做了一天的规划，而当这一天突然发生某些变数时，这个规划就得完全弃置，然后ai体就要重新开始规划，而GOAP更像是列了今天要干的事和今天能干的事，至于干什么就根据情况再定（有些抽象，看下面展开吧）</p>
+<h4>5.7.1 Goal Set<span class="hx:absolute hx:-mt-20" id="571-goal-set"></span>
+    <a href="#571-goal-set" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>Goal Set由一些列Goal节点组成，Goal节点是一个由precondition，goal，state组成的节点，其本身有priority属性</p>
+<p>以下是视频中举的一个Goal Set的例子</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">precondition</th>
+          <th style="text-align: left">goal</th>
+          <th style="text-align: left">state</th>
+          <th style="text-align: left">priority</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">中毒</td>
+          <td style="text-align: left">解毒</td>
+          <td style="text-align: left">失去中毒</td>
+          <td style="text-align: left">1</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">发现敌方是精英怪</td>
+          <td style="text-align: left">逃跑</td>
+          <td style="text-align: left">无</td>
+          <td style="text-align: left">2</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">发现敌方是小怪</td>
+          <td style="text-align: left">攻击</td>
+          <td style="text-align: left">无</td>
+          <td style="text-align: left">3</td>
+      </tr>
+  </tbody>
+</table>
+<h4>5.7.2 Action Set<span class="hx:absolute hx:-mt-20" id="572-action-set"></span>
+    <a href="#572-action-set" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>Action Set由一些列Action节点组成，Action节点是一个由precondition，action，effect，cost组成的节点，其中cost为开发者的经验输入，用于告诉ai体这个行为的消耗大小，从而规划更好的Action队列</p>
+<h3>5.8 GOAP的Planning<span class="hx:absolute hx:-mt-20" id="58-goap的planning"></span>
+    <a href="#58-goap%e7%9a%84planning" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>这里直接放我的笔记，因为视频里这一部分讲了两遍有点混乱，理解了这个就理解了GOAP基本逻辑了，视频里讲清晰的地方从此处开始：</p>
+<p><a href="https://www.bilibili.com/video/BV1iG4y1i78Q/?share_source=copy_web&amp;vd_source=ff55028a1f378d23599a756d4f11c840&amp;t=3451"target="_blank" rel="noopener">17.游戏引擎Gameplay玩法系统：高级AI (Part 1) | GAMES104-现代游戏引擎：从入门到实践 【精准空降到 57:31】</a></p>
+<hr>
+<ul>
+<li>Step 1
+根据priority检查Goal Set</li>
+</ul>
+<p>找到precondition符合World State且优先级最高的一个goal</p>
+<ul>
+<li>Step 2
+比较goal的state与World State中的state</li>
+</ul>
+<p>将为满足的state扔到栈stack of unsatisfied states</p>
+<ul>
+<li>Step 3
+检查stack of unsatisfied states中第一个未满足的state</li>
+</ul>
+<p>从Action Set中查找是否有Action的effect可以使该state改为goal需要的state（此处的effect通常称为set state）</p>
+<p>将这个Action放入将执行的计划栈中（plan stack）</p>
+<ul>
+<li>Step 4
+若将要放入plan stack中的Action的precondition未被满足，则将该precondition作为state放入stack of unsatisfied states中</li>
+</ul>
+<p>继续执行Step 3，直到stack of unsatisfied states清空</p>
+<p>输出plan stack作为计划执行队列交给Plan Runner</p>
+<p>（以上有不严谨的地方，如在plan stack中的Action的先后顺序未被提及）</p>
+<hr>
+<h3>5.9 GOAP图<span class="hx:absolute hx:-mt-20" id="59-goap图"></span>
+    <a href="#59-goap%e5%9b%be" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>到上面那段其实AI就已经讲完了，这里的GOAP图一般是用辅助理清楚GOAP逻辑的</p>
+<p>首先我们约定图例：</p>
+<p>节点：World State</p>
+<p>边：Action</p>
+<p>距离：Action的cost</p>
+<p>那么一张GOAP图就像下面这样：</p>
+<p>
+    <figure>
+    <img src="../GOAP%e5%9b%be%e4%b8%be%e4%be%8b.png" title="GOAP图举例" alt=""  loading="lazy" />
+    <figcaption>GOAP图举例</figcaption>
+  </figure></p>
+<p>比如当前的World State是A，目标是到达C，那么从A到C这中间的过程就是ai体要执行的Action，ai体需要寻找一个cost最小的一些Action执行</p>
+<p>（看着是不是很眼熟？路径规划，淦！这不是A*吗，动态规划转A*这一块）</p>
+<hr>
+<p>以上</p>
+
+        </div>
+        
+    <div class="hx:mt-12 hx:mb-8 hx:block hx:text-xs hx:text-gray-500 hx:ltr:text-right hx:rtl:text-left hx:dark:text-gray-400">最后更新于 <time datetime="2025-11-25T00:00:00.000Z">2025年11月25日</time></div>
+        <div class="hx:mb-8 hx:flex hx:items-center hx:border-t hx:pt-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-neutral-400 hx:dark:contrast-more:border-neutral-400 hx:print:hidden"><a
+        href="/game/%E4%B9%9D%E7%8E%8B/"
+        title="九王"
+        class="hx:flex hx:max-w-[50%] hx:items-center hx:gap-1 hx:py-4 hx:text-base hx:font-medium hx:text-gray-600 hx:transition-colors [word-break:break-word] hx:hover:text-primary-600 hx:dark:text-gray-300 hx:md:text-lg hx:ltr:pr-4 hx:rtl:pl-4"
+      ><svg class="hx:inline hx:h-5 hx:shrink-0 hx:ltr:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>九王</a></div>
+        
+      </main>
+    </article>
+  </div>
+
+      <footer class="hextra-footer hx:bg-gray-100 hx:pb-[env(safe-area-inset-bottom)] hx:dark:bg-neutral-900 hx:print:bg-transparent"><div class="hextra-custom-footer hextra-max-footer-width hx:pl-[max(env(safe-area-inset-left),1.5rem)] hx:pr-[max(env(safe-area-inset-right),1.5rem)] hx:text-gray-600 hx:dark:text-gray-400"></div><div
+      class="hextra-max-footer-width hx:mx-auto hx:flex hx:justify-center hx:py-12 hx:pl-[max(env(safe-area-inset-left),1.5rem)] hx:pr-[max(env(safe-area-inset-right),1.5rem)] hx:text-gray-600 hx:dark:text-gray-400 hx:md:justify-start"
+    >
+      <div class="hx:flex hx:w-full hx:flex-col hx:items-center hx:sm:items-start"><div class="hx:font-semibold"><a class="hx:flex hx:text-sm hx:items-center hx:gap-1 hx:text-current" target="_blank" rel="noopener noreferrer" title="Hextra GitHub Homepage" href="https://github.com/imfing/hextra">
+    <span>由 Hextra 提供支持<svg height=1em class="hx:inline-block hx:ltr:ml-1 hx:rtl:mr-1 hx:align-[-2.5px]" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="m 105.50024,22.224647 c -9.59169,-5.537563 -21.40871,-5.537563 -31.000093,0 L 39.054693,42.689119 C 29.463353,48.226675 23.55484,58.460531 23.55484,69.535642 v 40.928918 c 0,11.07542 5.908513,21.3092 15.499853,26.84652 l 35.445453,20.46446 c 9.591313,5.53732 21.408404,5.53732 31.000094,0 l 35.44507,-20.46446 c 9.59131,-5.53732 15.49985,-15.7711 15.49985,-26.84652 V 69.535642 c 0,-11.075111 -5.90854,-21.308967 -15.49985,-26.846523 z M 34.112797,85.737639 c -1.384445,2.397827 -1.384445,5.352099 0,7.749927 l 24.781554,42.922974 c 1.38437,2.39783 3.942853,3.87496 6.711592,3.87496 h 49.563107 c 2.76905,0 5.3273,-1.47713 6.71144,-3.87496 l 24.78194,-42.922974 c 1.38414,-2.397828 1.38414,-5.3521 0,-7.749927 L 121.88049,42.814746 c -1.38414,-2.397828 -3.94239,-3.874964 -6.71144,-3.874964 H 65.605944 c -2.768739,0 -5.327223,1.477059 -6.711592,3.874964 z" style="stroke-width:0.774993" /></svg></span>
+  </a></div><div class="hx:mt-6 hx:text-xs">© 2025 YUYI <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/."target="_blank" rel="noopener">lisence ↗</a></div></div>
+    </div></footer>
+    
+    <script defer src="/js/main.js" integrity=""></script>
+<script defer src="/js/flexsearch.9f5b5908f93ae86f1ecd4b043b799f580c2d1654e703dd9357d568ac41b2547a.js" integrity="sha256-n1tZCPk66G8ezUsEO3mfWAwtFlTnA92TV9VorEGyVHo=" crossorigin="anonymous"></script>
+        <script defer src="/zh-cn.search.js" integrity=""></script>
+  </body>
+</html>

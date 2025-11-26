@@ -8,7 +8,7 @@
 <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
 <link fetchpriority="low" href="/site.webmanifest" rel="manifest" />
-<title>AI-状态机 – 乂轶·轶名-0verDay</title>
+<title>AI决策-状态机 – 乂轶·轶名-0verDay</title>
   <meta name="description" content="1 前言 我在使用godot开发一个RTS游戏的时候，我突然发现游戏中的单位(Unit)有且仅有三个动作（当时没有考虑&#34;状态&#34;，而是直接将这些定义为动作）：静止，移动，攻击，或者他们的组合（比如边移动边攻击，当然，别和我杠边静止边移动）
 然后就诞生了这样一个无限递归函数的流程图：
 可nb了，当时我就觉得，wow，我简直是一个逻辑大王，直到我知道这么做会栈溢出…
@@ -27,9 +27,9 @@
 Godot 4 中的启动状态机 - The Shaggy Dev — Starter state machines in Godot 4 - The Shaggy Dev
 （这个文章里同时有硬代码方法和进阶状态机方法，看上半部分就行）
 （记住，不要用硬代码写状态机，除非你敢拿头保证你不会增加很多很复杂的状态或复合状态！）
-extends Node enum STATE { PATROL , CHASE , ATTACK } #在此定义状态机中的所有状态 @export Player : PLAYER #对玩家引用来判断是否在侦查范围内 var current_state : STATE = PATROL #定义&#34;当前状态&#34;并赋初始值为PATROL @export var animation : AnimatedSprite2D #这个动画状态机没有任何架构上的意义，你可以不用管它，我只是想突出状态应该要有的enter函数而已，让我的那个更改状态的函数变得不那么蠢 @export var detect_distance : float #侦查范围 @export var attack_distance : float #攻击范围 func change_state(new_state : STATE) : current_state = new_state match current_state : STATE.PATROL : animation.play(&#34;patrol&#34;) STATE.CHASE : animation.play(&#34;chase&#34;) STATE.ATTACK : animation.play(&#34;attack&#34;) change_state(PATROL) func _process(delta) : match current_state : STATE.PATROL : if Player.position.distance_to(position) &lt; detect_distance : change_state(STATE.CHASE) STATE.CHASE : if Player.position.distance_to(position) &lt; attack_distance : change_state(STATE.ATTACK) func _physics_process(delta) : match current_state : #这下面的函数我就不写了，毕竟重心不在实现enemy动作，而是实现状态机的结构 STATE.PATROL : random_move() STATE.CHASE : move_to_player(Player) STATE.ATTACK : attack(Player) 结束了，框架没了，是不是很简单？对，状态机就是这么简单" /><link rel="canonical" href="http://localhost:1313/game/ai-%E7%8A%B6%E6%80%81%E6%9C%BA/" itemprop="url" />
+extends Node enum STATE { PATROL , CHASE , ATTACK } #在此定义状态机中的所有状态 @export Player : PLAYER #对玩家引用来判断是否在侦查范围内 var current_state : STATE = PATROL #定义&#34;当前状态&#34;并赋初始值为PATROL @export var animation : AnimatedSprite2D #这个动画状态机没有任何架构上的意义，你可以不用管它，我只是想突出状态应该要有的enter函数而已，让我的那个更改状态的函数变得不那么蠢 @export var detect_distance : float #侦查范围 @export var attack_distance : float #攻击范围 func change_state(new_state : STATE) : current_state = new_state match current_state : STATE.PATROL : animation.play(&#34;patrol&#34;) STATE.CHASE : animation.play(&#34;chase&#34;) STATE.ATTACK : animation.play(&#34;attack&#34;) change_state(PATROL) func _process(delta) : match current_state : STATE.PATROL : if Player.position.distance_to(position) &lt; detect_distance : change_state(STATE.CHASE) STATE.CHASE : if Player.position.distance_to(position) &lt; attack_distance : change_state(STATE.ATTACK) func _physics_process(delta) : match current_state : #这下面的函数我就不写了，毕竟重心不在实现enemy动作，而是实现状态机的结构 STATE.PATROL : random_move() STATE.CHASE : move_to_player(Player) STATE.ATTACK : attack(Player) 结束了，框架没了，是不是很简单？对，状态机就是这么简单" /><link rel="canonical" href="http://localhost:1313/game/ai%E5%86%B3%E7%AD%96-%E7%8A%B6%E6%80%81%E6%9C%BA/" itemprop="url" />
 
-<meta property="og:title" content="AI-状态机">
+<meta property="og:title" content="AI决策-状态机">
 <meta
   property="og:description"
   content="
@@ -122,7 +122,7 @@ func _physics_process(delta) :
   content="
     article
   ">
-<meta property="og:url" content="http://localhost:1313/game/ai-%E7%8A%B6%E6%80%81%E6%9C%BA/"><meta property="article:section" content="game">
+<meta property="og:url" content="http://localhost:1313/game/ai%E5%86%B3%E7%AD%96-%E7%8A%B6%E6%80%81%E6%9C%BA/"><meta property="article:section" content="game">
 
 <meta
   property="article:published_time"
@@ -135,7 +135,7 @@ func _physics_process(delta) :
 
 
 
-  <meta itemprop="name" content="AI-状态机">
+  <meta itemprop="name" content="AI决策-状态机">
   <meta itemprop="description" content="1 前言 我在使用godot开发一个RTS游戏的时候，我突然发现游戏中的单位(Unit)有且仅有三个动作（当时没有考虑&#34;状态&#34;，而是直接将这些定义为动作）：静止，移动，攻击，或者他们的组合（比如边移动边攻击，当然，别和我杠边静止边移动）
 然后就诞生了这样一个无限递归函数的流程图：
 可nb了，当时我就觉得，wow，我简直是一个逻辑大王，直到我知道这么做会栈溢出…
@@ -159,7 +159,7 @@ extends Node enum STATE { PATROL , CHASE , ATTACK } #在此定义状态机中的
   <meta itemprop="dateModified" content="2025-04-11T00:00:00+00:00">
   <meta itemprop="wordCount" content="370">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="AI-状态机">
+  <meta name="twitter:title" content="AI决策-状态机">
   <meta name="twitter:description" content="1 前言 我在使用godot开发一个RTS游戏的时候，我突然发现游戏中的单位(Unit)有且仅有三个动作（当时没有考虑&#34;状态&#34;，而是直接将这些定义为动作）：静止，移动，攻击，或者他们的组合（比如边移动边攻击，当然，别和我杠边静止边移动）
 然后就诞生了这样一个无限递归函数的流程图：
 可nb了，当时我就觉得，wow，我简直是一个逻辑大王，直到我知道这么做会栈溢出…
@@ -419,9 +419,9 @@ extends Node enum STATE { PATROL , CHASE , ATTACK } #在此定义状态机中的
         <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col open"><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
-    href="/game/ai-%E7%8A%B6%E6%80%81%E6%9C%BA/"
+    href="/game/ai%E5%86%B3%E7%AD%96-%E7%8A%B6%E6%80%81%E6%9C%BA/"
     
-  >AI-状态机
+  >AI决策-状态机
     </a>
   
     <ul class='hx:flex hx:flex-col hx:gap-1 hx:relative hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:dark:before:bg-neutral-800 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:pr-3 hx:rtl:before:right-0 hx:ltr:ml-3 hx:rtl:mr-3'><li>
@@ -461,6 +461,14 @@ extends Node enum STATE { PATROL , CHASE , ATTACK } #在此定义状态机中的
   >九王
     </a>
               
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/game/ai%E5%86%B3%E7%AD%96-%E7%8A%B6%E6%80%81%E6%9C%BA&#43;%E8%A1%8C%E4%B8%BA%E6%A0%91&#43;htn&#43;goap/"
+    
+  >AI决策-状态机&#43;行为树&#43;HTN&#43;GOAP
+    </a>
+              
             </li></ul>
       </div></li>
       <li class="[word-break:break-word] hx:mt-5 hx:mb-2 hx:px-2 hx:py-1.5 hx:text-sm hx:font-semibold hx:text-gray-900 hx:first:mt-0 hx:dark:text-gray-100">
@@ -486,9 +494,9 @@ extends Node enum STATE { PATROL , CHASE , ATTACK } #在此定义状态机中的
           <li class="open"><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
-    href="/game/ai-%E7%8A%B6%E6%80%81%E6%9C%BA/"
+    href="/game/ai%E5%86%B3%E7%AD%96-%E7%8A%B6%E6%80%81%E6%9C%BA/"
     
-  >AI-状态机
+  >AI决策-状态机
     </a></li>
           <li class=""><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
@@ -503,6 +511,13 @@ extends Node enum STATE { PATROL , CHASE , ATTACK } #在此定义状态机中的
     href="/game/%E4%B9%9D%E7%8E%8B/"
     
   >九王
+    </a></li>
+          <li class=""><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/game/ai%E5%86%B3%E7%AD%96-%E7%8A%B6%E6%80%81%E6%9C%BA&#43;%E8%A1%8C%E4%B8%BA%E6%A0%91&#43;htn&#43;goap/"
+    
+  >AI决策-状态机&#43;行为树&#43;HTN&#43;GOAP
     </a></li>
         
       <li class="[word-break:break-word] hx:mt-5 hx:mb-2 hx:px-2 hx:py-1.5 hx:text-sm hx:font-semibold hx:text-gray-900 hx:first:mt-0 hx:dark:text-gray-100">
@@ -621,20 +636,20 @@ extends Node enum STATE { PATROL , CHASE , ATTACK } #在此定义状态机中的
         <div class="hx:mt-1.5 hx:flex hx:items-center hx:gap-1 hx:overflow-hidden hx:text-sm hx:text-gray-500 hx:dark:text-gray-400 hx:contrast-more:text-current">
         <div class="hx:whitespace-nowrap hx:transition-colors hx:min-w-[24px] hx:overflow-hidden hx:text-ellipsis hx:hover:text-gray-900 hx:dark:hover:text-gray-100">
           <a href="/game/">游戏</a>
-        </div><svg class="hx:w-3.5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg><div class="hx:whitespace-nowrap hx:transition-colors hx:font-medium hx:text-gray-700 hx:contrast-more:font-bold hx:contrast-more:text-current hx:dark:text-gray-100 hx:contrast-more:dark:text-current">AI-状态机</div>
+        </div><svg class="hx:w-3.5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg><div class="hx:whitespace-nowrap hx:transition-colors hx:font-medium hx:text-gray-700 hx:contrast-more:font-bold hx:contrast-more:text-current hx:dark:text-gray-100 hx:contrast-more:dark:text-current">AI决策-状态机</div>
   </div>
 
         <div class="content">
-          <h1>AI-状态机</h1>
+          <h1>AI决策-状态机</h1>
           <h2>1 前言<span class="hx:absolute hx:-mt-20" id="1-前言"></span>
     <a href="#1-%e5%89%8d%e8%a8%80" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>我在使用godot开发一个RTS游戏的时候，我突然发现游戏中的单位(Unit)有且仅有三个动作（当时没有考虑&quot;状态&quot;，而是直接将这些定义为动作）：静止，移动，攻击，或者他们的组合（比如边移动边攻击，当然，别和我杠边静止边移动）</p>
 <p>然后就诞生了这样一个无限递归函数的流程图：</p>
 <p>
-    <img src="../AI-%e7%8a%b6%e6%80%81%e6%9c%ba1.jpg" alt=""  loading="lazy" /></p>
+    <img src="../AI%e5%86%b3%e7%ad%96-%e7%8a%b6%e6%80%81%e6%9c%ba1.jpg" alt=""  loading="lazy" /></p>
 <p>可nb了，当时我就觉得，wow，我简直是一个逻辑大王，直到我知道这么做会栈溢出&hellip;</p>
 <p>然后就去学了状态机，把上面的逻辑通过状态机写成了这样：</p>
 <p>
-    <img src="../AI-%e7%8a%b6%e6%80%81%e6%9c%ba.jpg" alt=""  loading="lazy" /></p>
+    <img src="../AI%e5%86%b3%e7%ad%96-%e7%8a%b6%e6%80%81%e6%9c%ba.jpg" alt=""  loading="lazy" /></p>
 <p>他们两个看上去逻辑是一样的，但区别就在上面的不能用，下面的能用，所以，状态机有什么用？</p>
 <p>即答：让不能用的东西变得能用！（bushi</p>
 <p>答：让actor个体（你说GameObject或CharacterBody也行，主要是我从虚幻开始学的，用actor习惯了）的行为用状态表示，从而<strong>减少逻辑混乱，增强代码可维护性和可扩展性</strong></p>
@@ -842,7 +857,7 @@ class_name PATROL
 @export var player : PLAYER #引用Player检测玩家是否进入侦查距离
 
 var detect_distance : float #侦查距离，当玩家与敌人的距离小于这一距离时，更改状态为chase
-var wander_time : float #为了不用✓十timer，这里用最朴素的方法写计时器
+var wander_time : float #为了不用强制多线程的timer，这里用最朴素的方法写计时器
 var current_wander_time : float
 
 func random_move() :
