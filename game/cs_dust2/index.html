@@ -8,100 +8,91 @@
 <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
 <link fetchpriority="low" href="/site.webmanifest" rel="manifest" />
-<title>九王 – 乂轶·轶名-0verDay</title>
-  <meta name="description" content="游戏类型：肉鸽&#43;回合制卡牌&#43;自走棋（&#43;城市规划？）
-画风：像素风
-一句话总结：像小丑牌一样，很让人爽，但没有长时间深入玩的意愿，有尽爽游
-基本玩法 游戏是回合制，以手牌数=2标志本回合结束，回合结束时会有交战，交战后玩家会从三张卡牌中自选一张，回合中玩家需要使用卡牌强化自己的实力，再迎接下一次交战，以此为游戏主循环
-流程图 核心系统 游戏中共有：
-单位： 军队，构筑物（建筑）两种可以放在格子中的单位
-手牌： 军队牌，构筑物牌，buff牌三种手牌
-“九&#34;格系统 游戏中最核心的系统，其实就是格子系统，游戏中称&#34;地块”，玩家只有一种手段主动强化自己的势力，就是将手牌使用到至多5x5个地块中（初始为3x3个地块，故而称&#34;九&#34;格，但可以通过各种手段扩展地块，上限是5x5，敌人会无止境增强，且增强速度会在某时大于玩家增强速度，所以玩家注定会失败）
-所有手牌均是一次性的，使用单位牌会在该地块上创造一个单位群（游戏中的单位数量较多），使用构筑物牌会在该地块上创造一个相应的构筑物，使用buff会给该地块上的单位/构筑物加上一个永久buff，直到失去该地块上的单位/构筑物（游戏中有可以摧毁地块上的单位/构筑物的牌）
-特殊地，每个单位和构筑物均有三个等级，玩家可以通过将与某个地块相同的牌作用到该地块上来升级该地块，升级会带来面板增益，该增益不会失去，地块升级到三级后不可继续升级，buff牌可以无限叠加到一个地块上
-特殊地，游戏中存在一张可以降低等级数的buff牌（类似于小丑牌的&#34;负片&#34;效果）
-格子只会增多，不会减少，解锁的格子可以不相邻 格子的&#34;相邻&#34;是四连通
-位置相关举例： 设游戏中有一3x3格
-农田 军队A 军队E 军队B 墓地 军队C 森林 军队D 铁匠铺 其中，
-墓地：相邻地块单位死亡时，在原位生成一个&#34;小鬼&#34;（可以理解为炮灰级部队）
-农田：每回合结束时，给随机相邻军队增加一个单位
-森林：每回合结束时，相邻军队生命值&#43;2%
-铁匠铺：每回合结束时，相邻军队伤害&#43;2%
-军队E：当相邻军队增加单位时，自己增加相应数量的单位
-则军队ABCD每回合都分别有农田森林铁匠铺的一次次强化，军队E在军队A获得农田增员加成时也获得加成
-势力系统 游戏中共有9个可选势力和1个不可选的彩虹势力，每个势力均有9张牌（彩虹势力不知道，但应该也有9张）
-其中每个势力（除彩虹势力外）固定有一个主城
-游戏开始时玩家固定获得该势力的主城卡，在玩家使用该主城卡后（即在初始格中建造主城），玩家将获得3张随机的该牌开始第一轮游戏（这个数字可以通过养成而改变），随后开始循环，直到失败
-战斗系统 作用于回合结束时（即手牌数=2时）" /><link rel="canonical" href="http://localhost:1313/game/nine_kings/" itemprop="url" />
+<title>cs炙热沙城二打法概述 – 乂轶·轶名-0verDay</title>
+  <meta name="description" content="先放一张报点图，不过说实话也用不着那么多报点，记住以下常用的就好：（假如看到名字可以想起它在哪，就相当于记住了）
+B包点：狙位，大箱，死点，狗洞，白车
+B外：脚手架，沙地
+B通：B2，B1，旋梯
+匪家：后花园
+中路：暗道，L位，中远，X箱，中门
+A小：躲闪位（我喜欢叫A小箱子）
+A包点：忍者位，二箱，一箱，爆头位，电梯位，狙位，斜坡
+A大：蓝车，厕所，大坑，蓝箱，A门
+第一时间交火点 对于任何一种默认打法来说，首要目的就是拿到最大的图权，哪一方在第一时间交火时胜出了，哪一方就能拿下这片区域的优势，所以这里先从第一时间交火点说起
+解释一下第一时间交火点，就是当ct与t第一身位都以最快速度抢占这些点时，双方会在此处交火（所以以下提到的ct和t都是第一身位）
+这张地图的第一交火点分别是（中门对狙的不算）：B通-B包，旋梯上-旋梯下，A小/B1-L位/中远，A门-A大拐角，主要的控图也就围绕这些位置展开
+B通-B包 ct优势
+通常只要t不rushB，这里是不会第一时间交火的，t单摸的人也不会蠢到单人清B包（当然，纯的除外）
+这里ct的控图很简单，只需要ct在过B门时给火，随便要不要侦察都可以，只要在火快灭时给烟就行
+给烟之后主B的ct可以选择跳竖箱或躲大箱后，架烟即可，我会更推荐跳竖箱，可以拿到B通的信息，如果中路压力过大可以选择去狗洞，让中路队友回警家，这样可以在沙地打中路出的t的交叉
+旋梯上-旋梯下 t优势
+当ct选择顶B1时，双方会在此交火，这里也是t在rushB时经常翻车的点，t要反制很简单，只要对着旋梯烧个火就行了
+假如t在非rushB时要预防这里交火，就需要走暗道的人在暗道的箱子后跳看中门，在封中门烟控制中路时一并把B1控下
+A小/B1-L位/中远 均势
+当ct顶A小时一般都需要带一个顶B1的，此时暗道和中远都可能会出人（暗道出是劣势），B1的ct需要负责侦察（B1是劣势，地形不好，容易被单摸的匪偷掉），A小的ct由于没有暴露信息主要负责对枪，大部分情况下打掉一个就可以撤了
+A门-A大拐角 ct优势
+ct和t都抢A大时，双方会在此相遇，此时ct在A大拐角，t在A门里正对A大拐角，需要注意的是，此时双方都没有交火能力（都切刀或切道具）
+这里主要讲ct如何控A大，无配合情况下，ct第一身位丢火缩回拐角，由第二身位对枪，或者，ct第一身位给漂移火下大坑，和第二身位打交叉，此时对枪点位就变成了A门/蓝箱（t第一身位一般跳蓝箱）-大坑/A大拐角
+更理想的情况是，ct第一身位丢A门火同时第二身位丢出蓝箱火，第一身位再丢反清闪和第二身位双拉
+ct默认及打法 一般情况下t是不会有默认的，所以这里就讲下ct的默认，由于本张图ct只有五个出生位，所以ct打默认的位置和出生位是绑定的
+ct默认1B1中3A，右边第一个主B，右边第二个中路，中间去A小，左边两个去A大
+主B的站住包点内即可，激进点站竖箱上，保守点站狙位，大箱后，团队点站狗洞，卖队友站白车，假如t这把开局不打B的话那这局就和主B的没多大关系了，和米垃圾主B，nuke主铁板的一样，是坐牢位
+主中路的主要负责侦察中远和A小，并不负责对枪（沙地m4对中远ak纯属炸鱼，对面eco局或大狙除外），因为这张图在封警家隔断烟前中路压力不大，匪出中路的情况及其罕见
+站A小的受个人实力和团队配合影响最大，保守打就是站在A小后点，等中路队友报t上A小或封中门烟后就反烟架枪，假如t没抢A大的话还可以摇一个A大的队友回来，对自己有自信的可以顶A小，顶A小放在下面的打法里讲
+A大是沙二这张图最关键的地方没有之一（再次一级是B1，在下面讲顶B1的打法里讲），从总体上看，A大是一个田字形地图，但事实上中路对A大是几乎没有影响的，t即使丢失了中路控制权也可以在中远以优势架住前压的t，这就导致ct丢失A大控制权之后只能通过A平台反清（相当于不能反清），所以说，A大破了就相当于这把t主攻A（大概率不会转点，因为A大要往B转被偷的可能性太多了，t没必要冒这个险），请第一时间支援A包
+顶B1 这种打法通常在ct的eco局出现，目的是快速清空B通，要求至少2个ct，风险高
+主B的ct可以给出B通假火（烧B洞-B包间左侧的拐角），因为警火范围小的特性不会封住B洞入口，同时也可以给可能在B的t提示&#34;这把烧了B通火，所以不要rush了&#34;，随后主B的压进B洞，当然不给这颗火也是可以的，这颗火主要起心理博弈的作用，对野牛玩家无效
+中路侦察的ct就放中路，改为开局进中门贴墙进B1（顶B1的核心），随后直接走旋梯和主B的人夹击B通里的匪" /><link rel="canonical" href="http://localhost:1313/game/cs_dust2/" itemprop="url" />
 
-<meta property="og:title" content="九王">
+<meta property="og:title" content="cs炙热沙城二打法概述">
 <meta
   property="og:description"
   content="
     
-      游戏类型：肉鸽&#43;回合制卡牌&#43;自走棋（&#43;城市规划？）
-画风：像素风
-一句话总结：像小丑牌一样，很让人爽，但没有长时间深入玩的意愿，有尽爽游
-基本玩法
-    游戏是回合制，以手牌数=2标志本回合结束，回合结束时会有交战，交战后玩家会从三张卡牌中自选一张，回合中玩家需要使用卡牌强化自己的实力，再迎接下一次交战，以此为游戏主循环
-流程图
+      先放一张报点图，不过说实话也用不着那么多报点，记住以下常用的就好：（假如看到名字可以想起它在哪，就相当于记住了）
+
     
-    
-核心系统
-    游戏中共有：
-单位：
-军队，构筑物（建筑）两种可以放在格子中的单位
-手牌：
-军队牌，构筑物牌，buff牌三种手牌
-&ldquo;九&quot;格系统
-    游戏中最核心的系统，其实就是格子系统，游戏中称&quot;地块&rdquo;，玩家只有一种手段主动强化自己的势力，就是将手牌使用到至多5x5个地块中（初始为3x3个地块，故而称&quot;九&quot;格，但可以通过各种手段扩展地块，上限是5x5，敌人会无止境增强，且增强速度会在某时大于玩家增强速度，所以玩家注定会失败）
-所有手牌均是一次性的，使用单位牌会在该地块上创造一个单位群（游戏中的单位数量较多），使用构筑物牌会在该地块上创造一个相应的构筑物，使用buff会给该地块上的单位/构筑物加上一个永久buff，直到失去该地块上的单位/构筑物（游戏中有可以摧毁地块上的单位/构筑物的牌）
-特殊地，每个单位和构筑物均有三个等级，玩家可以通过将与某个地块相同的牌作用到该地块上来升级该地块，升级会带来面板增益，该增益不会失去，地块升级到三级后不可继续升级，buff牌可以无限叠加到一个地块上
-特殊地，游戏中存在一张可以降低等级数的buff牌（类似于小丑牌的&quot;负片&quot;效果）
-格子只会增多，不会减少，解锁的格子可以不相邻
-格子的&quot;相邻&quot;是四连通
+B包点：狙位，大箱，死点，狗洞，白车
+B外：脚手架，沙地
+B通：B2，B1，旋梯
+匪家：后花园
+中路：暗道，L位，中远，X箱，中门
+A小：躲闪位（我喜欢叫A小箱子）
+A包点：忍者位，二箱，一箱，爆头位，电梯位，狙位，斜坡
+A大：蓝车，厕所，大坑，蓝箱，A门
 
-位置相关举例：
-设游戏中有一3x3格
-
-  
-      
-          
-          
-          
-      
-  
-  
-      
-          农田
-          军队A
-          军队E
-      
-      
-          军队B
-          墓地
-          军队C
-      
-      
-          森林
-          军队D
-          铁匠铺
-      
-  
-
-其中，
-墓地：相邻地块单位死亡时，在原位生成一个&quot;小鬼&quot;（可以理解为炮灰级部队）
-农田：每回合结束时，给随机相邻军队增加一个单位
-森林：每回合结束时，相邻军队生命值&#43;2%
-铁匠铺：每回合结束时，相邻军队伤害&#43;2%
-军队E：当相邻军队增加单位时，自己增加相应数量的单位
-则军队ABCD每回合都分别有农田森林铁匠铺的一次次强化，军队E在军队A获得农田增员加成时也获得加成
-势力系统
-    游戏中共有9个可选势力和1个不可选的彩虹势力，每个势力均有9张牌（彩虹势力不知道，但应该也有9张）
-其中每个势力（除彩虹势力外）固定有一个主城
-游戏开始时玩家固定获得该势力的主城卡，在玩家使用该主城卡后（即在初始格中建造主城），玩家将获得3张随机的该牌开始第一轮游戏（这个数字可以通过养成而改变），随后开始循环，直到失败
-战斗系统
-    作用于回合结束时（即手牌数=2时）
+第一时间交火点
+    对于任何一种默认打法来说，首要目的就是拿到最大的图权，哪一方在第一时间交火时胜出了，哪一方就能拿下这片区域的优势，所以这里先从第一时间交火点说起
+解释一下第一时间交火点，就是当ct与t第一身位都以最快速度抢占这些点时，双方会在此处交火（所以以下提到的ct和t都是第一身位）
+这张地图的第一交火点分别是（中门对狙的不算）：B通-B包，旋梯上-旋梯下，A小/B1-L位/中远，A门-A大拐角，主要的控图也就围绕这些位置展开
+B通-B包
+    ct优势
+通常只要t不rushB，这里是不会第一时间交火的，t单摸的人也不会蠢到单人清B包（当然，纯的除外）
+这里ct的控图很简单，只需要ct在过B门时给火，随便要不要侦察都可以，只要在火快灭时给烟就行
+给烟之后主B的ct可以选择跳竖箱或躲大箱后，架烟即可，我会更推荐跳竖箱，可以拿到B通的信息，如果中路压力过大可以选择去狗洞，让中路队友回警家，这样可以在沙地打中路出的t的交叉
+旋梯上-旋梯下
+    t优势
+当ct选择顶B1时，双方会在此交火，这里也是t在rushB时经常翻车的点，t要反制很简单，只要对着旋梯烧个火就行了
+假如t在非rushB时要预防这里交火，就需要走暗道的人在暗道的箱子后跳看中门，在封中门烟控制中路时一并把B1控下
+A小/B1-L位/中远
+    均势
+当ct顶A小时一般都需要带一个顶B1的，此时暗道和中远都可能会出人（暗道出是劣势），B1的ct需要负责侦察（B1是劣势，地形不好，容易被单摸的匪偷掉），A小的ct由于没有暴露信息主要负责对枪，大部分情况下打掉一个就可以撤了
+A门-A大拐角
+    ct优势
+ct和t都抢A大时，双方会在此相遇，此时ct在A大拐角，t在A门里正对A大拐角，需要注意的是，此时双方都没有交火能力（都切刀或切道具）
+这里主要讲ct如何控A大，无配合情况下，ct第一身位丢火缩回拐角，由第二身位对枪，或者，ct第一身位给漂移火下大坑，和第二身位打交叉，此时对枪点位就变成了A门/蓝箱（t第一身位一般跳蓝箱）-大坑/A大拐角
+更理想的情况是，ct第一身位丢A门火同时第二身位丢出蓝箱火，第一身位再丢反清闪和第二身位双拉
+ct默认及打法
+    一般情况下t是不会有默认的，所以这里就讲下ct的默认，由于本张图ct只有五个出生位，所以ct打默认的位置和出生位是绑定的
+ct默认1B1中3A，右边第一个主B，右边第二个中路，中间去A小，左边两个去A大
+主B的站住包点内即可，激进点站竖箱上，保守点站狙位，大箱后，团队点站狗洞，卖队友站白车，假如t这把开局不打B的话那这局就和主B的没多大关系了，和米垃圾主B，nuke主铁板的一样，是坐牢位
+主中路的主要负责侦察中远和A小，并不负责对枪（沙地m4对中远ak纯属炸鱼，对面eco局或大狙除外），因为这张图在封警家隔断烟前中路压力不大，匪出中路的情况及其罕见
+站A小的受个人实力和团队配合影响最大，保守打就是站在A小后点，等中路队友报t上A小或封中门烟后就反烟架枪，假如t没抢A大的话还可以摇一个A大的队友回来，对自己有自信的可以顶A小，顶A小放在下面的打法里讲
+A大是沙二这张图最关键的地方没有之一（再次一级是B1，在下面讲顶B1的打法里讲），从总体上看，A大是一个田字形地图，但事实上中路对A大是几乎没有影响的，t即使丢失了中路控制权也可以在中远以优势架住前压的t，这就导致ct丢失A大控制权之后只能通过A平台反清（相当于不能反清），所以说，A大破了就相当于这把t主攻A（大概率不会转点，因为A大要往B转被偷的可能性太多了，t没必要冒这个险），请第一时间支援A包
+顶B1
+    这种打法通常在ct的eco局出现，目的是快速清空B通，要求至少2个ct，风险高
+主B的ct可以给出B通假火（烧B洞-B包间左侧的拐角），因为警火范围小的特性不会封住B洞入口，同时也可以给可能在B的t提示&quot;这把烧了B通火，所以不要rush了&quot;，随后主B的压进B洞，当然不给这颗火也是可以的，这颗火主要起心理博弈的作用，对野牛玩家无效
+中路侦察的ct就放中路，改为开局进中门贴墙进B1（顶B1的核心），随后直接走旋梯和主B的人夹击B通里的匪
     
   ">
 <meta
@@ -109,73 +100,93 @@
   content="
     article
   ">
-<meta property="og:url" content="http://localhost:1313/game/nine_kings/"><meta property="article:section" content="game">
+<meta property="og:url" content="http://localhost:1313/game/cs_dust2/"><meta property="article:section" content="game">
 
 <meta
   property="article:published_time"
-  content="2025-11-24T00:00:00+00:00">
+  content="2025-12-01T00:00:00+00:00">
 
 
 <meta
   property="article:modified_time"
-  content="2025-11-24T00:00:00+00:00">
+  content="2025-12-01T00:00:00+00:00">
 
 
 
-  <meta itemprop="name" content="九王">
-  <meta itemprop="description" content="游戏类型：肉鸽&#43;回合制卡牌&#43;自走棋（&#43;城市规划？）
-画风：像素风
-一句话总结：像小丑牌一样，很让人爽，但没有长时间深入玩的意愿，有尽爽游
-基本玩法 游戏是回合制，以手牌数=2标志本回合结束，回合结束时会有交战，交战后玩家会从三张卡牌中自选一张，回合中玩家需要使用卡牌强化自己的实力，再迎接下一次交战，以此为游戏主循环
-流程图 核心系统 游戏中共有：
-单位： 军队，构筑物（建筑）两种可以放在格子中的单位
-手牌： 军队牌，构筑物牌，buff牌三种手牌
-“九&#34;格系统 游戏中最核心的系统，其实就是格子系统，游戏中称&#34;地块”，玩家只有一种手段主动强化自己的势力，就是将手牌使用到至多5x5个地块中（初始为3x3个地块，故而称&#34;九&#34;格，但可以通过各种手段扩展地块，上限是5x5，敌人会无止境增强，且增强速度会在某时大于玩家增强速度，所以玩家注定会失败）
-所有手牌均是一次性的，使用单位牌会在该地块上创造一个单位群（游戏中的单位数量较多），使用构筑物牌会在该地块上创造一个相应的构筑物，使用buff会给该地块上的单位/构筑物加上一个永久buff，直到失去该地块上的单位/构筑物（游戏中有可以摧毁地块上的单位/构筑物的牌）
-特殊地，每个单位和构筑物均有三个等级，玩家可以通过将与某个地块相同的牌作用到该地块上来升级该地块，升级会带来面板增益，该增益不会失去，地块升级到三级后不可继续升级，buff牌可以无限叠加到一个地块上
-特殊地，游戏中存在一张可以降低等级数的buff牌（类似于小丑牌的&#34;负片&#34;效果）
-格子只会增多，不会减少，解锁的格子可以不相邻 格子的&#34;相邻&#34;是四连通
-位置相关举例： 设游戏中有一3x3格
-农田 军队A 军队E 军队B 墓地 军队C 森林 军队D 铁匠铺 其中，
-墓地：相邻地块单位死亡时，在原位生成一个&#34;小鬼&#34;（可以理解为炮灰级部队）
-农田：每回合结束时，给随机相邻军队增加一个单位
-森林：每回合结束时，相邻军队生命值&#43;2%
-铁匠铺：每回合结束时，相邻军队伤害&#43;2%
-军队E：当相邻军队增加单位时，自己增加相应数量的单位
-则军队ABCD每回合都分别有农田森林铁匠铺的一次次强化，军队E在军队A获得农田增员加成时也获得加成
-势力系统 游戏中共有9个可选势力和1个不可选的彩虹势力，每个势力均有9张牌（彩虹势力不知道，但应该也有9张）
-其中每个势力（除彩虹势力外）固定有一个主城
-游戏开始时玩家固定获得该势力的主城卡，在玩家使用该主城卡后（即在初始格中建造主城），玩家将获得3张随机的该牌开始第一轮游戏（这个数字可以通过养成而改变），随后开始循环，直到失败
-战斗系统 作用于回合结束时（即手牌数=2时）">
-  <meta itemprop="datePublished" content="2025-11-24T00:00:00+00:00">
-  <meta itemprop="dateModified" content="2025-11-24T00:00:00+00:00">
-  <meta itemprop="wordCount" content="86">
+  <meta itemprop="name" content="cs炙热沙城二打法概述">
+  <meta itemprop="description" content="先放一张报点图，不过说实话也用不着那么多报点，记住以下常用的就好：（假如看到名字可以想起它在哪，就相当于记住了）
+B包点：狙位，大箱，死点，狗洞，白车
+B外：脚手架，沙地
+B通：B2，B1，旋梯
+匪家：后花园
+中路：暗道，L位，中远，X箱，中门
+A小：躲闪位（我喜欢叫A小箱子）
+A包点：忍者位，二箱，一箱，爆头位，电梯位，狙位，斜坡
+A大：蓝车，厕所，大坑，蓝箱，A门
+第一时间交火点 对于任何一种默认打法来说，首要目的就是拿到最大的图权，哪一方在第一时间交火时胜出了，哪一方就能拿下这片区域的优势，所以这里先从第一时间交火点说起
+解释一下第一时间交火点，就是当ct与t第一身位都以最快速度抢占这些点时，双方会在此处交火（所以以下提到的ct和t都是第一身位）
+这张地图的第一交火点分别是（中门对狙的不算）：B通-B包，旋梯上-旋梯下，A小/B1-L位/中远，A门-A大拐角，主要的控图也就围绕这些位置展开
+B通-B包 ct优势
+通常只要t不rushB，这里是不会第一时间交火的，t单摸的人也不会蠢到单人清B包（当然，纯的除外）
+这里ct的控图很简单，只需要ct在过B门时给火，随便要不要侦察都可以，只要在火快灭时给烟就行
+给烟之后主B的ct可以选择跳竖箱或躲大箱后，架烟即可，我会更推荐跳竖箱，可以拿到B通的信息，如果中路压力过大可以选择去狗洞，让中路队友回警家，这样可以在沙地打中路出的t的交叉
+旋梯上-旋梯下 t优势
+当ct选择顶B1时，双方会在此交火，这里也是t在rushB时经常翻车的点，t要反制很简单，只要对着旋梯烧个火就行了
+假如t在非rushB时要预防这里交火，就需要走暗道的人在暗道的箱子后跳看中门，在封中门烟控制中路时一并把B1控下
+A小/B1-L位/中远 均势
+当ct顶A小时一般都需要带一个顶B1的，此时暗道和中远都可能会出人（暗道出是劣势），B1的ct需要负责侦察（B1是劣势，地形不好，容易被单摸的匪偷掉），A小的ct由于没有暴露信息主要负责对枪，大部分情况下打掉一个就可以撤了
+A门-A大拐角 ct优势
+ct和t都抢A大时，双方会在此相遇，此时ct在A大拐角，t在A门里正对A大拐角，需要注意的是，此时双方都没有交火能力（都切刀或切道具）
+这里主要讲ct如何控A大，无配合情况下，ct第一身位丢火缩回拐角，由第二身位对枪，或者，ct第一身位给漂移火下大坑，和第二身位打交叉，此时对枪点位就变成了A门/蓝箱（t第一身位一般跳蓝箱）-大坑/A大拐角
+更理想的情况是，ct第一身位丢A门火同时第二身位丢出蓝箱火，第一身位再丢反清闪和第二身位双拉
+ct默认及打法 一般情况下t是不会有默认的，所以这里就讲下ct的默认，由于本张图ct只有五个出生位，所以ct打默认的位置和出生位是绑定的
+ct默认1B1中3A，右边第一个主B，右边第二个中路，中间去A小，左边两个去A大
+主B的站住包点内即可，激进点站竖箱上，保守点站狙位，大箱后，团队点站狗洞，卖队友站白车，假如t这把开局不打B的话那这局就和主B的没多大关系了，和米垃圾主B，nuke主铁板的一样，是坐牢位
+主中路的主要负责侦察中远和A小，并不负责对枪（沙地m4对中远ak纯属炸鱼，对面eco局或大狙除外），因为这张图在封警家隔断烟前中路压力不大，匪出中路的情况及其罕见
+站A小的受个人实力和团队配合影响最大，保守打就是站在A小后点，等中路队友报t上A小或封中门烟后就反烟架枪，假如t没抢A大的话还可以摇一个A大的队友回来，对自己有自信的可以顶A小，顶A小放在下面的打法里讲
+A大是沙二这张图最关键的地方没有之一（再次一级是B1，在下面讲顶B1的打法里讲），从总体上看，A大是一个田字形地图，但事实上中路对A大是几乎没有影响的，t即使丢失了中路控制权也可以在中远以优势架住前压的t，这就导致ct丢失A大控制权之后只能通过A平台反清（相当于不能反清），所以说，A大破了就相当于这把t主攻A（大概率不会转点，因为A大要往B转被偷的可能性太多了，t没必要冒这个险），请第一时间支援A包
+顶B1 这种打法通常在ct的eco局出现，目的是快速清空B通，要求至少2个ct，风险高
+主B的ct可以给出B通假火（烧B洞-B包间左侧的拐角），因为警火范围小的特性不会封住B洞入口，同时也可以给可能在B的t提示&#34;这把烧了B通火，所以不要rush了&#34;，随后主B的压进B洞，当然不给这颗火也是可以的，这颗火主要起心理博弈的作用，对野牛玩家无效
+中路侦察的ct就放中路，改为开局进中门贴墙进B1（顶B1的核心），随后直接走旋梯和主B的人夹击B通里的匪">
+  <meta itemprop="datePublished" content="2025-12-01T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2025-12-01T00:00:00+00:00">
+  <meta itemprop="wordCount" content="51">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="九王">
-  <meta name="twitter:description" content="游戏类型：肉鸽&#43;回合制卡牌&#43;自走棋（&#43;城市规划？）
-画风：像素风
-一句话总结：像小丑牌一样，很让人爽，但没有长时间深入玩的意愿，有尽爽游
-基本玩法 游戏是回合制，以手牌数=2标志本回合结束，回合结束时会有交战，交战后玩家会从三张卡牌中自选一张，回合中玩家需要使用卡牌强化自己的实力，再迎接下一次交战，以此为游戏主循环
-流程图 核心系统 游戏中共有：
-单位： 军队，构筑物（建筑）两种可以放在格子中的单位
-手牌： 军队牌，构筑物牌，buff牌三种手牌
-“九&#34;格系统 游戏中最核心的系统，其实就是格子系统，游戏中称&#34;地块”，玩家只有一种手段主动强化自己的势力，就是将手牌使用到至多5x5个地块中（初始为3x3个地块，故而称&#34;九&#34;格，但可以通过各种手段扩展地块，上限是5x5，敌人会无止境增强，且增强速度会在某时大于玩家增强速度，所以玩家注定会失败）
-所有手牌均是一次性的，使用单位牌会在该地块上创造一个单位群（游戏中的单位数量较多），使用构筑物牌会在该地块上创造一个相应的构筑物，使用buff会给该地块上的单位/构筑物加上一个永久buff，直到失去该地块上的单位/构筑物（游戏中有可以摧毁地块上的单位/构筑物的牌）
-特殊地，每个单位和构筑物均有三个等级，玩家可以通过将与某个地块相同的牌作用到该地块上来升级该地块，升级会带来面板增益，该增益不会失去，地块升级到三级后不可继续升级，buff牌可以无限叠加到一个地块上
-特殊地，游戏中存在一张可以降低等级数的buff牌（类似于小丑牌的&#34;负片&#34;效果）
-格子只会增多，不会减少，解锁的格子可以不相邻 格子的&#34;相邻&#34;是四连通
-位置相关举例： 设游戏中有一3x3格
-农田 军队A 军队E 军队B 墓地 军队C 森林 军队D 铁匠铺 其中，
-墓地：相邻地块单位死亡时，在原位生成一个&#34;小鬼&#34;（可以理解为炮灰级部队）
-农田：每回合结束时，给随机相邻军队增加一个单位
-森林：每回合结束时，相邻军队生命值&#43;2%
-铁匠铺：每回合结束时，相邻军队伤害&#43;2%
-军队E：当相邻军队增加单位时，自己增加相应数量的单位
-则军队ABCD每回合都分别有农田森林铁匠铺的一次次强化，军队E在军队A获得农田增员加成时也获得加成
-势力系统 游戏中共有9个可选势力和1个不可选的彩虹势力，每个势力均有9张牌（彩虹势力不知道，但应该也有9张）
-其中每个势力（除彩虹势力外）固定有一个主城
-游戏开始时玩家固定获得该势力的主城卡，在玩家使用该主城卡后（即在初始格中建造主城），玩家将获得3张随机的该牌开始第一轮游戏（这个数字可以通过养成而改变），随后开始循环，直到失败
-战斗系统 作用于回合结束时（即手牌数=2时）">
+  <meta name="twitter:title" content="cs炙热沙城二打法概述">
+  <meta name="twitter:description" content="先放一张报点图，不过说实话也用不着那么多报点，记住以下常用的就好：（假如看到名字可以想起它在哪，就相当于记住了）
+B包点：狙位，大箱，死点，狗洞，白车
+B外：脚手架，沙地
+B通：B2，B1，旋梯
+匪家：后花园
+中路：暗道，L位，中远，X箱，中门
+A小：躲闪位（我喜欢叫A小箱子）
+A包点：忍者位，二箱，一箱，爆头位，电梯位，狙位，斜坡
+A大：蓝车，厕所，大坑，蓝箱，A门
+第一时间交火点 对于任何一种默认打法来说，首要目的就是拿到最大的图权，哪一方在第一时间交火时胜出了，哪一方就能拿下这片区域的优势，所以这里先从第一时间交火点说起
+解释一下第一时间交火点，就是当ct与t第一身位都以最快速度抢占这些点时，双方会在此处交火（所以以下提到的ct和t都是第一身位）
+这张地图的第一交火点分别是（中门对狙的不算）：B通-B包，旋梯上-旋梯下，A小/B1-L位/中远，A门-A大拐角，主要的控图也就围绕这些位置展开
+B通-B包 ct优势
+通常只要t不rushB，这里是不会第一时间交火的，t单摸的人也不会蠢到单人清B包（当然，纯的除外）
+这里ct的控图很简单，只需要ct在过B门时给火，随便要不要侦察都可以，只要在火快灭时给烟就行
+给烟之后主B的ct可以选择跳竖箱或躲大箱后，架烟即可，我会更推荐跳竖箱，可以拿到B通的信息，如果中路压力过大可以选择去狗洞，让中路队友回警家，这样可以在沙地打中路出的t的交叉
+旋梯上-旋梯下 t优势
+当ct选择顶B1时，双方会在此交火，这里也是t在rushB时经常翻车的点，t要反制很简单，只要对着旋梯烧个火就行了
+假如t在非rushB时要预防这里交火，就需要走暗道的人在暗道的箱子后跳看中门，在封中门烟控制中路时一并把B1控下
+A小/B1-L位/中远 均势
+当ct顶A小时一般都需要带一个顶B1的，此时暗道和中远都可能会出人（暗道出是劣势），B1的ct需要负责侦察（B1是劣势，地形不好，容易被单摸的匪偷掉），A小的ct由于没有暴露信息主要负责对枪，大部分情况下打掉一个就可以撤了
+A门-A大拐角 ct优势
+ct和t都抢A大时，双方会在此相遇，此时ct在A大拐角，t在A门里正对A大拐角，需要注意的是，此时双方都没有交火能力（都切刀或切道具）
+这里主要讲ct如何控A大，无配合情况下，ct第一身位丢火缩回拐角，由第二身位对枪，或者，ct第一身位给漂移火下大坑，和第二身位打交叉，此时对枪点位就变成了A门/蓝箱（t第一身位一般跳蓝箱）-大坑/A大拐角
+更理想的情况是，ct第一身位丢A门火同时第二身位丢出蓝箱火，第一身位再丢反清闪和第二身位双拉
+ct默认及打法 一般情况下t是不会有默认的，所以这里就讲下ct的默认，由于本张图ct只有五个出生位，所以ct打默认的位置和出生位是绑定的
+ct默认1B1中3A，右边第一个主B，右边第二个中路，中间去A小，左边两个去A大
+主B的站住包点内即可，激进点站竖箱上，保守点站狙位，大箱后，团队点站狗洞，卖队友站白车，假如t这把开局不打B的话那这局就和主B的没多大关系了，和米垃圾主B，nuke主铁板的一样，是坐牢位
+主中路的主要负责侦察中远和A小，并不负责对枪（沙地m4对中远ak纯属炸鱼，对面eco局或大狙除外），因为这张图在封警家隔断烟前中路压力不大，匪出中路的情况及其罕见
+站A小的受个人实力和团队配合影响最大，保守打就是站在A小后点，等中路队友报t上A小或封中门烟后就反烟架枪，假如t没抢A大的话还可以摇一个A大的队友回来，对自己有自信的可以顶A小，顶A小放在下面的打法里讲
+A大是沙二这张图最关键的地方没有之一（再次一级是B1，在下面讲顶B1的打法里讲），从总体上看，A大是一个田字形地图，但事实上中路对A大是几乎没有影响的，t即使丢失了中路控制权也可以在中远以优势架住前压的t，这就导致ct丢失A大控制权之后只能通过A平台反清（相当于不能反清），所以说，A大破了就相当于这把t主攻A（大概率不会转点，因为A大要往B转被偷的可能性太多了，t没必要冒这个险），请第一时间支援A包
+顶B1 这种打法通常在ct的eco局出现，目的是快速清空B通，要求至少2个ct，风险高
+主B的ct可以给出B通假火（烧B洞-B包间左侧的拐角），因为警火范围小的特性不会封住B洞入口，同时也可以给可能在B的t提示&#34;这把烧了B通火，所以不要rush了&#34;，随后主B的压进B洞，当然不给这颗火也是可以的，这颗火主要起心理博弈的作用，对野牛玩家无效
+中路侦察的ct就放中路，改为开局进中门贴墙进B1（顶B1的核心），随后直接走旋梯和主B的人夹击B通里的匪">
 <link href="/css/compiled/main.css" rel="stylesheet" />
     <link href="/css/variables.css" rel="stylesheet" />
     <link href="/css/custom.css" rel="stylesheet" />
@@ -429,34 +440,13 @@
   >墨守孤城
     </a>
               
-            </li><li class="hx:flex hx:flex-col open"><a
+            </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
     href="/game/nine_kings/"
     
   >九王
     </a>
-  
-    <ul class='hx:flex hx:flex-col hx:gap-1 hx:relative hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:dark:before:bg-neutral-800 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:pr-3 hx:rtl:before:right-0 hx:ltr:ml-3 hx:rtl:mr-3'><li>
-              <a
-                href="#%e5%9f%ba%e6%9c%ac%e7%8e%a9%e6%b3%95"
-                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
-              >基本玩法</a>
-            </li>
-          <li>
-              <a
-                href="#%e6%b5%81%e7%a8%8b%e5%9b%be"
-                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
-              >流程图</a>
-            </li>
-          <li>
-              <a
-                href="#%e6%a0%b8%e5%bf%83%e7%b3%bb%e7%bb%9f"
-                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
-              >核心系统</a>
-            </li>
-          </ul>
-  
               
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
@@ -466,13 +456,34 @@
   >AI决策-状态机&#43;行为树&#43;HTN&#43;GOAP
     </a>
               
-            </li><li class="hx:flex hx:flex-col "><a
+            </li><li class="hx:flex hx:flex-col open"><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
     href="/game/cs_dust2/"
     
   >cs炙热沙城二打法概述
     </a>
+  
+    <ul class='hx:flex hx:flex-col hx:gap-1 hx:relative hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:dark:before:bg-neutral-800 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:pr-3 hx:rtl:before:right-0 hx:ltr:ml-3 hx:rtl:mr-3'><li>
+              <a
+                href="#%e7%ac%ac%e4%b8%80%e6%97%b6%e9%97%b4%e4%ba%a4%e7%81%ab%e7%82%b9"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >第一时间交火点</a>
+            </li>
+          <li>
+              <a
+                href="#ct%e9%bb%98%e8%ae%a4%e5%8f%8a%e6%89%93%e6%b3%95"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >ct默认及打法</a>
+            </li>
+          <li>
+              <a
+                href="#t%e6%85%a2%e6%89%93%e6%89%93%e6%b3%95"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >t慢打打法</a>
+            </li>
+          </ul>
+  
               
             </li></ul>
       </div></li>
@@ -510,9 +521,9 @@
     
   >墨守孤城
     </a></li>
-          <li class="open"><a
+          <li class=""><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
     href="/game/nine_kings/"
     
   >九王
@@ -524,9 +535,9 @@
     
   >AI决策-状态机&#43;行为树&#43;HTN&#43;GOAP
     </a></li>
-          <li class=""><a
+          <li class="open"><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
     href="/game/cs_dust2/"
     
   >cs炙热沙城二打法概述
@@ -604,43 +615,39 @@
 <nav class="hextra-toc hx:order-last hx:hidden hx:w-64 hx:shrink-0 hx:xl:block hx:print:hidden hx:px-4" aria-label="table of contents">
     <div class="hextra-scrollbar hx:sticky hx:top-16 hx:overflow-y-auto hx:pr-4 hx:pt-6 hx:text-sm [hyphens:auto] hx:max-h-[calc(100vh-var(--navbar-height)-env(safe-area-inset-bottom))] hx:ltr:-mr-4 hx:rtl:-ml-4"><p class="hx:mb-4 hx:font-semibold hx:tracking-tight">此页上</p><ul>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e5%9f%ba%e6%9c%ac%e7%8e%a9%e6%b3%95">基本玩法
+        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e7%ac%ac%e4%b8%80%e6%97%b6%e9%97%b4%e4%ba%a4%e7%81%ab%e7%82%b9">第一时间交火点
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e6%b5%81%e7%a8%8b%e5%9b%be">流程图
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#b%e9%80%9a-b%e5%8c%85">B通-B包
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e6%a0%b8%e5%bf%83%e7%b3%bb%e7%bb%9f">核心系统
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e6%97%8b%e6%a2%af%e4%b8%8a-%e6%97%8b%e6%a2%af%e4%b8%8b">旋梯上-旋梯下
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e4%b9%9d%e6%a0%bc%e7%b3%bb%e7%bb%9f">“九&#34;格系统
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#a%e5%b0%8fb1-l%e4%bd%8d%e4%b8%ad%e8%bf%9c">A小/B1-L位/中远
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e5%8a%bf%e5%8a%9b%e7%b3%bb%e7%bb%9f">势力系统
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#a%e9%97%a8-a%e5%a4%a7%e6%8b%90%e8%a7%92">A门-A大拐角
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e6%88%98%e6%96%97%e7%b3%bb%e7%bb%9f">战斗系统
+        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#ct%e9%bb%98%e8%ae%a4%e5%8f%8a%e6%89%93%e6%b3%95">ct默认及打法
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e6%88%98%e6%96%97%e7%bb%93%e6%9d%9f%e5%90%8e%e7%9a%84%e4%b8%89%e9%80%89%e9%a1%b9%e9%80%89%e7%89%8c">战斗结束后的三选项选牌
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e9%a1%b6b1">顶B1
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e7%bb%8f%e6%b5%8e%e7%b3%bb%e7%bb%9f">经济系统
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e9%a1%b6a%e5%b0%8f">顶A小
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e5%b9%b4%e4%bb%bd%e7%b3%bb%e7%bb%9f">年份系统
-        </a>
-      </li>
-      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e5%85%bb%e6%88%90%e7%b3%bb%e7%bb%9f%e7%89%b9%e6%9d%83%e7%b3%bb%e7%bb%9f">养成系统（特权系统）
+        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#t%e6%85%a2%e6%89%93%e6%89%93%e6%b3%95">t慢打打法
         </a>
       </li></ul>
       <div class="hx:mt-8 hx:border-t hx:bg-white hx:pt-8 hx:shadow-[0_-12px_16px_white] hx:dark:bg-dark hx:dark:shadow-[0_-12px_16px_#111] hx:sticky hx:bottom-0 hx:flex hx:flex-col hx:items-start hx:gap-2 hx:pb-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-t hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:border-neutral-400">
@@ -660,159 +667,74 @@
         <div class="hx:mt-1.5 hx:flex hx:items-center hx:gap-1 hx:overflow-hidden hx:text-sm hx:text-gray-500 hx:dark:text-gray-400 hx:contrast-more:text-current">
         <div class="hx:whitespace-nowrap hx:transition-colors hx:min-w-[24px] hx:overflow-hidden hx:text-ellipsis hx:hover:text-gray-900 hx:dark:hover:text-gray-100">
           <a href="/game/">游戏</a>
-        </div><svg class="hx:w-3.5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg><div class="hx:whitespace-nowrap hx:transition-colors hx:font-medium hx:text-gray-700 hx:contrast-more:font-bold hx:contrast-more:text-current hx:dark:text-gray-100 hx:contrast-more:dark:text-current">九王</div>
+        </div><svg class="hx:w-3.5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg><div class="hx:whitespace-nowrap hx:transition-colors hx:font-medium hx:text-gray-700 hx:contrast-more:font-bold hx:contrast-more:text-current hx:dark:text-gray-100 hx:contrast-more:dark:text-current">cs炙热沙城二打法概述</div>
   </div>
 
         <div class="content">
-          <h1>九王</h1>
-          <p>游戏类型：肉鸽+回合制卡牌+自走棋（+城市规划？）</p>
-<p>画风：像素风</p>
-<p>一句话总结：像小丑牌一样，很让人爽，但没有长时间深入玩的意愿，有尽爽游</p>
-<h2>基本玩法<span class="hx:absolute hx:-mt-20" id="基本玩法"></span>
-    <a href="#%e5%9f%ba%e6%9c%ac%e7%8e%a9%e6%b3%95" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>游戏是回合制，以手牌数=2标志本回合结束，回合结束时会有交战，交战后玩家会从三张卡牌中自选一张，回合中玩家需要使用卡牌强化自己的实力，再迎接下一次交战，以此为游戏主循环</p>
-<h2>流程图<span class="hx:absolute hx:-mt-20" id="流程图"></span>
-    <a href="#%e6%b5%81%e7%a8%8b%e5%9b%be" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>
-    <img src="../%e4%b9%9d%e7%8e%8b.png" alt=""  loading="lazy" /></p>
-<h2>核心系统<span class="hx:absolute hx:-mt-20" id="核心系统"></span>
-    <a href="#%e6%a0%b8%e5%bf%83%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>游戏中共有：</p>
-<p>单位：
-军队，构筑物（建筑）两种可以放在格子中的单位</p>
-<p>手牌：
-军队牌，构筑物牌，buff牌三种手牌</p>
-<h3>&ldquo;九&quot;格系统<span class="hx:absolute hx:-mt-20" id="九格系统"></span>
-    <a href="#%e4%b9%9d%e6%a0%bc%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>游戏中最核心的系统，其实就是格子系统，游戏中称&quot;地块&rdquo;，玩家只有一种手段主动强化自己的势力，就是将手牌使用到至多5x5个地块中（初始为3x3个地块，故而称&quot;九&quot;格，但可以通过各种手段扩展地块，上限是5x5，敌人会无止境增强，且增强速度会在某时大于玩家增强速度，所以玩家注定会失败）</p>
-<p>所有手牌均是一次性的，使用单位牌会在该地块上创造一个单位群（游戏中的单位数量较多），使用构筑物牌会在该地块上创造一个相应的构筑物，使用buff会给该地块上的单位/构筑物加上一个永久buff，直到失去该地块上的单位/构筑物（游戏中有可以摧毁地块上的单位/构筑物的牌）</p>
-<p>特殊地，每个单位和构筑物均有三个等级，玩家可以通过将与某个地块相同的牌作用到该地块上来升级该地块，升级会带来面板增益，该增益不会失去，地块升级到三级后不可继续升级，buff牌可以无限叠加到一个地块上</p>
-<p>特殊地，游戏中存在一张可以降低等级数的buff牌（类似于小丑牌的&quot;负片&quot;效果）</p>
-<p>格子只会增多，不会减少，解锁的格子可以不相邻
-格子的&quot;相邻&quot;是四连通</p>
+          <h1>cs炙热沙城二打法概述</h1>
+          <p>先放一张报点图，不过说实话也用不着那么多报点，记住以下常用的就好：（假如看到名字可以想起它在哪，就相当于记住了）</p>
+<p>
+    <img src="../dust2.jpg" alt=""  loading="lazy" /></p>
+<p>B包点：狙位，大箱，死点，狗洞，白车</p>
+<p>B外：脚手架，沙地</p>
+<p>B通：B2，B1，旋梯</p>
+<p>匪家：后花园</p>
+<p>中路：暗道，L位，中远，X箱，中门</p>
+<p>A小：躲闪位（我喜欢叫A小箱子）</p>
+<p>A包点：忍者位，二箱，一箱，爆头位，电梯位，狙位，斜坡</p>
+<p>A大：蓝车，厕所，大坑，蓝箱，A门</p>
 <hr>
-<p>位置相关举例：
-设游戏中有一3x3格</p>
-<table>
-  <thead>
-      <tr>
-          <th style="text-align: left"></th>
-          <th style="text-align: left"></th>
-          <th style="text-align: left"></th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td style="text-align: left">农田</td>
-          <td style="text-align: left">军队A</td>
-          <td style="text-align: left">军队E</td>
-      </tr>
-      <tr>
-          <td style="text-align: left">军队B</td>
-          <td style="text-align: left">墓地</td>
-          <td style="text-align: left">军队C</td>
-      </tr>
-      <tr>
-          <td style="text-align: left">森林</td>
-          <td style="text-align: left">军队D</td>
-          <td style="text-align: left">铁匠铺</td>
-      </tr>
-  </tbody>
-</table>
-<p>其中，</p>
-<p>墓地：相邻地块单位死亡时，在原位生成一个&quot;小鬼&quot;（可以理解为炮灰级部队）</p>
-<p>农田：每回合结束时，给随机相邻军队增加一个单位</p>
-<p>森林：每回合结束时，相邻军队生命值+2%</p>
-<p>铁匠铺：每回合结束时，相邻军队伤害+2%</p>
-<p>军队E：当相邻军队增加单位时，自己增加相应数量的单位</p>
-<p>则军队ABCD每回合都分别有农田森林铁匠铺的一次次强化，军队E在军队A获得农田增员加成时也获得加成</p>
-<h3>势力系统<span class="hx:absolute hx:-mt-20" id="势力系统"></span>
-    <a href="#%e5%8a%bf%e5%8a%9b%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>游戏中共有9个可选势力和1个不可选的彩虹势力，每个势力均有9张牌（彩虹势力不知道，但应该也有9张）</p>
-<p>其中每个势力（除彩虹势力外）固定有一个主城</p>
-<p>游戏开始时玩家固定获得该势力的主城卡，在玩家使用该主城卡后（即在初始格中建造主城），玩家将获得3张随机的该牌开始第一轮游戏（这个数字可以通过养成而改变），随后开始循环，直到失败</p>
-<h3>战斗系统<span class="hx:absolute hx:-mt-20" id="战斗系统"></span>
-    <a href="#%e6%88%98%e6%96%97%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>作用于回合结束时（即手牌数=2时）</p>
-<p>游戏中的战斗是全自动的，玩家能直接影响到战局的手段只有&quot;主城&quot;的效果（如虚无之王的主城效果是有冷却地往玩家鼠标指示处丢出落石，死亡之王的主城效果是有上限地在玩家鼠标指示处召唤作战单位，玩家只会有一个主城）</p>
-<p>在回合结束时，玩家场上的单位会往战场自动排兵布阵（肉盾往前，输出往后），在战场上的另一边会出现一队某个势力的军队（玩家可以提前知道是哪个势力，但不可提前知道军队的具体信息，这个靠背板，即某个势力会固定出某些种类的军队，只不过数量和面板数值不同），双方自动战斗，当敌方军队全灭，玩家胜利，当敌方军队攻进玩家主城，玩家失败，失去1生命值（玩家初始有3生命值，生命值为0时本轮游戏结束）</p>
-<p>特殊地，玩家场上的构筑物有防御塔类时，这些防御塔也会帮助玩家攻击（但没有血量）</p>
-<h4>战斗结束后的三选项选牌<span class="hx:absolute hx:-mt-20" id="战斗结束后的三选项选牌"></span>
-    <a href="#%e6%88%98%e6%96%97%e7%bb%93%e6%9d%9f%e5%90%8e%e7%9a%84%e4%b8%89%e9%80%89%e9%a1%b9%e9%80%89%e7%89%8c" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>（战斗结束后立刻生效）
-玩家会获得3个卡牌选项（可以通过某些手段提高这个数），这些卡牌来自于战斗中交战的势力（也是充分利用到了其余势力的牌嗷），玩家可自选其中一项获得（有某些手段可以让玩家失去选择机会而随机获得两张牌）</p>
-<p>特殊地，玩家有消耗&quot;金币&quot;重掷的选项</p>
-<h3>经济系统<span class="hx:absolute hx:-mt-20" id="经济系统"></span>
-    <a href="#%e7%bb%8f%e6%b5%8e%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>游戏中的经济系统很小</p>
-<p>只有以下常规手段获取金币：</p>
-<ul>
-<li>
-<p>有&quot;击败敌人时有2%的概率获得1金币&quot;buff的军队击败敌人（该buff也是一张牌，需要附加到自己的军队上）</p>
-</li>
-<li>
-<p>构筑物&quot;金库&quot;：每回合获得3金币</p>
-</li>
-<li>
-<p>每回合固定收入</p>
-</li>
-</ul>
-<p>只有以下常规手段消耗金币：</p>
-<ul>
-<li>
-<p>年份效果为&quot;商店&quot;时消耗金币购买卡牌或重掷卡牌</p>
-</li>
-<li>
-<p>消耗金币重掷战斗结束时的三选项卡牌</p>
-</li>
-<li>
-<p>无限肉鸽阶段消耗金币解锁地块</p>
-</li>
-</ul>
-<p>特殊地，游戏中存在与金币相关的buff（如每获得1金币则获得n增益），为扩展，此处不赘述</p>
-<h3>年份系统<span class="hx:absolute hx:-mt-20" id="年份系统"></span>
-    <a href="#%e5%b9%b4%e4%bb%bd%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>作用于战斗结束时
-每一个回合相当于一年，有些年份会有特殊效果，在年份开始时（可以简单理解为回合开始时），这个效果将会生效（均为一次性效果）</p>
-<p>举例：</p>
-<ul>
-<li>
-<p>祈福：在n年后会有某些效果
-（如：9年后某地块的军队生命值翻倍，9年后某地块的军队数量翻倍）</p>
-</li>
-<li>
-<p>政策：玩家从三个效果中选择一个生效
-（如：部队暴击效果增加50%，立即解锁三个地块，获得99金币，恢复玩家生命值）</p>
-</li>
-<li>
-<p>解锁地块（玩家选择一个地块解锁）</p>
-</li>
-<li>
-<p>商店（玩家消耗金币购买卡牌）</p>
-</li>
-</ul>
-<h3>养成系统（特权系统）<span class="hx:absolute hx:-mt-20" id="养成系统特权系统"></span>
-    <a href="#%e5%85%bb%e6%88%90%e7%b3%bb%e7%bb%9f%e7%89%b9%e6%9d%83%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>游戏外初始只能选择一个国王（代表势力），随着玩家达到某些目标（如消灭9999军队，建造99建筑等），某些国王会相应地解锁，可选国王有9个</p>
-<p>游戏中养成系统主要在&quot;特权&quot;中，玩家在游玩一轮游戏结算时，会为本轮使用的国王增加经验，经验用于升级，升级会获得&quot;专属特权&quot;和&quot;通用特权&quot;两种特权，其中通用特权为每个国王均可使用，专属特权为仅该国王使用</p>
-<p>（类似于铭文系统）</p>
-<p>玩家需要在进入一轮游戏前配置所选国王的特权，每个国王限9个特权</p>
-<p>举例：</p>
-<ul>
-<li>通用特权：所有军队攻击速度+10%</li>
-<li>通用特权：游戏开始时随机解锁一个位置的地块</li>
-<li>通用特权：获得3次免费重掷次数</li>
-<li>通用特权：所有通用特权效果x2</li>
-<li>专属特权：游戏开始时随机在一个地块里生成&quot;恶魔祭坛&quot;（某个国王的构筑牌）</li>
-<li>专属特权：游戏开始时获得一张&quot;小鬼&quot;（某个国王的军队牌）</li>
-</ul>
-<p>特殊地，有的特权会根据位置影响其他特权，为扩展，此处不赘述
-（如：此特权的相邻纵向特权效果x2）</p>
-<hr>
-<p>以上</p>
+<h2>第一时间交火点<span class="hx:absolute hx:-mt-20" id="第一时间交火点"></span>
+    <a href="#%e7%ac%ac%e4%b8%80%e6%97%b6%e9%97%b4%e4%ba%a4%e7%81%ab%e7%82%b9" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>对于任何一种默认打法来说，首要目的就是拿到最大的图权，哪一方在第一时间交火时胜出了，哪一方就能拿下这片区域的优势，所以这里先从第一时间交火点说起</p>
+<p>解释一下第一时间交火点，就是当ct与t第一身位都以最快速度抢占这些点时，双方会在此处交火（所以以下提到的ct和t都是第一身位）</p>
+<p>这张地图的第一交火点分别是（中门对狙的不算）：B通-B包，旋梯上-旋梯下，A小/B1-L位/中远，A门-A大拐角，主要的控图也就围绕这些位置展开</p>
+<h3>B通-B包<span class="hx:absolute hx:-mt-20" id="b通-b包"></span>
+    <a href="#b%e9%80%9a-b%e5%8c%85" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>ct优势</p>
+<p>通常只要t不rushB，这里是不会第一时间交火的，t单摸的人也不会蠢到单人清B包（当然，纯的除外）</p>
+<p>这里ct的控图很简单，只需要ct在过B门时给火，随便要不要侦察都可以，只要在火快灭时给烟就行</p>
+<p>给烟之后主B的ct可以选择跳竖箱或躲大箱后，架烟即可，我会更推荐跳竖箱，可以拿到B通的信息，如果中路压力过大可以选择去狗洞，让中路队友回警家，这样可以在沙地打中路出的t的交叉</p>
+<h3>旋梯上-旋梯下<span class="hx:absolute hx:-mt-20" id="旋梯上-旋梯下"></span>
+    <a href="#%e6%97%8b%e6%a2%af%e4%b8%8a-%e6%97%8b%e6%a2%af%e4%b8%8b" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>t优势</p>
+<p>当ct选择顶B1时，双方会在此交火，这里也是t在rushB时经常翻车的点，t要反制很简单，只要对着旋梯烧个火就行了</p>
+<p>假如t在非rushB时要预防这里交火，就需要走暗道的人在暗道的箱子后跳看中门，在封中门烟控制中路时一并把B1控下</p>
+<h3>A小/B1-L位/中远<span class="hx:absolute hx:-mt-20" id="a小b1-l位中远"></span>
+    <a href="#a%e5%b0%8fb1-l%e4%bd%8d%e4%b8%ad%e8%bf%9c" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>均势</p>
+<p>当ct顶A小时一般都需要带一个顶B1的，此时暗道和中远都可能会出人（暗道出是劣势），B1的ct需要负责侦察（B1是劣势，地形不好，容易被单摸的匪偷掉），A小的ct由于没有暴露信息主要负责对枪，大部分情况下打掉一个就可以撤了</p>
+<h3>A门-A大拐角<span class="hx:absolute hx:-mt-20" id="a门-a大拐角"></span>
+    <a href="#a%e9%97%a8-a%e5%a4%a7%e6%8b%90%e8%a7%92" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>ct优势</p>
+<p>ct和t都抢A大时，双方会在此相遇，此时ct在A大拐角，t在A门里正对A大拐角，需要注意的是，此时双方都没有交火能力（都切刀或切道具）</p>
+<p>这里主要讲ct如何控A大，无配合情况下，ct第一身位丢火缩回拐角，由第二身位对枪，或者，ct第一身位给漂移火下大坑，和第二身位打交叉，此时对枪点位就变成了A门/蓝箱（t第一身位一般跳蓝箱）-大坑/A大拐角</p>
+<p>更理想的情况是，ct第一身位丢A门火同时第二身位丢出蓝箱火，第一身位再丢反清闪和第二身位双拉</p>
+<h2>ct默认及打法<span class="hx:absolute hx:-mt-20" id="ct默认及打法"></span>
+    <a href="#ct%e9%bb%98%e8%ae%a4%e5%8f%8a%e6%89%93%e6%b3%95" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>一般情况下t是不会有默认的，所以这里就讲下ct的默认，由于本张图ct只有五个出生位，所以ct打默认的位置和出生位是绑定的</p>
+<p>ct默认1B1中3A，右边第一个主B，右边第二个中路，中间去A小，左边两个去A大</p>
+<p>主B的站住包点内即可，激进点站竖箱上，保守点站狙位，大箱后，团队点站狗洞，卖队友站白车，假如t这把开局不打B的话那这局就和主B的没多大关系了，和米垃圾主B，nuke主铁板的一样，是坐牢位</p>
+<p>主中路的主要负责侦察中远和A小，并不负责对枪（沙地m4对中远ak纯属炸鱼，对面eco局或大狙除外），因为这张图在封警家隔断烟前中路压力不大，匪出中路的情况及其罕见</p>
+<p>站A小的受个人实力和团队配合影响最大，保守打就是站在A小后点，等中路队友报t上A小或封中门烟后就反烟架枪，假如t没抢A大的话还可以摇一个A大的队友回来，对自己有自信的可以顶A小，顶A小放在下面的打法里讲</p>
+<p>A大是沙二这张图最关键的地方没有之一（再次一级是B1，在下面讲顶B1的打法里讲），从总体上看，A大是一个田字形地图，但事实上中路对A大是几乎没有影响的，t即使丢失了中路控制权也可以在中远以优势架住前压的t，这就导致ct丢失A大控制权之后只能通过A平台反清（相当于不能反清），所以说，A大破了就相当于这把t主攻A（大概率不会转点，因为A大要往B转被偷的可能性太多了，t没必要冒这个险），请第一时间支援A包</p>
+<h3>顶B1<span class="hx:absolute hx:-mt-20" id="顶b1"></span>
+    <a href="#%e9%a1%b6b1" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>这种打法通常在ct的eco局出现，目的是快速清空B通，要求至少2个ct，风险高</p>
+<p>主B的ct可以给出B通假火（烧B洞-B包间左侧的拐角），因为警火范围小的特性不会封住B洞入口，同时也可以给可能在B的t提示&quot;这把烧了B通火，所以不要rush了&quot;，随后主B的压进B洞，当然不给这颗火也是可以的，这颗火主要起心理博弈的作用，对野牛玩家无效</p>
+<p>中路侦察的ct就放中路，改为开局进中门贴墙进B1（顶B1的核心），随后直接走旋梯和主B的人夹击B通里的匪</p>
+<p>这种打法是警劣势，匪道具占优，前面提到了匪可以通过烧旋梯火来防顶B1，所以这种打法主要是出其不意，通常一把里只能用两三次</p>
+<h3>顶A小<span class="hx:absolute hx:-mt-20" id="顶a小"></span>
+    <a href="#%e9%a1%b6a%e5%b0%8f" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>这种打法通常在双方全起局出现，目的是拿到首杀让t开局减员，最好有两个ct配合，风险低</p>
+<p>站A小的在A小箱子上（图上叫躲闪位）给出A小前点烟用于留后路，同时也可以预防可能到来的默认A小火，随后在A小拐角往中路弹一颗闪（往对面中路的墙弹或往A小的墙弹都行，只要能白中路就是有效的，难度也不大），切枪出来刷人即可（短枪就不要顶A小了，老老实实顶B1吧），这时通常可以抓到中远往L位走的t，暗道封中门烟出来的t的timing，假如这局t选择快速上A小，此时也可能看到n个人按住w往A小冲，由于前面打了闪所以可以直接偷正面，通常拿到一个击杀就可以回来了（因为顶完A小中路信息也吃完了，大赚）</p>
+<p>假如有一个ct可以配合，这个ct就需要去顶B1，当然，由于主要目的不是清B，所以这个顶B1的只要站住B1架旋梯防t单摸就行，假如顶A小的ct报t上A小的话，这个B1的ct还可以从B1补枪补道具</p>
+<p>这种打法是警优势，通常也是ct开局控中路必做的流程，但这种打法要求顶A小的ct击杀效率要高，否则容易把A小直接丢掉</p>
+<h2>t慢打打法<span class="hx:absolute hx:-mt-20" id="t慢打打法"></span>
+    <a href="#t%e6%85%a2%e6%89%93%e6%89%93%e6%b3%95" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>由于t是进攻方，所以t基本没有默认，要硬说有，那就是控中路，rush的战术就不讲了，感觉没必要讲，所以就讲慢打吧，就当另一种默认</p>
+<p>t要控中路时，需要给出中门烟（匪家给或暗道给区别都不大，但要求封满，不然就是沙地ct狙优势点名抽人），有必要时给出A小火（假如ct顶A小不给前点烟的话，那他踩到火基本就是送了）</p>
+<p>在第一时间不rush的话，匪通过控中远变相地控住了A门，那么此时控B就需要t单摸，通常一个就好，这个t需要负责保证B包内的ct不会压出来，同时也起到辅助清B1的作用，当控下B1时，中路控制权就基本在t手上了，同时单摸的t也需要在ct顶A小的时候及时通知控中路的队友，或者把队友卖了收掉这个顶A小的ct</p>
 
         </div>
         
-    <div class="hx:mt-12 hx:mb-8 hx:block hx:text-xs hx:text-gray-500 hx:ltr:text-right hx:rtl:text-left hx:dark:text-gray-400">最后更新于 <time datetime="2025-11-24T00:00:00.000Z">2025年11月24日</time></div>
+    <div class="hx:mt-12 hx:mb-8 hx:block hx:text-xs hx:text-gray-500 hx:ltr:text-right hx:rtl:text-left hx:dark:text-gray-400">最后更新于 <time datetime="2025-12-01T00:00:00.000Z">2025年12月1日</time></div>
         <div class="hx:mb-8 hx:flex hx:items-center hx:border-t hx:pt-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-neutral-400 hx:dark:contrast-more:border-neutral-400 hx:print:hidden"><a
-        href="/game/stick_to_an_isolated_city/"
-        title="墨守孤城"
-        class="hx:flex hx:max-w-[50%] hx:items-center hx:gap-1 hx:py-4 hx:text-base hx:font-medium hx:text-gray-600 hx:transition-colors [word-break:break-word] hx:hover:text-primary-600 hx:dark:text-gray-300 hx:md:text-lg hx:ltr:pr-4 hx:rtl:pl-4"
-      ><svg class="hx:inline hx:h-5 hx:shrink-0 hx:ltr:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>墨守孤城</a><a
         href="/game/ai_decision_tree_state_machine_behavior_tree_htn_goap/"
         title="AI决策-状态机&#43;行为树&#43;HTN&#43;GOAP"
-        class="hx:flex hx:max-w-[50%] hx:items-center hx:gap-1 hx:py-4 hx:text-base hx:font-medium hx:text-gray-600 hx:transition-colors [word-break:break-word] hx:hover:text-primary-600 hx:dark:text-gray-300 hx:md:text-lg hx:ltr:ml-auto hx:ltr:pl-4 hx:ltr:text-right hx:rtl:mr-auto hx:rtl:pr-4 hx:rtl:text-left"
-      >AI决策-状态机&#43;行为树&#43;HTN&#43;GOAP<svg class="hx:inline hx:h-5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a></div>
+        class="hx:flex hx:max-w-[50%] hx:items-center hx:gap-1 hx:py-4 hx:text-base hx:font-medium hx:text-gray-600 hx:transition-colors [word-break:break-word] hx:hover:text-primary-600 hx:dark:text-gray-300 hx:md:text-lg hx:ltr:pr-4 hx:rtl:pl-4"
+      ><svg class="hx:inline hx:h-5 hx:shrink-0 hx:ltr:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>AI决策-状态机&#43;行为树&#43;HTN&#43;GOAP</a></div>
         
       </main>
     </article>
