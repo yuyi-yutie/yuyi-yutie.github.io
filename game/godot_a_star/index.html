@@ -123,7 +123,7 @@ open通常需要包含的数据有：计算格父级的坐标，计算格的f，
 extends Node_2D class_name Grid var index : Vector2i var cost : float var parent : GridManager func initialize(parameter : GridManager) -&gt; void: parent = parameter #这里是依赖注入的写法，写习惯了带一笔 接下来是GridManager的脚本，A*算法主要得从这里根据坐标返回格子对象">
   <meta itemprop="datePublished" content="2025-12-03T00:00:00+00:00">
   <meta itemprop="dateModified" content="2025-12-03T00:00:00+00:00">
-  <meta itemprop="wordCount" content="503">
+  <meta itemprop="wordCount" content="506">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="基于Godot的A*寻路算法">
   <meta name="twitter:description" content="以下写的是四连通的情况，但其实完全可以类推到六连通和八连通
@@ -830,7 +830,7 @@ close需要包含的数据有：计算格父级的坐标，计算格的坐标</p
 </span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">var</span> size <span style="color:#f92672">=</span> h_result<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span>()
 </span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">var</span> random_num <span style="color:#f92672">=</span> randi(<span style="color:#ae81ff">0</span>,size)
 </span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">return</span> h_result[random_num]
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#这里的f,g,h属实屎山了,但没办法,为了理解简单就这样写吧</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#这里的f,g,h属实屎山了,但没办法,为了理解简单就这样写吧，反正就是优先找f最小，然后g最小，最后h最小，假如有都相同的，那就随机返回</span>
 </span></span><span style="display:flex;"><span>		
 </span></span><span style="display:flex;"><span><span style="color:#75715e">#这个函数的目的是返回目标坐标四连通区域的格子坐标</span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">get_cross_grids_index</span>(grid_manager : GridManager,best_element_index : <span style="color:#a6e22e">Vector2i</span>) <span style="color:#f92672">-&gt;</span> <span style="color:#a6e22e">Array</span>[<span style="color:#a6e22e">Vector2i</span>]:
@@ -854,6 +854,9 @@ close需要包含的数据有：计算格父级的坐标，计算格的坐标</p
   </button>
 </div>
 </div>
+<p>英明神武的ai大人告诉我我写的代码非常屎，是的，它是对的，以上的代码仅仅停留在能看和能用的阶段，距离好用还差很长的一段距离，比如其中某些函数有更好的写法，某些地方缺乏健壮性等（其实我不喜欢这个词，我就理解为更安全更经得住乱造）</p>
+<p>但没关系，本篇仅供用于参考A*算法的思路，至于写进游戏，还需要更多的适配性（比如Grid和GridManager还需要优化等）</p>
+<p>（狗头叠甲）</p>
 <hr>
 <p>以上</p>
 
