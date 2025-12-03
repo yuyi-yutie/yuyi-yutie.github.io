@@ -22,7 +22,8 @@ open通常需要包含的数据有：计算格父级的坐标，计算格的f，
 实现理论过程 前提：假设所有格子都继承于一个类Grid(父类是Node2D)，访问格子时可以访问到它的坐标，移动消耗，同时有一个格子管理器GridManager(父类是Node)，所有格子都是这个管理器的子节点
 我们要求Astar脚本的核心功能：输入起点和终点坐标，格子管理器的引用，若寻路成功，输出下一步要移动到的格子坐标
 步骤如下：
-把起点放入开启列表中 开始循环，在开启列表中寻找f最小的最优格，将其放入关闭列表，并从开启列表中移除（可能会存在有几个格子的情况，所以这里存储找到的格子需要是一个列表，但返回到后续过程的结果一定是一个格子，假如f相同就找h，再相同就找g，再相同就随机） 遍历最优格四连通区域的格子，将这些格子放入开启列表中（需要注意一下放入到开启列表中的元素，最优格的坐标会作为这些放入开启列表的格子的父级坐标一并放进去） 持续循环，直到开启列表为空或最优格为终点，若开启列表为空，则返回寻路失败，若最优格为终点，则寻路成功，则将终点放入关闭列表并结束循环 反向遍历，从关闭列表的最后一个元素（即终点）开始，访问其计算格父级坐标，与关闭列表中元素的计算格坐标比对，以此找到其父级，以此循环，知道访问到父级坐标为起点坐标时结束遍历，返回计算格坐标，即为输出 代码实现 首先我们需要明确一下格子类内包含的变量是哪些
+把起点放入开启列表中 开始循环，在开启列表中寻找f最小的最优格，将其放入关闭列表，并从开启列表中移除（可能会存在有几个格子的情况，所以这里存储找到的格子需要是一个列表，但返回到后续过程的结果一定是一个格子，假如f相同就找h，再相同就找g，再相同就随机） 遍历最优格四连通区域的格子，将这些格子放入开启列表中（需要注意一下放入到开启列表中的元素，最优格的坐标会作为这些放入开启列表的格子的父级坐标一并放进去） 持续循环，直到开启列表为空或最优格为终点，若开启列表为空，则返回寻路失败，若最优格为终点，则寻路成功，则将终点放入关闭列表并结束循环 反向遍历，从关闭列表的最后一个元素（即终点）开始，访问其计算格父级坐标，与关闭列表中元素的计算格坐标比对，以此找到其父级，以此循环，知道访问到父级坐标为起点坐标时结束遍历，返回计算格坐标，即为输出 代码实现 (约定地图起始格子坐标为(0,0)，那么(-1,-1)格即为不存在格，用作初始化)
+首先我们需要明确一下格子类内包含的变量是哪些
 extends Node_2D class_name Grid var index : Vector2i var cost : float var parent : GridManager func initialize(parameter : GridManager) -&gt; void: parent = parameter #这里是依赖注入的写法，写习惯了带一笔 接下来是GridManager的脚本，A*算法主要得从这里根据坐标返回格子对象" /><link rel="canonical" href="http://localhost:1313/game/godot_a_star/" itemprop="url" />
 
 <meta property="og:title" content="基于Godot的A*寻路算法">
@@ -62,7 +63,8 @@ close需要包含的数据有：计算格父级的坐标，计算格的坐标
 反向遍历，从关闭列表的最后一个元素（即终点）开始，访问其计算格父级坐标，与关闭列表中元素的计算格坐标比对，以此找到其父级，以此循环，知道访问到父级坐标为起点坐标时结束遍历，返回计算格坐标，即为输出
 
 代码实现
-    首先我们需要明确一下格子类内包含的变量是哪些
+    (约定地图起始格子坐标为(0,0)，那么(-1,-1)格即为不存在格，用作初始化)
+首先我们需要明确一下格子类内包含的变量是哪些
 
 
 extends Node_2D
@@ -116,11 +118,12 @@ open通常需要包含的数据有：计算格父级的坐标，计算格的f，
 实现理论过程 前提：假设所有格子都继承于一个类Grid(父类是Node2D)，访问格子时可以访问到它的坐标，移动消耗，同时有一个格子管理器GridManager(父类是Node)，所有格子都是这个管理器的子节点
 我们要求Astar脚本的核心功能：输入起点和终点坐标，格子管理器的引用，若寻路成功，输出下一步要移动到的格子坐标
 步骤如下：
-把起点放入开启列表中 开始循环，在开启列表中寻找f最小的最优格，将其放入关闭列表，并从开启列表中移除（可能会存在有几个格子的情况，所以这里存储找到的格子需要是一个列表，但返回到后续过程的结果一定是一个格子，假如f相同就找h，再相同就找g，再相同就随机） 遍历最优格四连通区域的格子，将这些格子放入开启列表中（需要注意一下放入到开启列表中的元素，最优格的坐标会作为这些放入开启列表的格子的父级坐标一并放进去） 持续循环，直到开启列表为空或最优格为终点，若开启列表为空，则返回寻路失败，若最优格为终点，则寻路成功，则将终点放入关闭列表并结束循环 反向遍历，从关闭列表的最后一个元素（即终点）开始，访问其计算格父级坐标，与关闭列表中元素的计算格坐标比对，以此找到其父级，以此循环，知道访问到父级坐标为起点坐标时结束遍历，返回计算格坐标，即为输出 代码实现 首先我们需要明确一下格子类内包含的变量是哪些
+把起点放入开启列表中 开始循环，在开启列表中寻找f最小的最优格，将其放入关闭列表，并从开启列表中移除（可能会存在有几个格子的情况，所以这里存储找到的格子需要是一个列表，但返回到后续过程的结果一定是一个格子，假如f相同就找h，再相同就找g，再相同就随机） 遍历最优格四连通区域的格子，将这些格子放入开启列表中（需要注意一下放入到开启列表中的元素，最优格的坐标会作为这些放入开启列表的格子的父级坐标一并放进去） 持续循环，直到开启列表为空或最优格为终点，若开启列表为空，则返回寻路失败，若最优格为终点，则寻路成功，则将终点放入关闭列表并结束循环 反向遍历，从关闭列表的最后一个元素（即终点）开始，访问其计算格父级坐标，与关闭列表中元素的计算格坐标比对，以此找到其父级，以此循环，知道访问到父级坐标为起点坐标时结束遍历，返回计算格坐标，即为输出 代码实现 (约定地图起始格子坐标为(0,0)，那么(-1,-1)格即为不存在格，用作初始化)
+首先我们需要明确一下格子类内包含的变量是哪些
 extends Node_2D class_name Grid var index : Vector2i var cost : float var parent : GridManager func initialize(parameter : GridManager) -&gt; void: parent = parameter #这里是依赖注入的写法，写习惯了带一笔 接下来是GridManager的脚本，A*算法主要得从这里根据坐标返回格子对象">
   <meta itemprop="datePublished" content="2025-12-03T00:00:00+00:00">
   <meta itemprop="dateModified" content="2025-12-03T00:00:00+00:00">
-  <meta itemprop="wordCount" content="341">
+  <meta itemprop="wordCount" content="503">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="基于Godot的A*寻路算法">
   <meta name="twitter:description" content="以下写的是四连通的情况，但其实完全可以类推到六连通和八连通
@@ -136,7 +139,8 @@ open通常需要包含的数据有：计算格父级的坐标，计算格的f，
 实现理论过程 前提：假设所有格子都继承于一个类Grid(父类是Node2D)，访问格子时可以访问到它的坐标，移动消耗，同时有一个格子管理器GridManager(父类是Node)，所有格子都是这个管理器的子节点
 我们要求Astar脚本的核心功能：输入起点和终点坐标，格子管理器的引用，若寻路成功，输出下一步要移动到的格子坐标
 步骤如下：
-把起点放入开启列表中 开始循环，在开启列表中寻找f最小的最优格，将其放入关闭列表，并从开启列表中移除（可能会存在有几个格子的情况，所以这里存储找到的格子需要是一个列表，但返回到后续过程的结果一定是一个格子，假如f相同就找h，再相同就找g，再相同就随机） 遍历最优格四连通区域的格子，将这些格子放入开启列表中（需要注意一下放入到开启列表中的元素，最优格的坐标会作为这些放入开启列表的格子的父级坐标一并放进去） 持续循环，直到开启列表为空或最优格为终点，若开启列表为空，则返回寻路失败，若最优格为终点，则寻路成功，则将终点放入关闭列表并结束循环 反向遍历，从关闭列表的最后一个元素（即终点）开始，访问其计算格父级坐标，与关闭列表中元素的计算格坐标比对，以此找到其父级，以此循环，知道访问到父级坐标为起点坐标时结束遍历，返回计算格坐标，即为输出 代码实现 首先我们需要明确一下格子类内包含的变量是哪些
+把起点放入开启列表中 开始循环，在开启列表中寻找f最小的最优格，将其放入关闭列表，并从开启列表中移除（可能会存在有几个格子的情况，所以这里存储找到的格子需要是一个列表，但返回到后续过程的结果一定是一个格子，假如f相同就找h，再相同就找g，再相同就随机） 遍历最优格四连通区域的格子，将这些格子放入开启列表中（需要注意一下放入到开启列表中的元素，最优格的坐标会作为这些放入开启列表的格子的父级坐标一并放进去） 持续循环，直到开启列表为空或最优格为终点，若开启列表为空，则返回寻路失败，若最优格为终点，则寻路成功，则将终点放入关闭列表并结束循环 反向遍历，从关闭列表的最后一个元素（即终点）开始，访问其计算格父级坐标，与关闭列表中元素的计算格坐标比对，以此找到其父级，以此循环，知道访问到父级坐标为起点坐标时结束遍历，返回计算格坐标，即为输出 代码实现 (约定地图起始格子坐标为(0,0)，那么(-1,-1)格即为不存在格，用作初始化)
+首先我们需要明确一下格子类内包含的变量是哪些
 extends Node_2D class_name Grid var index : Vector2i var cost : float var parent : GridManager func initialize(parameter : GridManager) -&gt; void: parent = parameter #这里是依赖注入的写法，写习惯了带一笔 接下来是GridManager的脚本，A*算法主要得从这里根据坐标返回格子对象">
 <link href="/css/compiled/main.css" rel="stylesheet" />
     <link href="/css/variables.css" rel="stylesheet" />
@@ -660,7 +664,8 @@ close需要包含的数据有：计算格父级的坐标，计算格的坐标</p
 <li>反向遍历，从关闭列表的最后一个元素（即终点）开始，访问其计算格父级坐标，与关闭列表中元素的计算格坐标比对，以此找到其父级，以此循环，知道访问到父级坐标为起点坐标时结束遍历，返回计算格坐标，即为输出</li>
 </ol>
 <h2>代码实现<span class="hx:absolute hx:-mt-20" id="代码实现"></span>
-    <a href="#%e4%bb%a3%e7%a0%81%e5%ae%9e%e7%8e%b0" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>首先我们需要明确一下格子类内包含的变量是哪些</p>
+    <a href="#%e4%bb%a3%e7%a0%81%e5%ae%9e%e7%8e%b0" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>(约定地图起始格子坐标为(0,0)，那么(-1,-1)格即为不存在格，用作初始化)</p>
+<p>首先我们需要明确一下格子类内包含的变量是哪些</p>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
 <div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-gdscript" data-lang="gdscript"><span style="display:flex;"><span><span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">Node_2D</span>
@@ -730,13 +735,12 @@ close需要包含的数据有：计算格父级的坐标，计算格的坐标</p
 </span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">while</span> end_flag <span style="color:#f92672">==</span> <span style="color:#66d9ef">false</span>:
 </span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">var</span> best_element_index : <span style="color:#a6e22e">Vector2i</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">get_best_element_index</span>(open_list)
 </span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">var</span> best_element_parent_index : <span style="color:#a6e22e">Vector2i</span> <span style="color:#f92672">=</span> open_list[best_element_index][<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>]
-</span></span><span style="display:flex;"><span>		open_list<span style="color:#f92672">.</span><span style="color:#a6e22e">erase</span>(best_element_index)
 </span></span><span style="display:flex;"><span>		<span style="color:#75715e">#以上是对open_list的处理</span>
 </span></span><span style="display:flex;"><span>		
 </span></span><span style="display:flex;"><span>		close_list[best_element_index] <span style="color:#f92672">=</span> best_element_parent_index
 </span></span><span style="display:flex;"><span>		<span style="color:#75715e">#把最优格放入close_list</span>
 </span></span><span style="display:flex;"><span>		
-</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">var</span> cross_grids_index : <span style="color:#a6e22e">Array</span>[<span style="color:#a6e22e">Vector2i</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">get_cross_grids_index</span>(grid_mamanager,best_element_index)
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">var</span> cross_grids_index : <span style="color:#a6e22e">Array</span>[<span style="color:#a6e22e">Vector2i</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">get_cross_grids_index</span>(grid_manager,best_element_index)
 </span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">for</span> cross_grid_index <span style="color:#f92672">in</span> cross_grids_index:
 </span></span><span style="display:flex;"><span>			
 </span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">var</span> cross_grid_index_dictionary : <span style="color:#a6e22e">Dictionary</span>
@@ -750,38 +754,96 @@ close需要包含的数据有：计算格父级的坐标，计算格的坐标</p
 </span></span><span style="display:flex;"><span>			
 </span></span><span style="display:flex;"><span>			open_list[cross_grid_index] <span style="color:#f92672">=</span> [[best_element_index] , cross_grid_index_dictionary[cross_grid_index]]
 </span></span><span style="display:flex;"><span>			<span style="color:#75715e">#处理父级</span>
-</span></span><span style="display:flex;"><span>			
+</span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> h <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
 </span></span><span style="display:flex;"><span>				close_list[end_index] <span style="color:#f92672">=</span> best_element_index
 </span></span><span style="display:flex;"><span>				end_flag <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>
 </span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		open_list<span style="color:#f92672">.</span><span style="color:#a6e22e">erase</span>(best_element_index)
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">#记住一定要删，不然会重复选中</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> open_list<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span>() <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">Vector2i</span>(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>,<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)
 </span></span><span style="display:flex;"><span>	
 </span></span><span style="display:flex;"><span>	end_flag <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span>
 </span></span><span style="display:flex;"><span>	result <span style="color:#f92672">=</span> end_index
 </span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">while</span> end_flag <span style="color:#f92672">==</span> <span style="color:#66d9ef">false</span>:
 </span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> close_list[result] <span style="color:#f92672">==</span> start_index:
+</span></span><span style="display:flex;"><span>			end_flag <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>
 </span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">return</span> result
 </span></span><span style="display:flex;"><span>		result <span style="color:#f92672">=</span> close_list[result]
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e">#下面补充工具函数</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#这个函数的目的是返回open_list中的最优元素的格子坐标</span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">get_best_element_index</span>(open_list : <span style="color:#a6e22e">Dictionary</span>) <span style="color:#f92672">-&gt;</span> <span style="color:#a6e22e">Vector2i</span>:
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">var</span> result : <span style="color:#a6e22e">Vector2i</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">Vector2i</span>(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>,<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">var</span> f_result : <span style="color:#a6e22e">Array</span>[<span style="color:#a6e22e">Vector2i</span>] <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#用于存储比较值可能重复的结果</span>
+</span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">var</span> calculation_index : <span style="color:#a6e22e">Array</span>[<span style="color:#a6e22e">Vector2i</span>]
 </span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">var</span> calculation_index_parameter : <span style="color:#a6e22e">Array</span>[<span style="color:#a6e22e">Array</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">var</span> min_f_index_array : <span style="color:#a6e22e">Array</span>[<span style="color:#a6e22e">Vector2i</span>]
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">var</span> min_g_index_array : <span style="color:#a6e22e">Array</span>[<span style="color:#a6e22e">Vector2i</span>]
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">var</span> min_h_index_array : <span style="color:#a6e22e">Array</span>[<span style="color:#a6e22e">Vector2i</span>]
 </span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> key <span style="color:#f92672">in</span> open_list<span style="color:#f92672">.</span><span style="color:#a6e22e">keys</span>():
 </span></span><span style="display:flex;"><span>		calculation_index<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span>(key)
 </span></span><span style="display:flex;"><span>		calculation_index_parameter<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span>(open_list[key][<span style="color:#ae81ff">1</span>])
-</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#TODO-----已经把要计算点部分提出来了-----</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">get_cross_grids_index</span>(grid_manager : GridMnager,best_element_index : <span style="color:#a6e22e">Vector2i</span>) <span style="color:#f92672">-&gt;</span> <span style="color:#a6e22e">Array</span>[<span style="color:#a6e22e">Vector2i</span>]:
-</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">var</span> result : <span style="color:#a6e22e">Vector2i</span>
-</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">var</span> directions : <span style="color:#a6e22e">Array</span>[<span style="color:#a6e22e">Vector2i</span>] <span style="color:#f92672">=</span> [<span style="color:#a6e22e">Vector2i</span>(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>),<span style="color:#a6e22e">Vector2i</span>(<span style="color:#ae81ff">1</span>,<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>),<span style="color:#a6e22e">Vector2i</span>(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>,<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>),<span style="color:#a6e22e">Vector</span>(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>)]
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> index <span style="color:#f92672">in</span> calculation_index:
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> result <span style="color:#f92672">==</span> <span style="color:#a6e22e">Vector2i</span>(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>,<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>):
+</span></span><span style="display:flex;"><span>			result <span style="color:#f92672">=</span> index
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">#这里是初始化</span>
+</span></span><span style="display:flex;"><span>		
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">var</span> num : <span style="color:#66d9ef">int</span> <span style="color:#f92672">=</span> calculation_index<span style="color:#f92672">.</span><span style="color:#a6e22e">find</span>(index)
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">#这个是计算点坐标的索引</span>
+</span></span><span style="display:flex;"><span>		
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">var</span> result_num : <span style="color:#66d9ef">int</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> calculation_index_parameter[num][<span style="color:#ae81ff">0</span>] <span style="color:#f92672">&lt;=</span> calculation_index_parameter[result_num][<span style="color:#ae81ff">0</span>]:
+</span></span><span style="display:flex;"><span>			result <span style="color:#f92672">=</span> calculation_index[num]
+</span></span><span style="display:flex;"><span>			result_num <span style="color:#f92672">=</span> num
+</span></span><span style="display:flex;"><span>			f_result<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span>(result)
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> f_result<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span>() <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>:
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> result
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">var</span> g_result : <span style="color:#a6e22e">Array</span>[<span style="color:#a6e22e">Vector2i</span>] <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">for</span> index <span style="color:#f92672">in</span> f_result:
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">var</span> num : <span style="color:#66d9ef">int</span> <span style="color:#f92672">=</span> calculation_index<span style="color:#f92672">.</span><span style="color:#a6e22e">find</span>(index)
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">var</span> result_num : <span style="color:#66d9ef">int</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> calculation_index_parameter[num][<span style="color:#ae81ff">1</span>] <span style="color:#f92672">&lt;=</span> calculation_index_parameter[result_num][<span style="color:#ae81ff">1</span>]:
+</span></span><span style="display:flex;"><span>				result <span style="color:#f92672">=</span> calculation_index[num]
+</span></span><span style="display:flex;"><span>				result_num <span style="color:#f92672">=</span> num
+</span></span><span style="display:flex;"><span>				g_result<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span>(result)
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> g_result<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span>() <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>:
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">return</span> result
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">var</span> h_result : <span style="color:#a6e22e">Array</span>[<span style="color:#a6e22e">Vector2i</span>] <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">for</span> index <span style="color:#f92672">in</span> g_result:
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">if</span> calculation_index_parameter[num][<span style="color:#ae81ff">2</span>] <span style="color:#f92672">&lt;=</span> calculation_index_parameter[result_num][<span style="color:#ae81ff">2</span>]:
+</span></span><span style="display:flex;"><span>					result <span style="color:#f92672">=</span> calculation_index[num]
+</span></span><span style="display:flex;"><span>					result_num <span style="color:#f92672">=</span> num
+</span></span><span style="display:flex;"><span>					h_result<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span>(result)
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> h_result<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span>() <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>:
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">return</span> result
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">var</span> size <span style="color:#f92672">=</span> h_result<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span>()
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">var</span> random_num <span style="color:#f92672">=</span> randi(<span style="color:#ae81ff">0</span>,size)
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">return</span> h_result[random_num]
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#这里的f,g,h属实屎山了,但没办法,为了理解简单就这样写吧</span>
+</span></span><span style="display:flex;"><span>		
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#这个函数的目的是返回目标坐标四连通区域的格子坐标</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">get_cross_grids_index</span>(grid_manager : GridManager,best_element_index : <span style="color:#a6e22e">Vector2i</span>) <span style="color:#f92672">-&gt;</span> <span style="color:#a6e22e">Array</span>[<span style="color:#a6e22e">Vector2i</span>]:
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">var</span> result : <span style="color:#a6e22e">Array</span>[<span style="color:#a6e22e">Vector2i</span>]
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">var</span> directions : <span style="color:#a6e22e">Array</span>[<span style="color:#a6e22e">Vector2i</span>] <span style="color:#f92672">=</span> [<span style="color:#a6e22e">Vector2i</span>(<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">1</span>),<span style="color:#a6e22e">Vector2i</span>(<span style="color:#ae81ff">0</span>,<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>),<span style="color:#a6e22e">Vector2i</span>(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>),<span style="color:#a6e22e">Vector2i</span>(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>)]
 </span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> direction <span style="color:#f92672">in</span> directions:
 </span></span><span style="display:flex;"><span>		target : <span style="color:#a6e22e">Vector2i</span> <span style="color:#f92672">=</span> best_element_index <span style="color:#f92672">+</span> direction
 </span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> grid_manager<span style="color:#f92672">.</span><span style="color:#a6e22e">index2grid</span>(target):
 </span></span><span style="display:flex;"><span>			result<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span>(target)
 </span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> result
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">get_MHD</span>(start_index : <span style="color:#a6e22e">Vector2i</span>,end_index : <span style="color:#a6e22e">Vector2i</span>) <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">int</span>:
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#这个函数的目的是得到两个坐标间的曼哈顿距离</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">get_MHD</span>(start_index : <span style="color:#a6e22e">Vector2i</span>,end_index : <span style="color:#a6e22e">Vector2i</span>) <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">int</span>:
 </span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> abs(start_index<span style="color:#f92672">.</span>x <span style="color:#f92672">-</span> end_index<span style="color:#f92672">.</span>x)<span style="color:#f92672">+</span>abs(start_index<span style="color:#f92672">.</span>y <span style="color:#f92672">-</span> end_index<span style="color:#f92672">.</span>y)</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
@@ -793,7 +855,7 @@ close需要包含的数据有：计算格父级的坐标，计算格的坐标</p
 </div>
 </div>
 <hr>
-<p>未完成</p>
+<p>以上</p>
 
         </div>
         
