@@ -8,113 +8,80 @@
 <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
 <link fetchpriority="low" href="/site.webmanifest" rel="manifest" />
-<title>AI决策-状态机 – 乂轶·轶名-0verDay</title>
-  <meta name="description" content="1 前言 我在使用godot开发一个RTS游戏的时候，我突然发现游戏中的单位(Unit)有且仅有三个动作（当时没有考虑&#34;状态&#34;，而是直接将这些定义为动作）：静止，移动，攻击，或者他们的组合（比如边移动边攻击，当然，别和我杠边静止边移动）
-然后就诞生了这样一个无限递归函数的流程图：
-可nb了，当时我就觉得，wow，我简直是一个逻辑大王，直到我知道这么做会栈溢出…
-然后就去学了状态机，把上面的逻辑通过状态机写成了这样：
-他们两个看上去逻辑是一样的，但区别就在上面的不能用，下面的能用，所以，状态机有什么用？
-即答：让不能用的东西变得能用！（bushi
-答：让actor个体（你说GameObject或CharacterBody也行，主要是我从虚幻开始学的，用actor习惯了）的行为用状态表示，从而减少逻辑混乱，增强代码可维护性和可扩展性
-2 用硬代码实现状态机 2.1 逻辑 想象一下，我们只有一个enemy场景，和一个附着在enemy根节点上的脚本，这个脚本要全权负责enmey的巡逻，追逐，攻击逻辑（经典的patrol-chase-attack循环），我们该怎么写？
-既然用状态机，那么我们就把这三个变成状态吧，我们有巡逻状态，追逐状态，攻击状态，自然，我们需要一个枚举来存储这个分类，还要有一个变量来存储当前状态，嗯，好，记得要做这两个
-然后我们要处理一下动画，我们得三个状态显然要有不同的动画，那么我们就可以在更改当前状态时同步更改它的动画，那么要记得在更改状态的函数中同步更新动画
-再者让我们想想，我们要怎么样更改状态呢，比如从patrol转到chase？或许你有许多种方法，比如添加一个Area2D然后把它的area_entered信号连接到根节点脚本中，但我们在这里还是只谈脚本中处理的方法
-那么我们就需要知道玩家在哪，敌人在哪，当玩家与敌人近到一定程度时就更改状态，这里我们用硬代码直接在tick里写，当我们的当前状态为patrol时，实时获取玩家与敌人位置，当二者距离小于侦查距离时，转换状态为chase，chase到attack的转换同理，二者距离小于攻击距离时，立刻攻击玩家，然后状态转为patrol
-以上，一个硬代码状态机就实现了，好了，那么纸上谈兵结束了，现在自己对照下面的代码看上面的解释吧
-2.2 实现 那么就用一下硬代码实现一下状态机吧
-这个硬代码是我从YouTube上一个老哥的博客学来的（啥不是学来的嘞，你说是不吼），以下是原帖，我改成了更简单的版本（原版是scanning-firing-charging循环，但我改成我觉得更简单易懂的patrol-chase-attack循环）
-Godot 4 中的启动状态机 - The Shaggy Dev — Starter state machines in Godot 4 - The Shaggy Dev
-（这个文章里同时有硬代码方法和进阶状态机方法，看上半部分就行）
-（记住，不要用硬代码写状态机，除非你敢拿头保证你不会增加很多很复杂的状态或复合状态！）
-extends Node enum STATE { PATROL , CHASE , ATTACK } #在此定义状态机中的所有状态 @export Player : PLAYER #对玩家引用来判断是否在侦查范围内 var current_state : STATE = PATROL #定义&#34;当前状态&#34;并赋初始值为PATROL @export var animation : AnimatedSprite2D #这个动画状态机没有任何架构上的意义，你可以不用管它，我只是想突出状态应该要有的enter函数而已，让我的那个更改状态的函数变得不那么蠢 @export var detect_distance : float #侦查范围 @export var attack_distance : float #攻击范围 func change_state(new_state : STATE) : current_state = new_state match current_state : STATE.PATROL : animation.play(&#34;patrol&#34;) STATE.CHASE : animation.play(&#34;chase&#34;) STATE.ATTACK : animation.play(&#34;attack&#34;) change_state(PATROL) func _process(delta) : match current_state : STATE.PATROL : if Player.position.distance_to(position) &lt; detect_distance : change_state(STATE.CHASE) STATE.CHASE : if Player.position.distance_to(position) &lt; attack_distance : change_state(STATE.ATTACK) func _physics_process(delta) : match current_state : #这下面的函数我就不写了，毕竟重心不在实现enemy动作，而是实现状态机的结构 STATE.PATROL : random_move() STATE.CHASE : move_to_player(Player) STATE.ATTACK : attack(Player) 结束了，框架没了，是不是很简单？对，状态机就是这么简单" /><link rel="canonical" href="http://localhost:1313/game/ai_decision_tree_state_machine/" itemprop="url" />
+<title>基于Godot的A*寻路算法 – 乂轶·轶名-0verDay</title>
+  <meta name="description" content="以下写的是四连通的情况，但其实完全可以类推到六连通和八连通
+首先是Astar寻路的四个要点：
+寻路消耗公式f = g &#43; h（虽然我并不知道为什么一定是这三个字母而不是a = b &#43; c） open开启列表 close关闭列表 反向遍历 寻路消耗公式 f = g &#43; h
+其中，f为寻路消耗，g为起点到计算点的切比雪夫距离，h为计算点到终点的曼哈顿距离
+为什么是切比雪夫距离？经典的版本是欧氏距离，但依旧如题，这里要涉及到消耗，所以我会更偏向使用切比雪夫距离，下方解释一下三个距离
+三个距离 欧几里得距离（欧氏距离）的计算公式是横坐标差的平方加纵坐标差的平方的和开根号，当对ai体的灵活度有要求时，就会用这个距离代表g
+曼哈顿距离的计算公式是横坐标差的绝对值加纵坐标差的绝对值，一般用来衡量计算点到终点的远近
+切比雪夫距离没有很明确的计算公式，如果非要有的话那应该就是对经过的所有格子的消耗求和，所以一般说到消耗都是切比雪夫距离
+open开启列表和close关闭列表 open用来存储已访问但未放入路径的格子，close用来存储放入路径的格子，Astar计算出的路径就是close的子集
+open通常需要包含的数据有：计算格父级的坐标，计算格的f，g，h，计算格的坐标 close需要包含的数据有：计算格父级的坐标，计算格的坐标
+实现理论过程 前提：假设所有格子都继承于一个类Grid(父类是Node2D)，访问格子时可以访问到它的坐标，移动消耗，同时有一个格子管理器GridManager(父类是Node)，所有格子都是这个管理器的子节点
+我们要求Astar脚本的核心功能：输入起点和终点坐标，格子管理器的引用，若寻路成功，输出下一步要移动到的格子坐标
+步骤如下：
+把起点放入开启列表中 开始循环，在开启列表中寻找f最小的最优格，将其放入关闭列表，并从开启列表中移除（可能会存在有几个格子的情况，所以这里存储找到的格子需要是一个列表，但返回到后续过程的结果一定是一个格子，假如f相同就找h，再相同就找g，再相同就随机） 遍历最优格四连通区域的格子，将这些格子放入开启列表中（需要注意一下放入到开启列表中的元素，最优格的坐标会作为这些放入开启列表的格子的父级坐标一并放进去） 持续循环，直到开启列表为空或最优格为终点，若开启列表为空，则返回寻路失败，若最优格为终点，则寻路成功，则将终点放入关闭列表并结束循环 反向遍历，从关闭列表的最后一个元素（即终点）开始，访问其计算格父级坐标，与关闭列表中元素的计算格坐标比对，以此找到其父级，以此循环，知道访问到父级坐标为起点坐标时结束遍历，返回计算格坐标，即为输出 代码实现 首先我们需要明确一下格子类内包含的变量是哪些
+extends Node_2D class_name Grid var index : Vector2i var cost : float var parent : GridManager func initialize(parameter : GridManager) -&gt; void: parent = parameter #这里是依赖注入的写法，写习惯了带一笔 接下来是GridManager的脚本，A*算法主要得从这里根据坐标返回格子对象" /><link rel="canonical" href="http://localhost:1313/game/godot_a_star/" itemprop="url" />
 
-<meta property="og:title" content="AI决策-状态机">
+<meta property="og:title" content="基于Godot的A*寻路算法">
 <meta
   property="og:description"
   content="
     
-      1 前言
-    我在使用godot开发一个RTS游戏的时候，我突然发现游戏中的单位(Unit)有且仅有三个动作（当时没有考虑&quot;状态&quot;，而是直接将这些定义为动作）：静止，移动，攻击，或者他们的组合（比如边移动边攻击，当然，别和我杠边静止边移动）
-然后就诞生了这样一个无限递归函数的流程图：
+      以下写的是四连通的情况，但其实完全可以类推到六连通和八连通
+首先是Astar寻路的四个要点：
 
-    
-可nb了，当时我就觉得，wow，我简直是一个逻辑大王，直到我知道这么做会栈溢出&hellip;
-然后就去学了状态机，把上面的逻辑通过状态机写成了这样：
+寻路消耗公式f = g &#43; h（虽然我并不知道为什么一定是这三个字母而不是a = b &#43; c）
+open开启列表
+close关闭列表
+反向遍历
 
-    
-他们两个看上去逻辑是一样的，但区别就在上面的不能用，下面的能用，所以，状态机有什么用？
-即答：让不能用的东西变得能用！（bushi
-答：让actor个体（你说GameObject或CharacterBody也行，主要是我从虚幻开始学的，用actor习惯了）的行为用状态表示，从而减少逻辑混乱，增强代码可维护性和可扩展性
+寻路消耗公式
+    f = g &#43; h
+其中，f为寻路消耗，g为起点到计算点的切比雪夫距离，h为计算点到终点的曼哈顿距离
+为什么是切比雪夫距离？经典的版本是欧氏距离，但依旧如题，这里要涉及到消耗，所以我会更偏向使用切比雪夫距离，下方解释一下三个距离
+三个距离
+    欧几里得距离（欧氏距离）的计算公式是横坐标差的平方加纵坐标差的平方的和开根号，当对ai体的灵活度有要求时，就会用这个距离代表g
+曼哈顿距离的计算公式是横坐标差的绝对值加纵坐标差的绝对值，一般用来衡量计算点到终点的远近
+切比雪夫距离没有很明确的计算公式，如果非要有的话那应该就是对经过的所有格子的消耗求和，所以一般说到消耗都是切比雪夫距离
+open开启列表和close关闭列表
+    open用来存储已访问但未放入路径的格子，close用来存储放入路径的格子，Astar计算出的路径就是close的子集
+open通常需要包含的数据有：计算格父级的坐标，计算格的f，g，h，计算格的坐标
+close需要包含的数据有：计算格父级的坐标，计算格的坐标
+实现理论过程
+    前提：假设所有格子都继承于一个类Grid(父类是Node2D)，访问格子时可以访问到它的坐标，移动消耗，同时有一个格子管理器GridManager(父类是Node)，所有格子都是这个管理器的子节点
+我们要求Astar脚本的核心功能：输入起点和终点坐标，格子管理器的引用，若寻路成功，输出下一步要移动到的格子坐标
+步骤如下：
 
-2 用硬代码实现状态机
-    2.1 逻辑
-    想象一下，我们只有一个enemy场景，和一个附着在enemy根节点上的脚本，这个脚本要全权负责enmey的巡逻，追逐，攻击逻辑（经典的patrol-chase-attack循环），我们该怎么写？
-既然用状态机，那么我们就把这三个变成状态吧，我们有巡逻状态，追逐状态，攻击状态，自然，我们需要一个枚举来存储这个分类，还要有一个变量来存储当前状态，嗯，好，记得要做这两个
-然后我们要处理一下动画，我们得三个状态显然要有不同的动画，那么我们就可以在更改当前状态时同步更改它的动画，那么要记得在更改状态的函数中同步更新动画
-再者让我们想想，我们要怎么样更改状态呢，比如从patrol转到chase？或许你有许多种方法，比如添加一个Area2D然后把它的area_entered信号连接到根节点脚本中，但我们在这里还是只谈脚本中处理的方法
-那么我们就需要知道玩家在哪，敌人在哪，当玩家与敌人近到一定程度时就更改状态，这里我们用硬代码直接在tick里写，当我们的当前状态为patrol时，实时获取玩家与敌人位置，当二者距离小于侦查距离时，转换状态为chase，chase到attack的转换同理，二者距离小于攻击距离时，立刻攻击玩家，然后状态转为patrol
-以上，一个硬代码状态机就实现了，好了，那么纸上谈兵结束了，现在自己对照下面的代码看上面的解释吧
-2.2 实现
-    那么就用一下硬代码实现一下状态机吧
-这个硬代码是我从YouTube上一个老哥的博客学来的（啥不是学来的嘞，你说是不吼），以下是原帖，我改成了更简单的版本（原版是scanning-firing-charging循环，但我改成我觉得更简单易懂的patrol-chase-attack循环）
-Godot 4 中的启动状态机 - The Shaggy Dev &mdash; Starter state machines in Godot 4 - The Shaggy Dev
-（这个文章里同时有硬代码方法和进阶状态机方法，看上半部分就行）
-（记住，不要用硬代码写状态机，除非你敢拿头保证你不会增加很多很复杂的状态或复合状态！）
+把起点放入开启列表中
+开始循环，在开启列表中寻找f最小的最优格，将其放入关闭列表，并从开启列表中移除（可能会存在有几个格子的情况，所以这里存储找到的格子需要是一个列表，但返回到后续过程的结果一定是一个格子，假如f相同就找h，再相同就找g，再相同就随机）
+遍历最优格四连通区域的格子，将这些格子放入开启列表中（需要注意一下放入到开启列表中的元素，最优格的坐标会作为这些放入开启列表的格子的父级坐标一并放进去）
+持续循环，直到开启列表为空或最优格为终点，若开启列表为空，则返回寻路失败，若最优格为终点，则寻路成功，则将终点放入关闭列表并结束循环
+反向遍历，从关闭列表的最后一个元素（即终点）开始，访问其计算格父级坐标，与关闭列表中元素的计算格坐标比对，以此找到其父级，以此循环，知道访问到父级坐标为起点坐标时结束遍历，返回计算格坐标，即为输出
+
+代码实现
+    首先我们需要明确一下格子类内包含的变量是哪些
 
 
-extends Node
+extends Node_2D
+class_name Grid
 
-enum STATE {
-PATROL ,
-CHASE ,
-ATTACK
-} #在此定义状态机中的所有状态
+var index : Vector2i
+var cost : float
+var parent : GridManager
 
-@export Player : PLAYER #对玩家引用来判断是否在侦查范围内
-
-var current_state : STATE = PATROL #定义&#34;当前状态&#34;并赋初始值为PATROL
-@export var animation : AnimatedSprite2D #这个动画状态机没有任何架构上的意义，你可以不用管它，我只是想突出状态应该要有的enter函数而已，让我的那个更改状态的函数变得不那么蠢
-
-@export var detect_distance : float #侦查范围
-@export var attack_distance : float #攻击范围
-
-func change_state(new_state : STATE) :
-	current_state = new_state
-	match current_state :
-		STATE.PATROL :
-			animation.play(&#34;patrol&#34;)
-		STATE.CHASE :
-			animation.play(&#34;chase&#34;)
-		STATE.ATTACK :
-			animation.play(&#34;attack&#34;)
-			change_state(PATROL)
-
-func _process(delta) :
-	match current_state :
-		STATE.PATROL :
-			if Player.position.distance_to(position) &lt; detect_distance :
-				change_state(STATE.CHASE)
-		STATE.CHASE :
-			if Player.position.distance_to(position) &lt; attack_distance :
-				change_state(STATE.ATTACK)
-
-func _physics_process(delta) :
-	match current_state :
-		#这下面的函数我就不写了，毕竟重心不在实现enemy动作，而是实现状态机的结构
-		STATE.PATROL :
-			random_move()
-		STATE.CHASE :
-			move_to_player(Player)
-		STATE.ATTACK :
-			attack(Player)
+func initialize(parameter : GridManager) -&gt; void:
+	parent = parameter
+	#这里是依赖注入的写法，写习惯了带一笔
   
     
 
   
 
 
-结束了，框架没了，是不是很简单？对，状态机就是这么简单
+接下来是GridManager的脚本，A*算法主要得从这里根据坐标返回格子对象
     
   ">
 <meta
@@ -122,63 +89,55 @@ func _physics_process(delta) :
   content="
     article
   ">
-<meta property="og:url" content="http://localhost:1313/game/ai_decision_tree_state_machine/"><meta property="article:section" content="game">
+<meta property="og:url" content="http://localhost:1313/game/godot_a_star/"><meta property="article:section" content="game">
 
 <meta
   property="article:published_time"
-  content="2025-04-11T00:00:00+00:00">
+  content="2025-12-03T00:00:00+00:00">
 
 
 <meta
   property="article:modified_time"
-  content="2025-04-11T00:00:00+00:00">
+  content="2025-12-03T00:00:00+00:00">
 
 
 
-  <meta itemprop="name" content="AI决策-状态机">
-  <meta itemprop="description" content="1 前言 我在使用godot开发一个RTS游戏的时候，我突然发现游戏中的单位(Unit)有且仅有三个动作（当时没有考虑&#34;状态&#34;，而是直接将这些定义为动作）：静止，移动，攻击，或者他们的组合（比如边移动边攻击，当然，别和我杠边静止边移动）
-然后就诞生了这样一个无限递归函数的流程图：
-可nb了，当时我就觉得，wow，我简直是一个逻辑大王，直到我知道这么做会栈溢出…
-然后就去学了状态机，把上面的逻辑通过状态机写成了这样：
-他们两个看上去逻辑是一样的，但区别就在上面的不能用，下面的能用，所以，状态机有什么用？
-即答：让不能用的东西变得能用！（bushi
-答：让actor个体（你说GameObject或CharacterBody也行，主要是我从虚幻开始学的，用actor习惯了）的行为用状态表示，从而减少逻辑混乱，增强代码可维护性和可扩展性
-2 用硬代码实现状态机 2.1 逻辑 想象一下，我们只有一个enemy场景，和一个附着在enemy根节点上的脚本，这个脚本要全权负责enmey的巡逻，追逐，攻击逻辑（经典的patrol-chase-attack循环），我们该怎么写？
-既然用状态机，那么我们就把这三个变成状态吧，我们有巡逻状态，追逐状态，攻击状态，自然，我们需要一个枚举来存储这个分类，还要有一个变量来存储当前状态，嗯，好，记得要做这两个
-然后我们要处理一下动画，我们得三个状态显然要有不同的动画，那么我们就可以在更改当前状态时同步更改它的动画，那么要记得在更改状态的函数中同步更新动画
-再者让我们想想，我们要怎么样更改状态呢，比如从patrol转到chase？或许你有许多种方法，比如添加一个Area2D然后把它的area_entered信号连接到根节点脚本中，但我们在这里还是只谈脚本中处理的方法
-那么我们就需要知道玩家在哪，敌人在哪，当玩家与敌人近到一定程度时就更改状态，这里我们用硬代码直接在tick里写，当我们的当前状态为patrol时，实时获取玩家与敌人位置，当二者距离小于侦查距离时，转换状态为chase，chase到attack的转换同理，二者距离小于攻击距离时，立刻攻击玩家，然后状态转为patrol
-以上，一个硬代码状态机就实现了，好了，那么纸上谈兵结束了，现在自己对照下面的代码看上面的解释吧
-2.2 实现 那么就用一下硬代码实现一下状态机吧
-这个硬代码是我从YouTube上一个老哥的博客学来的（啥不是学来的嘞，你说是不吼），以下是原帖，我改成了更简单的版本（原版是scanning-firing-charging循环，但我改成我觉得更简单易懂的patrol-chase-attack循环）
-Godot 4 中的启动状态机 - The Shaggy Dev — Starter state machines in Godot 4 - The Shaggy Dev
-（这个文章里同时有硬代码方法和进阶状态机方法，看上半部分就行）
-（记住，不要用硬代码写状态机，除非你敢拿头保证你不会增加很多很复杂的状态或复合状态！）
-extends Node enum STATE { PATROL , CHASE , ATTACK } #在此定义状态机中的所有状态 @export Player : PLAYER #对玩家引用来判断是否在侦查范围内 var current_state : STATE = PATROL #定义&#34;当前状态&#34;并赋初始值为PATROL @export var animation : AnimatedSprite2D #这个动画状态机没有任何架构上的意义，你可以不用管它，我只是想突出状态应该要有的enter函数而已，让我的那个更改状态的函数变得不那么蠢 @export var detect_distance : float #侦查范围 @export var attack_distance : float #攻击范围 func change_state(new_state : STATE) : current_state = new_state match current_state : STATE.PATROL : animation.play(&#34;patrol&#34;) STATE.CHASE : animation.play(&#34;chase&#34;) STATE.ATTACK : animation.play(&#34;attack&#34;) change_state(PATROL) func _process(delta) : match current_state : STATE.PATROL : if Player.position.distance_to(position) &lt; detect_distance : change_state(STATE.CHASE) STATE.CHASE : if Player.position.distance_to(position) &lt; attack_distance : change_state(STATE.ATTACK) func _physics_process(delta) : match current_state : #这下面的函数我就不写了，毕竟重心不在实现enemy动作，而是实现状态机的结构 STATE.PATROL : random_move() STATE.CHASE : move_to_player(Player) STATE.ATTACK : attack(Player) 结束了，框架没了，是不是很简单？对，状态机就是这么简单">
-  <meta itemprop="datePublished" content="2025-04-11T00:00:00+00:00">
-  <meta itemprop="dateModified" content="2025-04-11T00:00:00+00:00">
-  <meta itemprop="wordCount" content="370">
+  <meta itemprop="name" content="基于Godot的A*寻路算法">
+  <meta itemprop="description" content="以下写的是四连通的情况，但其实完全可以类推到六连通和八连通
+首先是Astar寻路的四个要点：
+寻路消耗公式f = g &#43; h（虽然我并不知道为什么一定是这三个字母而不是a = b &#43; c） open开启列表 close关闭列表 反向遍历 寻路消耗公式 f = g &#43; h
+其中，f为寻路消耗，g为起点到计算点的切比雪夫距离，h为计算点到终点的曼哈顿距离
+为什么是切比雪夫距离？经典的版本是欧氏距离，但依旧如题，这里要涉及到消耗，所以我会更偏向使用切比雪夫距离，下方解释一下三个距离
+三个距离 欧几里得距离（欧氏距离）的计算公式是横坐标差的平方加纵坐标差的平方的和开根号，当对ai体的灵活度有要求时，就会用这个距离代表g
+曼哈顿距离的计算公式是横坐标差的绝对值加纵坐标差的绝对值，一般用来衡量计算点到终点的远近
+切比雪夫距离没有很明确的计算公式，如果非要有的话那应该就是对经过的所有格子的消耗求和，所以一般说到消耗都是切比雪夫距离
+open开启列表和close关闭列表 open用来存储已访问但未放入路径的格子，close用来存储放入路径的格子，Astar计算出的路径就是close的子集
+open通常需要包含的数据有：计算格父级的坐标，计算格的f，g，h，计算格的坐标 close需要包含的数据有：计算格父级的坐标，计算格的坐标
+实现理论过程 前提：假设所有格子都继承于一个类Grid(父类是Node2D)，访问格子时可以访问到它的坐标，移动消耗，同时有一个格子管理器GridManager(父类是Node)，所有格子都是这个管理器的子节点
+我们要求Astar脚本的核心功能：输入起点和终点坐标，格子管理器的引用，若寻路成功，输出下一步要移动到的格子坐标
+步骤如下：
+把起点放入开启列表中 开始循环，在开启列表中寻找f最小的最优格，将其放入关闭列表，并从开启列表中移除（可能会存在有几个格子的情况，所以这里存储找到的格子需要是一个列表，但返回到后续过程的结果一定是一个格子，假如f相同就找h，再相同就找g，再相同就随机） 遍历最优格四连通区域的格子，将这些格子放入开启列表中（需要注意一下放入到开启列表中的元素，最优格的坐标会作为这些放入开启列表的格子的父级坐标一并放进去） 持续循环，直到开启列表为空或最优格为终点，若开启列表为空，则返回寻路失败，若最优格为终点，则寻路成功，则将终点放入关闭列表并结束循环 反向遍历，从关闭列表的最后一个元素（即终点）开始，访问其计算格父级坐标，与关闭列表中元素的计算格坐标比对，以此找到其父级，以此循环，知道访问到父级坐标为起点坐标时结束遍历，返回计算格坐标，即为输出 代码实现 首先我们需要明确一下格子类内包含的变量是哪些
+extends Node_2D class_name Grid var index : Vector2i var cost : float var parent : GridManager func initialize(parameter : GridManager) -&gt; void: parent = parameter #这里是依赖注入的写法，写习惯了带一笔 接下来是GridManager的脚本，A*算法主要得从这里根据坐标返回格子对象">
+  <meta itemprop="datePublished" content="2025-12-03T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2025-12-03T00:00:00+00:00">
+  <meta itemprop="wordCount" content="341">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="AI决策-状态机">
-  <meta name="twitter:description" content="1 前言 我在使用godot开发一个RTS游戏的时候，我突然发现游戏中的单位(Unit)有且仅有三个动作（当时没有考虑&#34;状态&#34;，而是直接将这些定义为动作）：静止，移动，攻击，或者他们的组合（比如边移动边攻击，当然，别和我杠边静止边移动）
-然后就诞生了这样一个无限递归函数的流程图：
-可nb了，当时我就觉得，wow，我简直是一个逻辑大王，直到我知道这么做会栈溢出…
-然后就去学了状态机，把上面的逻辑通过状态机写成了这样：
-他们两个看上去逻辑是一样的，但区别就在上面的不能用，下面的能用，所以，状态机有什么用？
-即答：让不能用的东西变得能用！（bushi
-答：让actor个体（你说GameObject或CharacterBody也行，主要是我从虚幻开始学的，用actor习惯了）的行为用状态表示，从而减少逻辑混乱，增强代码可维护性和可扩展性
-2 用硬代码实现状态机 2.1 逻辑 想象一下，我们只有一个enemy场景，和一个附着在enemy根节点上的脚本，这个脚本要全权负责enmey的巡逻，追逐，攻击逻辑（经典的patrol-chase-attack循环），我们该怎么写？
-既然用状态机，那么我们就把这三个变成状态吧，我们有巡逻状态，追逐状态，攻击状态，自然，我们需要一个枚举来存储这个分类，还要有一个变量来存储当前状态，嗯，好，记得要做这两个
-然后我们要处理一下动画，我们得三个状态显然要有不同的动画，那么我们就可以在更改当前状态时同步更改它的动画，那么要记得在更改状态的函数中同步更新动画
-再者让我们想想，我们要怎么样更改状态呢，比如从patrol转到chase？或许你有许多种方法，比如添加一个Area2D然后把它的area_entered信号连接到根节点脚本中，但我们在这里还是只谈脚本中处理的方法
-那么我们就需要知道玩家在哪，敌人在哪，当玩家与敌人近到一定程度时就更改状态，这里我们用硬代码直接在tick里写，当我们的当前状态为patrol时，实时获取玩家与敌人位置，当二者距离小于侦查距离时，转换状态为chase，chase到attack的转换同理，二者距离小于攻击距离时，立刻攻击玩家，然后状态转为patrol
-以上，一个硬代码状态机就实现了，好了，那么纸上谈兵结束了，现在自己对照下面的代码看上面的解释吧
-2.2 实现 那么就用一下硬代码实现一下状态机吧
-这个硬代码是我从YouTube上一个老哥的博客学来的（啥不是学来的嘞，你说是不吼），以下是原帖，我改成了更简单的版本（原版是scanning-firing-charging循环，但我改成我觉得更简单易懂的patrol-chase-attack循环）
-Godot 4 中的启动状态机 - The Shaggy Dev — Starter state machines in Godot 4 - The Shaggy Dev
-（这个文章里同时有硬代码方法和进阶状态机方法，看上半部分就行）
-（记住，不要用硬代码写状态机，除非你敢拿头保证你不会增加很多很复杂的状态或复合状态！）
-extends Node enum STATE { PATROL , CHASE , ATTACK } #在此定义状态机中的所有状态 @export Player : PLAYER #对玩家引用来判断是否在侦查范围内 var current_state : STATE = PATROL #定义&#34;当前状态&#34;并赋初始值为PATROL @export var animation : AnimatedSprite2D #这个动画状态机没有任何架构上的意义，你可以不用管它，我只是想突出状态应该要有的enter函数而已，让我的那个更改状态的函数变得不那么蠢 @export var detect_distance : float #侦查范围 @export var attack_distance : float #攻击范围 func change_state(new_state : STATE) : current_state = new_state match current_state : STATE.PATROL : animation.play(&#34;patrol&#34;) STATE.CHASE : animation.play(&#34;chase&#34;) STATE.ATTACK : animation.play(&#34;attack&#34;) change_state(PATROL) func _process(delta) : match current_state : STATE.PATROL : if Player.position.distance_to(position) &lt; detect_distance : change_state(STATE.CHASE) STATE.CHASE : if Player.position.distance_to(position) &lt; attack_distance : change_state(STATE.ATTACK) func _physics_process(delta) : match current_state : #这下面的函数我就不写了，毕竟重心不在实现enemy动作，而是实现状态机的结构 STATE.PATROL : random_move() STATE.CHASE : move_to_player(Player) STATE.ATTACK : attack(Player) 结束了，框架没了，是不是很简单？对，状态机就是这么简单">
+  <meta name="twitter:title" content="基于Godot的A*寻路算法">
+  <meta name="twitter:description" content="以下写的是四连通的情况，但其实完全可以类推到六连通和八连通
+首先是Astar寻路的四个要点：
+寻路消耗公式f = g &#43; h（虽然我并不知道为什么一定是这三个字母而不是a = b &#43; c） open开启列表 close关闭列表 反向遍历 寻路消耗公式 f = g &#43; h
+其中，f为寻路消耗，g为起点到计算点的切比雪夫距离，h为计算点到终点的曼哈顿距离
+为什么是切比雪夫距离？经典的版本是欧氏距离，但依旧如题，这里要涉及到消耗，所以我会更偏向使用切比雪夫距离，下方解释一下三个距离
+三个距离 欧几里得距离（欧氏距离）的计算公式是横坐标差的平方加纵坐标差的平方的和开根号，当对ai体的灵活度有要求时，就会用这个距离代表g
+曼哈顿距离的计算公式是横坐标差的绝对值加纵坐标差的绝对值，一般用来衡量计算点到终点的远近
+切比雪夫距离没有很明确的计算公式，如果非要有的话那应该就是对经过的所有格子的消耗求和，所以一般说到消耗都是切比雪夫距离
+open开启列表和close关闭列表 open用来存储已访问但未放入路径的格子，close用来存储放入路径的格子，Astar计算出的路径就是close的子集
+open通常需要包含的数据有：计算格父级的坐标，计算格的f，g，h，计算格的坐标 close需要包含的数据有：计算格父级的坐标，计算格的坐标
+实现理论过程 前提：假设所有格子都继承于一个类Grid(父类是Node2D)，访问格子时可以访问到它的坐标，移动消耗，同时有一个格子管理器GridManager(父类是Node)，所有格子都是这个管理器的子节点
+我们要求Astar脚本的核心功能：输入起点和终点坐标，格子管理器的引用，若寻路成功，输出下一步要移动到的格子坐标
+步骤如下：
+把起点放入开启列表中 开始循环，在开启列表中寻找f最小的最优格，将其放入关闭列表，并从开启列表中移除（可能会存在有几个格子的情况，所以这里存储找到的格子需要是一个列表，但返回到后续过程的结果一定是一个格子，假如f相同就找h，再相同就找g，再相同就随机） 遍历最优格四连通区域的格子，将这些格子放入开启列表中（需要注意一下放入到开启列表中的元素，最优格的坐标会作为这些放入开启列表的格子的父级坐标一并放进去） 持续循环，直到开启列表为空或最优格为终点，若开启列表为空，则返回寻路失败，若最优格为终点，则寻路成功，则将终点放入关闭列表并结束循环 反向遍历，从关闭列表的最后一个元素（即终点）开始，访问其计算格父级坐标，与关闭列表中元素的计算格坐标比对，以此找到其父级，以此循环，知道访问到父级坐标为起点坐标时结束遍历，返回计算格坐标，即为输出 代码实现 首先我们需要明确一下格子类内包含的变量是哪些
+extends Node_2D class_name Grid var index : Vector2i var cost : float var parent : GridManager func initialize(parameter : GridManager) -&gt; void: parent = parameter #这里是依赖注入的写法，写习惯了带一笔 接下来是GridManager的脚本，A*算法主要得从这里根据坐标返回格子对象">
 <link href="/css/compiled/main.css" rel="stylesheet" />
     <link href="/css/variables.css" rel="stylesheet" />
     <link href="/css/custom.css" rel="stylesheet" />
@@ -416,34 +375,13 @@ extends Node enum STATE { PATROL , CHASE , ATTACK } #在此定义状态机中的
   >游戏
         <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></span>
     </a><div class="hx:ltr:pr-0 hx:overflow-hidden">
-        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col open"><a
+        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
     href="/game/ai_decision_tree_state_machine/"
     
   >AI决策-状态机
     </a>
-  
-    <ul class='hx:flex hx:flex-col hx:gap-1 hx:relative hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:dark:before:bg-neutral-800 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:pr-3 hx:rtl:before:right-0 hx:ltr:ml-3 hx:rtl:mr-3'><li>
-              <a
-                href="#1-%e5%89%8d%e8%a8%80"
-                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
-              >1 前言</a>
-            </li>
-          <li>
-              <a
-                href="#2-%e7%94%a8%e7%a1%ac%e4%bb%a3%e7%a0%81%e5%ae%9e%e7%8e%b0%e7%8a%b6%e6%80%81%e6%9c%ba"
-                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
-              >2 用硬代码实现状态机</a>
-            </li>
-          <li>
-              <a
-                href="#3-%e7%94%a8statemachine%e7%88%b6%e8%8a%82%e7%82%b9state%e7%b1%bb%e5%ad%90%e8%8a%82%e7%82%b9%e5%ae%9e%e7%8e%b0%e7%8a%b6%e6%80%81%e6%9c%ba"
-                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
-              >3 用StateMachine父节点&#43;STATE类子节点实现状态机</a>
-            </li>
-          </ul>
-  
               
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
@@ -477,13 +415,40 @@ extends Node enum STATE { PATROL , CHASE , ATTACK } #在此定义状态机中的
   >cs炙热沙城二打法概述
     </a>
               
-            </li><li class="hx:flex hx:flex-col "><a
+            </li><li class="hx:flex hx:flex-col open"><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
     href="/game/godot_a_star/"
     
   >基于Godot的A*寻路算法
     </a>
+  
+    <ul class='hx:flex hx:flex-col hx:gap-1 hx:relative hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:dark:before:bg-neutral-800 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:pr-3 hx:rtl:before:right-0 hx:ltr:ml-3 hx:rtl:mr-3'><li>
+              <a
+                href="#%e5%af%bb%e8%b7%af%e6%b6%88%e8%80%97%e5%85%ac%e5%bc%8f"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >寻路消耗公式</a>
+            </li>
+          <li>
+              <a
+                href="#open%e5%bc%80%e5%90%af%e5%88%97%e8%a1%a8%e5%92%8cclose%e5%85%b3%e9%97%ad%e5%88%97%e8%a1%a8"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >open开启列表和close关闭列表</a>
+            </li>
+          <li>
+              <a
+                href="#%e5%ae%9e%e7%8e%b0%e7%90%86%e8%ae%ba%e8%bf%87%e7%a8%8b"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >实现理论过程</a>
+            </li>
+          <li>
+              <a
+                href="#%e4%bb%a3%e7%a0%81%e5%ae%9e%e7%8e%b0"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >代码实现</a>
+            </li>
+          </ul>
+  
               
             </li></ul>
       </div></li>
@@ -507,9 +472,9 @@ extends Node enum STATE { PATROL , CHASE , ATTACK } #在此定义状态机中的
 
     <ul class="hx:flex hx:flex-col hx:gap-1 hx:max-md:hidden">
         
-          <li class="open"><a
+          <li class=""><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
     href="/game/ai_decision_tree_state_machine/"
     
   >AI决策-状态机
@@ -542,9 +507,9 @@ extends Node enum STATE { PATROL , CHASE , ATTACK } #在此定义状态机中的
     
   >cs炙热沙城二打法概述
     </a></li>
-          <li class=""><a
+          <li class="open"><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
     href="/game/godot_a_star/"
     
   >基于Godot的A*寻路算法
@@ -622,31 +587,23 @@ extends Node enum STATE { PATROL , CHASE , ATTACK } #在此定义状态机中的
 <nav class="hextra-toc hx:order-last hx:hidden hx:w-64 hx:shrink-0 hx:xl:block hx:print:hidden hx:px-4" aria-label="table of contents">
     <div class="hextra-scrollbar hx:sticky hx:top-16 hx:overflow-y-auto hx:pr-4 hx:pt-6 hx:text-sm [hyphens:auto] hx:max-h-[calc(100vh-var(--navbar-height)-env(safe-area-inset-bottom))] hx:ltr:-mr-4 hx:rtl:-ml-4"><p class="hx:mb-4 hx:font-semibold hx:tracking-tight">此页上</p><ul>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#1-%e5%89%8d%e8%a8%80">1 前言
+        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e5%af%bb%e8%b7%af%e6%b6%88%e8%80%97%e5%85%ac%e5%bc%8f">寻路消耗公式
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#2-%e7%94%a8%e7%a1%ac%e4%bb%a3%e7%a0%81%e5%ae%9e%e7%8e%b0%e7%8a%b6%e6%80%81%e6%9c%ba">2 用硬代码实现状态机
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e4%b8%89%e4%b8%aa%e8%b7%9d%e7%a6%bb">三个距离
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#21-%e9%80%bb%e8%be%91">2.1 逻辑
+        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#open%e5%bc%80%e5%90%af%e5%88%97%e8%a1%a8%e5%92%8cclose%e5%85%b3%e9%97%ad%e5%88%97%e8%a1%a8">open开启列表和close关闭列表
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#22-%e5%ae%9e%e7%8e%b0">2.2 实现
+        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e5%ae%9e%e7%8e%b0%e7%90%86%e8%ae%ba%e8%bf%87%e7%a8%8b">实现理论过程
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#3-%e7%94%a8statemachine%e7%88%b6%e8%8a%82%e7%82%b9state%e7%b1%bb%e5%ad%90%e8%8a%82%e7%82%b9%e5%ae%9e%e7%8e%b0%e7%8a%b6%e6%80%81%e6%9c%ba">3 用StateMachine父节点&#43;STATE类子节点实现状态机
-        </a>
-      </li>
-      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#31-%e7%ba%a6%e5%ae%9a%e4%bf%97%e6%88%90">3.1 约定俗成
-        </a>
-      </li>
-      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#32-%e5%ae%9e%e7%8e%b0%e4%b8%8e%e7%90%86%e8%a7%a3">3.2 实现与理解
+        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e4%bb%a3%e7%a0%81%e5%ae%9e%e7%8e%b0">代码实现
         </a>
       </li></ul>
       <div class="hx:mt-8 hx:border-t hx:bg-white hx:pt-8 hx:shadow-[0_-12px_16px_white] hx:dark:bg-dark hx:dark:shadow-[0_-12px_16px_#111] hx:sticky hx:bottom-0 hx:flex hx:flex-col hx:items-start hx:gap-2 hx:pb-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-t hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:border-neutral-400">
@@ -666,206 +623,56 @@ extends Node enum STATE { PATROL , CHASE , ATTACK } #在此定义状态机中的
         <div class="hx:mt-1.5 hx:flex hx:items-center hx:gap-1 hx:overflow-hidden hx:text-sm hx:text-gray-500 hx:dark:text-gray-400 hx:contrast-more:text-current">
         <div class="hx:whitespace-nowrap hx:transition-colors hx:min-w-[24px] hx:overflow-hidden hx:text-ellipsis hx:hover:text-gray-900 hx:dark:hover:text-gray-100">
           <a href="/game/">游戏</a>
-        </div><svg class="hx:w-3.5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg><div class="hx:whitespace-nowrap hx:transition-colors hx:font-medium hx:text-gray-700 hx:contrast-more:font-bold hx:contrast-more:text-current hx:dark:text-gray-100 hx:contrast-more:dark:text-current">AI决策-状态机</div>
+        </div><svg class="hx:w-3.5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg><div class="hx:whitespace-nowrap hx:transition-colors hx:font-medium hx:text-gray-700 hx:contrast-more:font-bold hx:contrast-more:text-current hx:dark:text-gray-100 hx:contrast-more:dark:text-current">基于Godot的A*寻路算法</div>
   </div>
 
         <div class="content">
-          <h1>AI决策-状态机</h1>
-          <h2>1 前言<span class="hx:absolute hx:-mt-20" id="1-前言"></span>
-    <a href="#1-%e5%89%8d%e8%a8%80" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>我在使用godot开发一个RTS游戏的时候，我突然发现游戏中的单位(Unit)有且仅有三个动作（当时没有考虑&quot;状态&quot;，而是直接将这些定义为动作）：静止，移动，攻击，或者他们的组合（比如边移动边攻击，当然，别和我杠边静止边移动）</p>
-<p>然后就诞生了这样一个无限递归函数的流程图：</p>
-<p>
-    <img src="../AI%e5%86%b3%e7%ad%96-%e7%8a%b6%e6%80%81%e6%9c%ba1.jpg" alt=""  loading="lazy" /></p>
-<p>可nb了，当时我就觉得，wow，我简直是一个逻辑大王，直到我知道这么做会栈溢出&hellip;</p>
-<p>然后就去学了状态机，把上面的逻辑通过状态机写成了这样：</p>
-<p>
-    <img src="../AI%e5%86%b3%e7%ad%96-%e7%8a%b6%e6%80%81%e6%9c%ba2.jpg" alt=""  loading="lazy" /></p>
-<p>他们两个看上去逻辑是一样的，但区别就在上面的不能用，下面的能用，所以，状态机有什么用？</p>
-<p>即答：让不能用的东西变得能用！（bushi</p>
-<p>答：让actor个体（你说GameObject或CharacterBody也行，主要是我从虚幻开始学的，用actor习惯了）的行为用状态表示，从而<strong>减少逻辑混乱，增强代码可维护性和可扩展性</strong></p>
-<hr>
-<h2>2 用硬代码实现状态机<span class="hx:absolute hx:-mt-20" id="2-用硬代码实现状态机"></span>
-    <a href="#2-%e7%94%a8%e7%a1%ac%e4%bb%a3%e7%a0%81%e5%ae%9e%e7%8e%b0%e7%8a%b6%e6%80%81%e6%9c%ba" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><h3>2.1 逻辑<span class="hx:absolute hx:-mt-20" id="21-逻辑"></span>
-    <a href="#21-%e9%80%bb%e8%be%91" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>想象一下，我们只有一个enemy场景，和一个附着在enemy根节点上的脚本，这个脚本要全权负责enmey的巡逻，追逐，攻击逻辑（经典的patrol-chase-attack循环），我们该怎么写？</p>
-<p>既然用状态机，那么我们就把这三个变成状态吧，我们有巡逻状态，追逐状态，攻击状态，自然，我们需要一个<strong>枚举</strong>来存储这个分类，还要有一个变量来存储<strong>当前状态</strong>，嗯，好，记得要做这两个</p>
-<p>然后我们要处理一下动画，我们得三个状态显然要有不同的动画，那么我们就可以在更改当前状态时同步更改它的动画，那么要记得<strong>在更改状态的函数中同步更新动画</strong></p>
-<p>再者让我们想想，我们要怎么样更改状态呢，比如从patrol转到chase？或许你有许多种方法，比如添加一个Area2D然后把它的area_entered信号连接到根节点脚本中，但我们在这里还是只谈脚本中处理的方法</p>
-<p>那么我们就需要知道玩家在哪，敌人在哪，当玩家与敌人近到一定程度时就更改状态，这里我们用硬代码直接在tick里写，<strong>当我们的当前状态为patrol时，实时获取玩家与敌人位置，当二者距离小于侦查距离时，转换状态为chase</strong>，chase到attack的转换同理，<strong>二者距离小于攻击距离时，立刻攻击玩家，然后状态转为patrol</strong></p>
-<p>以上，一个硬代码状态机就实现了，好了，那么纸上谈兵结束了，现在自己对照下面的代码看上面的解释吧</p>
-<h3>2.2 实现<span class="hx:absolute hx:-mt-20" id="22-实现"></span>
-    <a href="#22-%e5%ae%9e%e7%8e%b0" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>那么就用一下硬代码实现一下状态机吧</p>
-<p>这个硬代码是我从YouTube上一个老哥的博客学来的（啥不是学来的嘞，你说是不吼），以下是原帖，我改成了更简单的版本（原版是scanning-firing-charging循环，但我改成我觉得更简单易懂的patrol-chase-attack循环）</p>
-<p><a href="https://shaggydev.com/2023/10/08/godot-4-state-machines/"target="_blank" rel="noopener">Godot 4 中的启动状态机 - The Shaggy Dev &mdash; Starter state machines in Godot 4 - The Shaggy Dev</a></p>
-<p>（这个文章里同时有硬代码方法和进阶状态机方法，看上半部分就行）</p>
-<p>（记住，不要用硬代码写状态机，除非你敢拿头保证你不会增加很多很复杂的状态或复合状态！）</p>
-<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
-
-<div><pre><code>extends Node
-
-enum STATE {
-PATROL ,
-CHASE ,
-ATTACK
-} #在此定义状态机中的所有状态
-
-@export Player : PLAYER #对玩家引用来判断是否在侦查范围内
-
-var current_state : STATE = PATROL #定义&#34;当前状态&#34;并赋初始值为PATROL
-@export var animation : AnimatedSprite2D #这个动画状态机没有任何架构上的意义，你可以不用管它，我只是想突出状态应该要有的enter函数而已，让我的那个更改状态的函数变得不那么蠢
-
-@export var detect_distance : float #侦查范围
-@export var attack_distance : float #攻击范围
-
-func change_state(new_state : STATE) :
-	current_state = new_state
-	match current_state :
-		STATE.PATROL :
-			animation.play(&#34;patrol&#34;)
-		STATE.CHASE :
-			animation.play(&#34;chase&#34;)
-		STATE.ATTACK :
-			animation.play(&#34;attack&#34;)
-			change_state(PATROL)
-
-func _process(delta) :
-	match current_state :
-		STATE.PATROL :
-			if Player.position.distance_to(position) &lt; detect_distance :
-				change_state(STATE.CHASE)
-		STATE.CHASE :
-			if Player.position.distance_to(position) &lt; attack_distance :
-				change_state(STATE.ATTACK)
-
-func _physics_process(delta) :
-	match current_state :
-		#这下面的函数我就不写了，毕竟重心不在实现enemy动作，而是实现状态机的结构
-		STATE.PATROL :
-			random_move()
-		STATE.CHASE :
-			move_to_player(Player)
-		STATE.ATTACK :
-			attack(Player)</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
-  <button
-    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
-    title="复制代码"
-  >
-    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
-<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
-  </button>
-</div>
-</div>
-<p>结束了，框架没了，是不是很简单？对，状态机就是这么简单</p>
-<hr>
-<h2>3 用StateMachine父节点+STATE类子节点实现状态机<span class="hx:absolute hx:-mt-20" id="3-用statemachine父节点state类子节点实现状态机"></span>
-    <a href="#3-%e7%94%a8statemachine%e7%88%b6%e8%8a%82%e7%82%b9state%e7%b1%bb%e5%ad%90%e8%8a%82%e7%82%b9%e5%ae%9e%e7%8e%b0%e7%8a%b6%e6%80%81%e6%9c%ba" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><h3>3.1 约定俗成<span class="hx:absolute hx:-mt-20" id="31-约定俗成"></span>
-    <a href="#31-%e7%ba%a6%e5%ae%9a%e4%bf%97%e6%88%90" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>知道了上面硬代码实现状态机的方法，有一些东西我就不重复了，知识直接extends过来就ok</p>
-<p>现在我们讲讲一个<strong>状态</strong>应该有什么</p>
-<p>什么？什么叫应该有什么？这是什么意思？意思就是<strong>状态</strong>这个东西的规范形式</p>
-<p>它会有四个函数，分别是</p>
-<ul>
-<li>
-<p>Enter()
-在状态改变为当前状态时调用，抽象理解为godot中的_enter_tree()</p>
-</li>
-<li>
-<p>Exit()
-在离开该状态时调用，理解为_exit_tree()</p>
-</li>
-<li>
-<p>Update()
-与_process()绑定调用，用于处理渲染</p>
-</li>
-<li>
-<p>Physics_Update()
-与_physics_process()绑定调用，用于处理逻辑</p>
-</li>
-</ul>
-<p>以上都是约定俗成，但我觉得它们应该能对你理解接下来的代码有点帮助</p>
-<h3>3.2 实现与理解<span class="hx:absolute hx:-mt-20" id="32-实现与理解"></span>
-    <a href="#32-%e5%ae%9e%e7%8e%b0%e4%b8%8e%e7%90%86%e8%a7%a3" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>以下是我适应的在godot中使用的状态机写法</p>
-<p>原帖</p>
-<p><a href="https://www.youtube.com/watch?v=ow_Lum-Agbs"target="_blank" rel="noopener">Finite State Machines in Godot 4 in Under 10 Minutes - YouTube</a></p>
-<p>首先定义STATE这个东西，我们得知道STATE是什么，有什么默认函数（定义STATE类）</p>
-<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
-
-<div><pre><code>#STATE.gd
-
-extends Node
-class_name STATE #这里就是定义STATE
-
-signal ChangeState #在要更改状态时发出信号，这个信号将附带有将要转向的状态的字符串形式，然后我们在状态机中用字符串查找到的状态来替换当前状态
-
-func Enter() :  #这个函数将在进入该状态时调用
-	pass
-
-func Exit() : #在退出该状态时调用
-	pass
-
-func Update(delta) : #和_process绑定，用于处理渲染tick
-	pass
-
-func Physics_Update(delta) : #和_physics_process绑定，用于处理逻辑tick
-	pass</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
-  <button
-    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
-    title="复制代码"
-  >
-    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
-<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
-  </button>
-</div>
-</div>
-<p>为什么上面的函数都是空的？</p>
-<p>因为后面会根据状态不同直接覆盖这些函数</p>
-<p>然后就是状态机了，先想想状态机应该有什么？</p>
-<p>状态机得：</p>
+          <h1>基于Godot的A*寻路算法</h1>
+          <p>以下写的是四连通的情况，但其实完全可以类推到六连通和八连通</p>
+<p>首先是Astar寻路的四个要点：</p>
 <ol>
-<li>初始化状态（如果有）</li>
-<li>知道能有几种状态（状态的字典）</li>
-<li>知道当前状态是什么（知道当前要执行哪个状态的函数）</li>
-<li>能改变状态（有改变状态的函数）</li>
+<li>寻路消耗公式f = g + h（虽然我并不知道为什么一定是这三个字母而不是a = b + c）</li>
+<li>open开启列表</li>
+<li>close关闭列表</li>
+<li>反向遍历</li>
 </ol>
-<p>没了！那就写吧！</p>
+<h2>寻路消耗公式<span class="hx:absolute hx:-mt-20" id="寻路消耗公式"></span>
+    <a href="#%e5%af%bb%e8%b7%af%e6%b6%88%e8%80%97%e5%85%ac%e5%bc%8f" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p><strong>f = g + h</strong></p>
+<p>其中，f为寻路消耗，g为起点到计算点的切比雪夫距离，h为计算点到终点的曼哈顿距离</p>
+<p>为什么是切比雪夫距离？经典的版本是欧氏距离，但依旧如题，这里要涉及到消耗，所以我会更偏向使用切比雪夫距离，下方解释一下三个距离</p>
+<h3>三个距离<span class="hx:absolute hx:-mt-20" id="三个距离"></span>
+    <a href="#%e4%b8%89%e4%b8%aa%e8%b7%9d%e7%a6%bb" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>欧几里得距离（欧氏距离）的计算公式是横坐标差的平方加纵坐标差的平方的和开根号，当对ai体的灵活度有要求时，就会用这个距离代表g</p>
+<p>曼哈顿距离的计算公式是横坐标差的绝对值加纵坐标差的绝对值，一般用来衡量计算点到终点的远近</p>
+<p>切比雪夫距离没有很明确的计算公式，如果非要有的话那应该就是对经过的所有格子的消耗求和，所以一般说到消耗都是切比雪夫距离</p>
+<h2>open开启列表和close关闭列表<span class="hx:absolute hx:-mt-20" id="open开启列表和close关闭列表"></span>
+    <a href="#open%e5%bc%80%e5%90%af%e5%88%97%e8%a1%a8%e5%92%8cclose%e5%85%b3%e9%97%ad%e5%88%97%e8%a1%a8" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>open用来存储已访问但未放入路径的格子，close用来存储放入路径的格子，Astar计算出的路径就是close的子集</p>
+<p>open通常需要包含的数据有：计算格父级的坐标，计算格的f，g，h，计算格的坐标
+close需要包含的数据有：计算格父级的坐标，计算格的坐标</p>
+<h2>实现理论过程<span class="hx:absolute hx:-mt-20" id="实现理论过程"></span>
+    <a href="#%e5%ae%9e%e7%8e%b0%e7%90%86%e8%ae%ba%e8%bf%87%e7%a8%8b" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>前提：假设所有格子都继承于一个类Grid(父类是Node2D)，访问格子时可以访问到它的坐标，移动消耗，同时有一个格子管理器GridManager(父类是Node)，所有格子都是这个管理器的子节点</p>
+<p>我们要求Astar脚本的核心功能：输入起点和终点坐标，格子管理器的引用，若寻路成功，输出下一步要移动到的格子坐标</p>
+<p>步骤如下：</p>
+<ol>
+<li>把起点放入开启列表中</li>
+<li>开始循环，在开启列表中寻找f最小的最优格，将其放入关闭列表，并从开启列表中移除（可能会存在有几个格子的情况，所以这里存储找到的格子需要是一个列表，但返回到后续过程的结果一定是一个格子，假如f相同就找h，再相同就找g，再相同就随机）</li>
+<li>遍历最优格四连通区域的格子，将这些格子放入开启列表中（需要注意一下放入到开启列表中的元素，最优格的坐标会作为这些放入开启列表的格子的父级坐标一并放进去）</li>
+<li>持续循环，直到开启列表为空或最优格为终点，若开启列表为空，则返回寻路失败，若最优格为终点，则寻路成功，则将终点放入关闭列表并结束循环</li>
+<li>反向遍历，从关闭列表的最后一个元素（即终点）开始，访问其计算格父级坐标，与关闭列表中元素的计算格坐标比对，以此找到其父级，以此循环，知道访问到父级坐标为起点坐标时结束遍历，返回计算格坐标，即为输出</li>
+</ol>
+<h2>代码实现<span class="hx:absolute hx:-mt-20" id="代码实现"></span>
+    <a href="#%e4%bb%a3%e7%a0%81%e5%ae%9e%e7%8e%b0" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>首先我们需要明确一下格子类内包含的变量是哪些</p>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><pre><code>#StateMachine.gd
-
-extends Node
-class_name state_machine
-
-var state_dictionary := {} #这里是2
-var current_state : STATE #这里是3
-@export var init_state : STATE #这里是1
-
-
-func _ready() :
-	
-	#这里是2
-	for child in get_children() :
-		if child is STATE :
-			state_dictionary[child.name.to_lower()] = child #状态字典，键为状态的小写字符串形式，值为状态（子节点），这里的小写是用于保证代码安全的写法，避免因为大小写不同而检索不到相应的状态名
-			child.change_state.connect(_change_state) #绑定信号到函数
-			
-	#这里是1
-	if init_state :
-		current_state = init_state
-		current_state.Enter()
-
-#这里是3
-func _process(delta) :
-	if current_state :
-		current_state.Update(delta)
-
-func _physics_process(delta) :
-	if current_state :
-		current_state.Physics_Update(delta)
-
-#这里是4
-func _change_state(new_state) :
-	if current_state :
-		current_state.Exit()
-	current_state = state_dictionary[new_state]
-	current_state.Enter()</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-gdscript" data-lang="gdscript"><span style="display:flex;"><span><span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">Node_2D</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class_name</span> <span style="color:#a6e22e">Grid</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> index : <span style="color:#a6e22e">Vector2i</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> cost : <span style="color:#66d9ef">float</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> parent : GridManager
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">initialize</span>(parameter : GridManager) <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">void</span>:
+</span></span><span style="display:flex;"><span>	parent <span style="color:#f92672">=</span> parameter
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#这里是依赖注入的写法，写习惯了带一笔</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="复制代码"
@@ -875,39 +682,25 @@ func _change_state(new_state) :
   </button>
 </div>
 </div>
-<p>接下来用patrol-chase-attack循环来演示状态节点</p>
+<p>接下来是GridManager的脚本，A*算法主要得从这里根据坐标返回格子对象</p>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><pre><code>#patrol.gd
-
-extends STATE
-class_name PATROL
-
-@export var enemy : ENEMY #这里是用引用的方法来让根节点实现当前状态的逻辑的
-@export var player : PLAYER #引用Player检测玩家是否进入侦查距离
-
-var detect_distance : float #侦查距离，当玩家与敌人的距离小于这一距离时，更改状态为chase
-var wander_time : float #为了不用强制多线程的timer，这里用最朴素的方法写计时器
-var current_wander_time : float
-
-func random_move() :
-	pass
-	#这里我就不演示了，反正就是enemy的运动逻辑
-
-func Enter() :
-	random_move()
-
-func Update(delta) :
-	if wander_time &gt; 0 :
-		current_wander_time -= delta
-	else :
-		random_move()
-		current_wander_time = wander_time
-
-func _Physics_Update(delta) :
-	#当玩家与敌人距离比侦查距离小时，将状态转换为chase
-	if player.position.distance_to(position) &lt; detect_distance :
-		change_state.emit(&#34;chase&#34;)</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-gdscript" data-lang="gdscript"><span style="display:flex;"><span><span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">Node</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class_name</span> <span style="color:#a6e22e">GridManager</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> parent : <span style="color:#a6e22e">Node</span> <span style="color:#75715e">#这里的是GridManager的父级</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">initialize</span>(parameter : <span style="color:#a6e22e">Node</span>) <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">void</span>:
+</span></span><span style="display:flex;"><span>	parent <span style="color:#f92672">=</span> parameter
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> child <span style="color:#f92672">in</span> <span style="color:#a6e22e">get_children</span>():
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> child <span style="color:#f92672">is</span> Grid:
+</span></span><span style="display:flex;"><span>				child<span style="color:#f92672">.</span><span style="color:#a6e22e">initialize</span>(self)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">index2grid</span>(index : <span style="color:#a6e22e">Vector2i</span>) <span style="color:#f92672">-&gt;</span> Grid:
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> child <span style="color:#f92672">in</span> <span style="color:#a6e22e">get_children</span>():
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> child <span style="color:#f92672">is</span> Grid:
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> child<span style="color:#f92672">.</span>index <span style="color:#f92672">==</span> index:
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">return</span> child</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="复制代码"
@@ -917,27 +710,99 @@ func _Physics_Update(delta) :
   </button>
 </div>
 </div>
-<p>以上</p>
-<p>这个状态机的思路就是：</p>
-<ul>
-<li>给根节点一个节点StateMachine</li>
-<li>在StateMachine下添加STATE类节点</li>
-<li>StateMachine实时调用current_state的逻辑</li>
-<li>STATE节点获得对StateMachine的引用实现更改current_state逻辑</li>
-<li>STATE节点获得对根节点的引用实现STATE逻辑</li>
-</ul>
+<p>接下来就是寻路算法的核心脚本，输入管理器、起点和终点坐标，输出接下来要走的坐标，具体看注释，这里不赘述了</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-gdscript" data-lang="gdscript"><span style="display:flex;"><span><span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">Node</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class_name</span> <span style="color:#a6e22e">AStar</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>(grid_manager : GridManager , start_index : <span style="color:#a6e22e">Vector2i</span> , end_index : <span style="color:#a6e22e">Vector2i</span>) <span style="color:#f92672">-&gt;</span> <span style="color:#a6e22e">Vector2i</span>: <span style="color:#75715e">#明确算法的输入输出</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">var</span> result : <span style="color:#a6e22e">Vector2i</span> <span style="color:#75715e">#结果</span>
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">var</span> open_list : <span style="color:#a6e22e">Dictionary</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">var</span> close_list : <span style="color:#a6e22e">Dictionary</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#这里明确这两个list中的数据结构分别为{计算点坐标 : [[计算点父级坐标] , [f,g,h]]}和{计算点坐标 : 计算点父级坐标}</span>
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	open_list[start_index] <span style="color:#f92672">=</span> [[<span style="color:#a6e22e">Vector2i</span>(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>,<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)] , [<span style="color:#a6e22e">get_MHD</span>(start_index , end_index),<span style="color:#ae81ff">0</span>,<span style="color:#a6e22e">get_MHD</span>(start_index , end_index)]]
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#初始化open_list</span>
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">var</span> end_flag : <span style="color:#66d9ef">bool</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">while</span> end_flag <span style="color:#f92672">==</span> <span style="color:#66d9ef">false</span>:
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">var</span> best_element_index : <span style="color:#a6e22e">Vector2i</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">get_best_element_index</span>(open_list)
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">var</span> best_element_parent_index : <span style="color:#a6e22e">Vector2i</span> <span style="color:#f92672">=</span> open_list[best_element_index][<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>		open_list<span style="color:#f92672">.</span><span style="color:#a6e22e">erase</span>(best_element_index)
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">#以上是对open_list的处理</span>
+</span></span><span style="display:flex;"><span>		
+</span></span><span style="display:flex;"><span>		close_list[best_element_index] <span style="color:#f92672">=</span> best_element_parent_index
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">#把最优格放入close_list</span>
+</span></span><span style="display:flex;"><span>		
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">var</span> cross_grids_index : <span style="color:#a6e22e">Array</span>[<span style="color:#a6e22e">Vector2i</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">get_cross_grids_index</span>(grid_mamanager,best_element_index)
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">for</span> cross_grid_index <span style="color:#f92672">in</span> cross_grids_index:
+</span></span><span style="display:flex;"><span>			
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">var</span> cross_grid_index_dictionary : <span style="color:#a6e22e">Dictionary</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">#数据结构为{计算点坐标 : [f,g,h]}</span>
+</span></span><span style="display:flex;"><span>			
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">var</span> g : <span style="color:#66d9ef">float</span> <span style="color:#f92672">=</span> grid_manager<span style="color:#f92672">.</span><span style="color:#a6e22e">index2grid</span>(cross_grid_index)<span style="color:#f92672">.</span>cost <span style="color:#f92672">+</span> open_list[best_element_index][<span style="color:#ae81ff">1</span>][<span style="color:#ae81ff">1</span>]
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">var</span> h : <span style="color:#66d9ef">int</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">get_MHD</span>(cross_grid_index,end_index)
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">var</span> f : <span style="color:#66d9ef">float</span> <span style="color:#f92672">=</span> g <span style="color:#f92672">+</span> h
+</span></span><span style="display:flex;"><span>			cross_grid_index_dictionary[cross_grid_index] <span style="color:#f92672">=</span> [f,g,h]
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">#这个要着重看，精髓在此</span>
+</span></span><span style="display:flex;"><span>			
+</span></span><span style="display:flex;"><span>			open_list[cross_grid_index] <span style="color:#f92672">=</span> [[best_element_index] , cross_grid_index_dictionary[cross_grid_index]]
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">#处理父级</span>
+</span></span><span style="display:flex;"><span>			
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">if</span> h <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>				close_list[end_index] <span style="color:#f92672">=</span> best_element_index
+</span></span><span style="display:flex;"><span>				end_flag <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	end_flag <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>	result <span style="color:#f92672">=</span> end_index
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">while</span> end_flag <span style="color:#f92672">==</span> <span style="color:#66d9ef">false</span>:
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> close_list[result] <span style="color:#f92672">==</span> start_index:
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">return</span> result
+</span></span><span style="display:flex;"><span>		result <span style="color:#f92672">=</span> close_list[result]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#下面补充工具函数</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">get_best_element_index</span>(open_list : <span style="color:#a6e22e">Dictionary</span>) <span style="color:#f92672">-&gt;</span> <span style="color:#a6e22e">Vector2i</span>:
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">var</span> calculation_index : <span style="color:#a6e22e">Array</span>[<span style="color:#a6e22e">Vector2i</span>]
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">var</span> calculation_index_parameter : <span style="color:#a6e22e">Array</span>[<span style="color:#a6e22e">Array</span>]
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> key <span style="color:#f92672">in</span> open_list<span style="color:#f92672">.</span><span style="color:#a6e22e">keys</span>():
+</span></span><span style="display:flex;"><span>		calculation_index<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span>(key)
+</span></span><span style="display:flex;"><span>		calculation_index_parameter<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span>(open_list[key][<span style="color:#ae81ff">1</span>])
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">#TODO-----已经把要计算点部分提出来了-----</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">get_cross_grids_index</span>(grid_manager : GridMnager,best_element_index : <span style="color:#a6e22e">Vector2i</span>) <span style="color:#f92672">-&gt;</span> <span style="color:#a6e22e">Array</span>[<span style="color:#a6e22e">Vector2i</span>]:
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">var</span> result : <span style="color:#a6e22e">Vector2i</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">var</span> directions : <span style="color:#a6e22e">Array</span>[<span style="color:#a6e22e">Vector2i</span>] <span style="color:#f92672">=</span> [<span style="color:#a6e22e">Vector2i</span>(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>),<span style="color:#a6e22e">Vector2i</span>(<span style="color:#ae81ff">1</span>,<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>),<span style="color:#a6e22e">Vector2i</span>(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>,<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>),<span style="color:#a6e22e">Vector</span>(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>)]
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> direction <span style="color:#f92672">in</span> directions:
+</span></span><span style="display:flex;"><span>		target : <span style="color:#a6e22e">Vector2i</span> <span style="color:#f92672">=</span> best_element_index <span style="color:#f92672">+</span> direction
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> grid_manager<span style="color:#f92672">.</span><span style="color:#a6e22e">index2grid</span>(target):
+</span></span><span style="display:flex;"><span>			result<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span>(target)
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> result
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">get_MHD</span>(start_index : <span style="color:#a6e22e">Vector2i</span>,end_index : <span style="color:#a6e22e">Vector2i</span>) <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">int</span>:
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> abs(start_index<span style="color:#f92672">.</span>x <span style="color:#f92672">-</span> end_index<span style="color:#f92672">.</span>x)<span style="color:#f92672">+</span>abs(start_index<span style="color:#f92672">.</span>y <span style="color:#f92672">-</span> end_index<span style="color:#f92672">.</span>y)</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="复制代码"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
 <hr>
-<p>下面写一个进阶的状态机写法</p>
-<p>ToDo（希望不鸽）</p>
+<p>未完成</p>
 
         </div>
         
-    <div class="hx:mt-12 hx:mb-8 hx:block hx:text-xs hx:text-gray-500 hx:ltr:text-right hx:rtl:text-left hx:dark:text-gray-400">最后更新于 <time datetime="2025-04-11T00:00:00.000Z">2025年4月11日</time></div>
+    <div class="hx:mt-12 hx:mb-8 hx:block hx:text-xs hx:text-gray-500 hx:ltr:text-right hx:rtl:text-left hx:dark:text-gray-400">最后更新于 <time datetime="2025-12-03T00:00:00.000Z">2025年12月3日</time></div>
         <div class="hx:mb-8 hx:flex hx:items-center hx:border-t hx:pt-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-neutral-400 hx:dark:contrast-more:border-neutral-400 hx:print:hidden"><a
-        href="/game/stick_to_an_isolated_city/"
-        title="墨守孤城"
-        class="hx:flex hx:max-w-[50%] hx:items-center hx:gap-1 hx:py-4 hx:text-base hx:font-medium hx:text-gray-600 hx:transition-colors [word-break:break-word] hx:hover:text-primary-600 hx:dark:text-gray-300 hx:md:text-lg hx:ltr:ml-auto hx:ltr:pl-4 hx:ltr:text-right hx:rtl:mr-auto hx:rtl:pr-4 hx:rtl:text-left"
-      >墨守孤城<svg class="hx:inline hx:h-5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a></div>
+        href="/game/cs_dust2/"
+        title="cs炙热沙城二打法概述"
+        class="hx:flex hx:max-w-[50%] hx:items-center hx:gap-1 hx:py-4 hx:text-base hx:font-medium hx:text-gray-600 hx:transition-colors [word-break:break-word] hx:hover:text-primary-600 hx:dark:text-gray-300 hx:md:text-lg hx:ltr:pr-4 hx:rtl:pl-4"
+      ><svg class="hx:inline hx:h-5 hx:shrink-0 hx:ltr:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>cs炙热沙城二打法概述</a></div>
         
       </main>
     </article>
