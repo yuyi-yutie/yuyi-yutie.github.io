@@ -155,7 +155,7 @@ HTN概念图 GOAP概念图 2.1 全篇速览举例 （这个例子看不懂的话
   </head>
 <body>
 <div class="hextra-banner hx:max-md:sticky hx:top-0 hx:z-20 hx:px-6 hx:text-center hx:text-slate-50 hx:dark:text-white hx:bg-neutral-900 hx:dark:bg-neutral-800 hx:print:[display:none]">
-  <div class="hx:relative hx:flex hx:items-center hx:justify-center hx:font-medium hx:text-sm hx:py-2.5"><div style="white-space: pre-wrap" class="hx:px-8">Welcome!Last updated date -&gt; 2025-12-15</div><button
+  <div class="hx:relative hx:flex hx:items-center hx:justify-center hx:font-medium hx:text-sm hx:py-2.5"><div style="white-space: pre-wrap" class="hx:px-8">Welcome ! Last updated date -&gt; 2025-12-15</div><button
       class="hextra-banner-close-button hx:cursor-pointer hx:absolute hx:right-0 hx:text-white hx:font-bold hx:leading-none hx:hover:opacity-75 hx:transition hx:w-10 hx:h-10 hx:-mr-2 hx:md:mr-0 hx:flex hx:items-center hx:justify-center"
     ><svg height=16 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button>
   </div>
@@ -461,6 +461,14 @@ HTN概念图 GOAP概念图 2.1 全篇速览举例 （这个例子看不懂的话
   >基于Godot的A*寻路算法
     </a>
               
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/game/godot_code_framework/"
+    
+  >Godot或许合格的程序架构
+    </a>
+              
             </li></ul>
       </div></li>
       <li class="[word-break:break-word] hx:mt-5 hx:mb-2 hx:px-2 hx:py-1.5 hx:text-sm hx:font-semibold hx:text-gray-900 hx:first:mt-0 hx:dark:text-gray-100">
@@ -524,6 +532,13 @@ HTN概念图 GOAP概念图 2.1 全篇速览举例 （这个例子看不懂的话
     href="/game/godot_a_star/"
     
   >基于Godot的A*寻路算法
+    </a></li>
+          <li class=""><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/game/godot_code_framework/"
+    
+  >Godot或许合格的程序架构
     </a></li>
         
       <li class="[word-break:break-word] hx:mt-5 hx:mb-2 hx:px-2 hx:py-1.5 hx:text-sm hx:font-semibold hx:text-gray-900 hx:first:mt-0 hx:dark:text-gray-100">
@@ -1116,7 +1131,7 @@ Sequence -&gt; 状态节点：门是锁着的？ -&gt; 动作节点：解锁门 
 </table>
 <p>视频里更简单的理解是Selector + Sequence的组合，没错，就是这个感觉</p>
 <h3>5.4 HTN的tick和World State<span class="hx:absolute hx:-mt-20" id="54-htn的tick和world-state"></span>
-    <a href="#54-htn%e7%9a%84tick%e5%92%8cworld-state" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>到此就得讲一下HTN的tick形式了，首先会议一下状态机的tick形式是状态变化时tick，行为树的tick形式是每一帧tick，而HTN的tick形式则是World State改变时tick</p>
+    <a href="#54-htn%e7%9a%84tick%e5%92%8cworld-state" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>到此就得讲一下HTN的tick形式了，首先回忆一下状态机的tick形式是状态变化时tick，行为树的tick形式是每一帧tick，而HTN的tick形式则是World State改变时tick</p>
 <p>对于World State，视频中的解释是，HTN和GOAP的ai像是把世界以自己的方式抄下来，比如看到10个敌人就抄为&quot;看到很多敌人&rdquo;(true)，有1个草药和1个空瓶（假设是制作解毒药的材料）就抄为&quot;有制作解毒药的材料&rdquo;(true)</p>
 <h3>5.5 HTN的Planning<span class="hx:absolute hx:-mt-20" id="55-htn的planning"></span>
     <a href="#55-htn%e7%9a%84planning" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>现在就得开始做规划了，我们需要在这里把ai体接下来要做的事情排成一个队列（可以理解为排列要执行的Task）</p>
