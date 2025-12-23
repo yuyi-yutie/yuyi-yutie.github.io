@@ -8,77 +8,35 @@
 <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
 <link fetchpriority="low" href="/site.webmanifest" rel="manifest" />
-<title>墨守孤城 – 乂轶·轶名-0verDay</title>
-  <meta name="description" content="游戏类型：RTS?&#43;塔防?&#43;自走棋?
-画风：国风&#43;水墨风
-一句话总结：有些卖ip的意思，玩法没有很大的创新性，对RTS的简化值得借鉴
-主题：采集资源，建造军队，防御攻击
-（吐槽一下，优化真的烂）
-游戏主玩法 游戏玩法流程和RTS是一个模子刻出来的，至少我玩到整个游戏关卡流程的一半还没看到更多的机制或系统
-经济系统 游戏中有以下资源种类： 人口，粮食，水墨，木材，石材，乌薪，产业链（纯纯的败笔）
-其中，除人口和粮食之外，其他资源均以&#34;天&#34;为回合单位，依回合结束时的资源增长数获得 （每天为15秒）
-人口 是一次性生产的少量资源
-游戏中的人口有且仅有住房类建筑能提供，同时住房类建筑会提供水墨，可以理解为水墨增长和人口增长是成正比的
-人口是建造某些生产类建筑所需的资源，如伐木场（木材），猎人小屋（食物），采石场（石材），墨薪采矿场（墨薪） 是训练军事单位所需的资源
-粮食 是一次性生产的少量资源
-游戏中的粮食由&#34;农田&#34;和&#34;猎人小屋&#34;提供
-其中&#34;农田&#34;仅消耗水墨，是游戏开始时必造的主要建筑，“猎人小屋&#34;消耗人口，水墨，木材，是游戏中期生产粮食的主要建筑
-对于&#34;农田”，游戏中设定了&#34;肥沃度&#34;系统，每一个空地地块都有一个&#34;肥沃度&#34;值，特别地，肥沃度为0的空地即为&#34;荒地&#34;，在只有荒地的地块无法建造农田
-肥沃度仅由地图决定
-对于&#34;猎人小屋&#34;，其存在一个&#34;影响范围&#34;，在该影响范围内的树木会为玩家提供一次性的粮食值，树木量与粮食量关联函数暂未知，反正多多益善
-特殊地，猎人小屋的影响范围不能重叠（要求玩家通过合理城市规划来最大化资源生产）
-是建造住房类建筑的核心资源，前期的资源循环存在于&#34;水墨&#34;-&gt;“粮食”-&gt;“人口”&#43;“水墨&#34;中
-木材 是周期性生产的大量资源
-游戏中的木材由伐木场类建筑提供，同&#34;猎人小屋”，只不过其生产资源是周期性的
-石材 是周期性生产的少量资源
-游戏中存在&#34;石头&#34;地块，在该地块上建造采石场类建筑，保证石头在采石场影响范围内即可为玩家周期性地提供石材资源
-乌薪 完全同&#34;石材&#34;，只不过量更少
-水墨 可以广义地理解为&#34;钱&#34;，基本所有建筑建造，单位训练，地图扩张都需要&#34;水墨&#34;
-产业链 是一种只有顶级建筑一次性生产，专门用于升级顶级部队的个位数资源" /><link rel="canonical" href="http://localhost:1313/game/stick_to_an_isolated_city/" itemprop="url" />
+<title>2025TapTap聚光灯48Hgamejam成都场复盘 – 乂轶·轶名-0verDay</title>
+  <meta name="description" content="放一下官方给的时间安排
+不想听经历的话可以直接看本文的文件汇总，那里面的东西看完也差不多能知道这次做了什么
+文件汇总 ↗ 飞书 注：由于我不是上帝，我复盘只能以自己的视角看，所以我自己的部分会写的更详细一些，本文中描述各人的文字长度不能代表各人的工作量（手动叠甲）
+我们的状况 成员组成：系统/数值策划&#43;副程&#43;地编&#43;ui美术（大二程策美，后文称&#34;我&#34;），主程&#43;地编（大二程序，组长，因为拿的牌子是&#34;程序&#34;，故后文称&#34;程序&#34;），玩法策划&#43;原画（大四美术，线上美术，因大部分时间在干美术，故后文称&#34;美术&#34;），动画&#43;管理（在职策划，因拿的牌子是&#34;策划&#34;，故后文称&#34;策划&#34;）
+我和程序原先一直在合作做长期项目，本来因为要上课而不想打这场gamejam，但美术和策划在同一天找上了程序要组队，于是便因这样的机缘巧合组了队
+脑暴 先说主题，“模拟器”" /><link rel="canonical" href="http://localhost:1313/game/2025taptap_spotlight_48hgamejam_chengdu/" itemprop="url" />
 
-<meta property="og:title" content="墨守孤城">
+<meta property="og:title" content="2025TapTap聚光灯48Hgamejam成都场复盘">
 <meta
   property="og:description"
   content="
     
-      游戏类型：RTS?&#43;塔防?&#43;自走棋?
-画风：国风&#43;水墨风
-一句话总结：有些卖ip的意思，玩法没有很大的创新性，对RTS的简化值得借鉴
-主题：采集资源，建造军队，防御攻击
-（吐槽一下，优化真的烂）
-游戏主玩法
-    游戏玩法流程和RTS是一个模子刻出来的，至少我玩到整个游戏关卡流程的一半还没看到更多的机制或系统
-经济系统
-    游戏中有以下资源种类：
-人口，粮食，水墨，木材，石材，乌薪，产业链（纯纯的败笔）
-其中，除人口和粮食之外，其他资源均以&quot;天&quot;为回合单位，依回合结束时的资源增长数获得
-（每天为15秒）
-人口
-    是一次性生产的少量资源
-游戏中的人口有且仅有住房类建筑能提供，同时住房类建筑会提供水墨，可以理解为水墨增长和人口增长是成正比的
-人口是建造某些生产类建筑所需的资源，如伐木场（木材），猎人小屋（食物），采石场（石材），墨薪采矿场（墨薪）
-是训练军事单位所需的资源
-粮食
-    是一次性生产的少量资源
-游戏中的粮食由&quot;农田&quot;和&quot;猎人小屋&quot;提供
-其中&quot;农田&quot;仅消耗水墨，是游戏开始时必造的主要建筑，&ldquo;猎人小屋&quot;消耗人口，水墨，木材，是游戏中期生产粮食的主要建筑
-对于&quot;农田&rdquo;，游戏中设定了&quot;肥沃度&quot;系统，每一个空地地块都有一个&quot;肥沃度&quot;值，特别地，肥沃度为0的空地即为&quot;荒地&quot;，在只有荒地的地块无法建造农田
-肥沃度仅由地图决定
-对于&quot;猎人小屋&quot;，其存在一个&quot;影响范围&quot;，在该影响范围内的树木会为玩家提供一次性的粮食值，树木量与粮食量关联函数暂未知，反正多多益善
-特殊地，猎人小屋的影响范围不能重叠（要求玩家通过合理城市规划来最大化资源生产）
-是建造住房类建筑的核心资源，前期的资源循环存在于&quot;水墨&quot;-&gt;&ldquo;粮食&rdquo;-&gt;&ldquo;人口&rdquo;&#43;&ldquo;水墨&quot;中
-木材
-    是周期性生产的大量资源
-游戏中的木材由伐木场类建筑提供，同&quot;猎人小屋&rdquo;，只不过其生产资源是周期性的
-石材
-    是周期性生产的少量资源
-游戏中存在&quot;石头&quot;地块，在该地块上建造采石场类建筑，保证石头在采石场影响范围内即可为玩家周期性地提供石材资源
-乌薪
-    完全同&quot;石材&quot;，只不过量更少
-水墨
-    可以广义地理解为&quot;钱&quot;，基本所有建筑建造，单位训练，地图扩张都需要&quot;水墨&quot;
-产业链
-    是一种只有顶级建筑一次性生产，专门用于升级顶级部队的个位数资源
+      放一下官方给的时间安排
+
+    
+不想听经历的话可以直接看本文的文件汇总，那里面的东西看完也差不多能知道这次做了什么
+
+  文件汇总 ↗
+    飞书
+  
+
+
+注：由于我不是上帝，我复盘只能以自己的视角看，所以我自己的部分会写的更详细一些，本文中描述各人的文字长度不能代表各人的工作量（手动叠甲）
+我们的状况
+    成员组成：系统/数值策划&#43;副程&#43;地编&#43;ui美术（大二程策美，后文称&quot;我&quot;），主程&#43;地编（大二程序，组长，因为拿的牌子是&quot;程序&quot;，故后文称&quot;程序&quot;），玩法策划&#43;原画（大四美术，线上美术，因大部分时间在干美术，故后文称&quot;美术&quot;），动画&#43;管理（在职策划，因拿的牌子是&quot;策划&quot;，故后文称&quot;策划&quot;）
+我和程序原先一直在合作做长期项目，本来因为要上课而不想打这场gamejam，但美术和策划在同一天找上了程序要组队，于是便因这样的机缘巧合组了队
+脑暴
+    先说主题，&ldquo;模拟器&rdquo;
     
   ">
 <meta
@@ -86,77 +44,37 @@
   content="
     article
   ">
-<meta property="og:url" content="http://localhost:1313/game/stick_to_an_isolated_city/"><meta property="article:section" content="game">
+<meta property="og:url" content="http://localhost:1313/game/2025taptap_spotlight_48hgamejam_chengdu/"><meta property="article:section" content="game">
 
 <meta
   property="article:published_time"
-  content="2025-11-21T00:00:00+00:00">
+  content="2025-12-22T00:00:00+00:00">
 
 
 <meta
   property="article:modified_time"
-  content="2025-11-21T00:00:00+00:00">
+  content="2025-12-22T00:00:00+00:00">
 
 
 
-  <meta itemprop="name" content="墨守孤城">
-  <meta itemprop="description" content="游戏类型：RTS?&#43;塔防?&#43;自走棋?
-画风：国风&#43;水墨风
-一句话总结：有些卖ip的意思，玩法没有很大的创新性，对RTS的简化值得借鉴
-主题：采集资源，建造军队，防御攻击
-（吐槽一下，优化真的烂）
-游戏主玩法 游戏玩法流程和RTS是一个模子刻出来的，至少我玩到整个游戏关卡流程的一半还没看到更多的机制或系统
-经济系统 游戏中有以下资源种类： 人口，粮食，水墨，木材，石材，乌薪，产业链（纯纯的败笔）
-其中，除人口和粮食之外，其他资源均以&#34;天&#34;为回合单位，依回合结束时的资源增长数获得 （每天为15秒）
-人口 是一次性生产的少量资源
-游戏中的人口有且仅有住房类建筑能提供，同时住房类建筑会提供水墨，可以理解为水墨增长和人口增长是成正比的
-人口是建造某些生产类建筑所需的资源，如伐木场（木材），猎人小屋（食物），采石场（石材），墨薪采矿场（墨薪） 是训练军事单位所需的资源
-粮食 是一次性生产的少量资源
-游戏中的粮食由&#34;农田&#34;和&#34;猎人小屋&#34;提供
-其中&#34;农田&#34;仅消耗水墨，是游戏开始时必造的主要建筑，“猎人小屋&#34;消耗人口，水墨，木材，是游戏中期生产粮食的主要建筑
-对于&#34;农田”，游戏中设定了&#34;肥沃度&#34;系统，每一个空地地块都有一个&#34;肥沃度&#34;值，特别地，肥沃度为0的空地即为&#34;荒地&#34;，在只有荒地的地块无法建造农田
-肥沃度仅由地图决定
-对于&#34;猎人小屋&#34;，其存在一个&#34;影响范围&#34;，在该影响范围内的树木会为玩家提供一次性的粮食值，树木量与粮食量关联函数暂未知，反正多多益善
-特殊地，猎人小屋的影响范围不能重叠（要求玩家通过合理城市规划来最大化资源生产）
-是建造住房类建筑的核心资源，前期的资源循环存在于&#34;水墨&#34;-&gt;“粮食”-&gt;“人口”&#43;“水墨&#34;中
-木材 是周期性生产的大量资源
-游戏中的木材由伐木场类建筑提供，同&#34;猎人小屋”，只不过其生产资源是周期性的
-石材 是周期性生产的少量资源
-游戏中存在&#34;石头&#34;地块，在该地块上建造采石场类建筑，保证石头在采石场影响范围内即可为玩家周期性地提供石材资源
-乌薪 完全同&#34;石材&#34;，只不过量更少
-水墨 可以广义地理解为&#34;钱&#34;，基本所有建筑建造，单位训练，地图扩张都需要&#34;水墨&#34;
-产业链 是一种只有顶级建筑一次性生产，专门用于升级顶级部队的个位数资源">
-  <meta itemprop="datePublished" content="2025-11-21T00:00:00+00:00">
-  <meta itemprop="dateModified" content="2025-11-21T00:00:00+00:00">
-  <meta itemprop="wordCount" content="63">
+  <meta itemprop="name" content="2025TapTap聚光灯48Hgamejam成都场复盘">
+  <meta itemprop="description" content="放一下官方给的时间安排
+不想听经历的话可以直接看本文的文件汇总，那里面的东西看完也差不多能知道这次做了什么
+文件汇总 ↗ 飞书 注：由于我不是上帝，我复盘只能以自己的视角看，所以我自己的部分会写的更详细一些，本文中描述各人的文字长度不能代表各人的工作量（手动叠甲）
+我们的状况 成员组成：系统/数值策划&#43;副程&#43;地编&#43;ui美术（大二程策美，后文称&#34;我&#34;），主程&#43;地编（大二程序，组长，因为拿的牌子是&#34;程序&#34;，故后文称&#34;程序&#34;），玩法策划&#43;原画（大四美术，线上美术，因大部分时间在干美术，故后文称&#34;美术&#34;），动画&#43;管理（在职策划，因拿的牌子是&#34;策划&#34;，故后文称&#34;策划&#34;）
+我和程序原先一直在合作做长期项目，本来因为要上课而不想打这场gamejam，但美术和策划在同一天找上了程序要组队，于是便因这样的机缘巧合组了队
+脑暴 先说主题，“模拟器”">
+  <meta itemprop="datePublished" content="2025-12-22T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2025-12-22T00:00:00+00:00">
+  <meta itemprop="wordCount" content="123">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="墨守孤城">
-  <meta name="twitter:description" content="游戏类型：RTS?&#43;塔防?&#43;自走棋?
-画风：国风&#43;水墨风
-一句话总结：有些卖ip的意思，玩法没有很大的创新性，对RTS的简化值得借鉴
-主题：采集资源，建造军队，防御攻击
-（吐槽一下，优化真的烂）
-游戏主玩法 游戏玩法流程和RTS是一个模子刻出来的，至少我玩到整个游戏关卡流程的一半还没看到更多的机制或系统
-经济系统 游戏中有以下资源种类： 人口，粮食，水墨，木材，石材，乌薪，产业链（纯纯的败笔）
-其中，除人口和粮食之外，其他资源均以&#34;天&#34;为回合单位，依回合结束时的资源增长数获得 （每天为15秒）
-人口 是一次性生产的少量资源
-游戏中的人口有且仅有住房类建筑能提供，同时住房类建筑会提供水墨，可以理解为水墨增长和人口增长是成正比的
-人口是建造某些生产类建筑所需的资源，如伐木场（木材），猎人小屋（食物），采石场（石材），墨薪采矿场（墨薪） 是训练军事单位所需的资源
-粮食 是一次性生产的少量资源
-游戏中的粮食由&#34;农田&#34;和&#34;猎人小屋&#34;提供
-其中&#34;农田&#34;仅消耗水墨，是游戏开始时必造的主要建筑，“猎人小屋&#34;消耗人口，水墨，木材，是游戏中期生产粮食的主要建筑
-对于&#34;农田”，游戏中设定了&#34;肥沃度&#34;系统，每一个空地地块都有一个&#34;肥沃度&#34;值，特别地，肥沃度为0的空地即为&#34;荒地&#34;，在只有荒地的地块无法建造农田
-肥沃度仅由地图决定
-对于&#34;猎人小屋&#34;，其存在一个&#34;影响范围&#34;，在该影响范围内的树木会为玩家提供一次性的粮食值，树木量与粮食量关联函数暂未知，反正多多益善
-特殊地，猎人小屋的影响范围不能重叠（要求玩家通过合理城市规划来最大化资源生产）
-是建造住房类建筑的核心资源，前期的资源循环存在于&#34;水墨&#34;-&gt;“粮食”-&gt;“人口”&#43;“水墨&#34;中
-木材 是周期性生产的大量资源
-游戏中的木材由伐木场类建筑提供，同&#34;猎人小屋”，只不过其生产资源是周期性的
-石材 是周期性生产的少量资源
-游戏中存在&#34;石头&#34;地块，在该地块上建造采石场类建筑，保证石头在采石场影响范围内即可为玩家周期性地提供石材资源
-乌薪 完全同&#34;石材&#34;，只不过量更少
-水墨 可以广义地理解为&#34;钱&#34;，基本所有建筑建造，单位训练，地图扩张都需要&#34;水墨&#34;
-产业链 是一种只有顶级建筑一次性生产，专门用于升级顶级部队的个位数资源">
+  <meta name="twitter:title" content="2025TapTap聚光灯48Hgamejam成都场复盘">
+  <meta name="twitter:description" content="放一下官方给的时间安排
+不想听经历的话可以直接看本文的文件汇总，那里面的东西看完也差不多能知道这次做了什么
+文件汇总 ↗ 飞书 注：由于我不是上帝，我复盘只能以自己的视角看，所以我自己的部分会写的更详细一些，本文中描述各人的文字长度不能代表各人的工作量（手动叠甲）
+我们的状况 成员组成：系统/数值策划&#43;副程&#43;地编&#43;ui美术（大二程策美，后文称&#34;我&#34;），主程&#43;地编（大二程序，组长，因为拿的牌子是&#34;程序&#34;，故后文称&#34;程序&#34;），玩法策划&#43;原画（大四美术，线上美术，因大部分时间在干美术，故后文称&#34;美术&#34;），动画&#43;管理（在职策划，因拿的牌子是&#34;策划&#34;，故后文称&#34;策划&#34;）
+我和程序原先一直在合作做长期项目，本来因为要上课而不想打这场gamejam，但美术和策划在同一天找上了程序要组队，于是便因这样的机缘巧合组了队
+脑暴 先说主题，“模拟器”">
 <link href="/css/compiled/main.css" rel="stylesheet" />
     <link href="/css/variables.css" rel="stylesheet" />
     <link href="/css/custom.css" rel="stylesheet" />
@@ -315,22 +233,13 @@
   >AI决策-状态机
     </a>
               
-            </li><li class="hx:flex hx:flex-col open"><a
+            </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
     href="/game/stick_to_an_isolated_city/"
     
   >墨守孤城
     </a>
-  
-    <ul class='hx:flex hx:flex-col hx:gap-1 hx:relative hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:dark:before:bg-neutral-800 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:pr-3 hx:rtl:before:right-0 hx:ltr:ml-3 hx:rtl:mr-3'><li>
-              <a
-                href="#%e6%b8%b8%e6%88%8f%e4%b8%bb%e7%8e%a9%e6%b3%95"
-                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
-              >游戏主玩法</a>
-            </li>
-          </ul>
-  
               
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
@@ -372,13 +281,28 @@
   >Godot或许合格的程序架构
     </a>
               
-            </li><li class="hx:flex hx:flex-col "><a
+            </li><li class="hx:flex hx:flex-col open"><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
     href="/game/2025taptap_spotlight_48hgamejam_chengdu/"
     
   >2025TapTap聚光灯48Hgamejam成都场复盘
     </a>
+  
+    <ul class='hx:flex hx:flex-col hx:gap-1 hx:relative hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:dark:before:bg-neutral-800 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:pr-3 hx:rtl:before:right-0 hx:ltr:ml-3 hx:rtl:mr-3'><li>
+              <a
+                href="#%e6%88%91%e4%bb%ac%e7%9a%84%e7%8a%b6%e5%86%b5"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >我们的状况</a>
+            </li>
+          <li>
+              <a
+                href="#%e5%88%ab%e4%ba%ba%e7%9a%84%e6%83%85%e5%86%b5"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >别人的情况</a>
+            </li>
+          </ul>
+  
               
             </li></ul>
       </div></li>
@@ -496,9 +420,9 @@
     
   >AI决策-状态机
     </a></li>
-          <li class="open"><a
+          <li class=""><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
     href="/game/stick_to_an_isolated_city/"
     
   >墨守孤城
@@ -538,9 +462,9 @@
     
   >Godot或许合格的程序架构
     </a></li>
-          <li class=""><a
+          <li class="open"><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
     href="/game/2025taptap_spotlight_48hgamejam_chengdu/"
     
   >2025TapTap聚光灯48Hgamejam成都场复盘
@@ -618,59 +542,75 @@
 <nav class="hextra-toc hx:order-last hx:hidden hx:w-64 hx:shrink-0 hx:xl:block hx:print:hidden hx:px-4" aria-label="table of contents">
     <div class="hextra-scrollbar hx:sticky hx:top-16 hx:overflow-y-auto hx:pr-4 hx:pt-6 hx:text-sm [hyphens:auto] hx:max-h-[calc(100vh-var(--navbar-height)-env(safe-area-inset-bottom))] hx:ltr:-mr-4 hx:rtl:-ml-4"><p class="hx:mb-4 hx:font-semibold hx:tracking-tight">此页上</p><ul>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e6%b8%b8%e6%88%8f%e4%b8%bb%e7%8e%a9%e6%b3%95">游戏主玩法
+        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e6%88%91%e4%bb%ac%e7%9a%84%e7%8a%b6%e5%86%b5">我们的状况
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e7%bb%8f%e6%b5%8e%e7%b3%bb%e7%bb%9f">经济系统
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e8%84%91%e6%9a%b4">脑暴
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e4%ba%ba%e5%8f%a3">人口
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e5%bc%80%e5%8f%91">开发
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e7%b2%ae%e9%a3%9f">粮食
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e7%a8%8b%e5%ba%8f%e6%a1%86%e6%9e%b6">程序框架
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e6%9c%a8%e6%9d%90">木材
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e7%ad%96%e5%88%92%e7%9a%84%e5%af%b9%e6%8e%a5">策划的对接
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e7%9f%b3%e6%9d%90">石材
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e7%be%8e%e6%9c%af%e7%9a%84%e5%af%b9%e6%8e%a5">美术的对接
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e4%b9%8c%e8%96%aa">乌薪
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e7%bb%93%e6%9e%9c">结果
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e6%b0%b4%e5%a2%a8">水墨
+        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e5%88%ab%e4%ba%ba%e7%9a%84%e6%83%85%e5%86%b5">别人的情况
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e4%ba%a7%e4%b8%9a%e9%93%be">产业链
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e5%a5%bd%e7%9a%84%e6%b8%b8%e6%88%8f">好的游戏
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e5%86%9b%e9%98%9f%e7%b3%bb%e7%bb%9f">军队系统
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e6%9f%90%e5%bf%98%e8%ae%b0%e5%90%8d%e5%ad%97%e7%9a%84%e5%9b%bd%e9%a3%8e%e4%b9%9d%e5%ae%ab%e6%a0%bc%e6%b8%b8%e6%88%8f">某忘记名字的国风九宫格游戏
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e5%86%9b%e9%98%9f%e7%9a%84%e5%85%bb%e6%88%90%e7%b3%bb%e7%bb%9f">军队的养成系统
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e6%9f%90%e5%bf%98%e8%ae%b0%e5%90%8d%e5%ad%97%e7%9a%84%e5%90%83%e4%ba%ba%e6%a8%a1%e6%8b%9f%e5%99%a8">某忘记名字的吃人模拟器
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e5%86%9b%e9%98%9f%e7%9a%84%e7%be%81%e7%bb%8a%e7%b3%bb%e7%bb%9f">军队的羁绊系统
+        <a class="hx:ltr:pl-12 hx:rtl:pr-12 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e6%89%a7%e8%a1%8c%e6%a0%8f">执行栏
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e7%a7%91%e6%8a%80%e7%a0%94%e7%a9%b6%e7%b3%bb%e7%bb%9f">科技/研究系统
+        <a class="hx:ltr:pl-12 hx:rtl:pr-12 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e4%ba%ba%e7%89%a9%e6%a0%8f">人物栏
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e5%9c%b0%e5%9b%be%e7%b3%bb%e7%bb%9f">地图系统
+        <a class="hx:ltr:pl-12 hx:rtl:pr-12 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e6%97%b6%e9%97%b4%e6%8c%87%e7%a4%ba%e5%99%a8">时间指示器
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-12 hx:rtl:pr-12 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e5%90%b8%e5%bc%95%e7%82%b9">吸引点
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e6%ad%a6%e5%99%a8%e5%a4%a7%e5%b8%88%e6%88%91%e6%9b%b4%e6%83%b3%e5%8f%ab%e5%ae%83%e6%89%93%e9%93%81%e6%a8%a1%e6%8b%9f%e5%99%a8">《武器大师》（我更想叫它&#34;打铁模拟器&#34;）
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e9%80%83%e7%a6%bb%e4%bf%84%e7%bd%97%e6%96%af%e6%96%b9%e5%9d%97">《逃离俄罗斯方块》
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%e5%a5%bd%e7%9a%84%e5%9b%a2%e9%98%9f">好的团队
         </a>
       </li></ul>
       <div class="hx:mt-8 hx:border-t hx:bg-white hx:pt-8 hx:shadow-[0_-12px_16px_white] hx:dark:bg-dark hx:dark:shadow-[0_-12px_16px_#111] hx:sticky hx:bottom-0 hx:flex hx:flex-col hx:items-start hx:gap-2 hx:pb-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-t hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:border-neutral-400">
@@ -690,88 +630,180 @@
         <div class="hx:mt-1.5 hx:flex hx:items-center hx:gap-1 hx:overflow-hidden hx:text-sm hx:text-gray-500 hx:dark:text-gray-400 hx:contrast-more:text-current">
         <div class="hx:whitespace-nowrap hx:transition-colors hx:min-w-[24px] hx:overflow-hidden hx:text-ellipsis hx:hover:text-gray-900 hx:dark:hover:text-gray-100">
           <a href="/game/">游戏</a>
-        </div><svg class="hx:w-3.5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg><div class="hx:whitespace-nowrap hx:transition-colors hx:font-medium hx:text-gray-700 hx:contrast-more:font-bold hx:contrast-more:text-current hx:dark:text-gray-100 hx:contrast-more:dark:text-current">墨守孤城</div>
+        </div><svg class="hx:w-3.5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg><div class="hx:whitespace-nowrap hx:transition-colors hx:font-medium hx:text-gray-700 hx:contrast-more:font-bold hx:contrast-more:text-current hx:dark:text-gray-100 hx:contrast-more:dark:text-current">2025TapTap聚光灯48Hgamejam成都场复盘</div>
   </div>
 
         <div class="content">
-          <h1>墨守孤城</h1>
-          <p>游戏类型：RTS?+塔防?+自走棋?</p>
-<p>画风：国风+水墨风</p>
-<p>一句话总结：有些卖ip的意思，玩法没有很大的创新性，对RTS的简化值得借鉴</p>
-<p>主题：采集资源，建造军队，防御攻击</p>
-<p>（吐槽一下，优化真的烂）</p>
-<h2>游戏主玩法<span class="hx:absolute hx:-mt-20" id="游戏主玩法"></span>
-    <a href="#%e6%b8%b8%e6%88%8f%e4%b8%bb%e7%8e%a9%e6%b3%95" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>游戏玩法流程和RTS是一个模子刻出来的，至少我玩到整个游戏关卡流程的一半还没看到更多的机制或系统</p>
-<h3>经济系统<span class="hx:absolute hx:-mt-20" id="经济系统"></span>
-    <a href="#%e7%bb%8f%e6%b5%8e%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>游戏中有以下资源种类：
-人口，粮食，水墨，木材，石材，乌薪，产业链（纯纯的败笔）</p>
-<p>其中，除人口和粮食之外，其他资源均以&quot;天&quot;为回合单位，依回合结束时的资源增长数获得
-（每天为15秒）</p>
-<h4>人口<span class="hx:absolute hx:-mt-20" id="人口"></span>
-    <a href="#%e4%ba%ba%e5%8f%a3" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>是一次性生产的少量资源</p>
-<p>游戏中的人口有且仅有住房类建筑能提供，同时住房类建筑会提供水墨，可以理解为水墨增长和人口增长是成正比的</p>
-<p>人口是建造某些生产类建筑所需的资源，如伐木场（木材），猎人小屋（食物），采石场（石材），墨薪采矿场（墨薪）
-是训练军事单位所需的资源</p>
-<h4>粮食<span class="hx:absolute hx:-mt-20" id="粮食"></span>
-    <a href="#%e7%b2%ae%e9%a3%9f" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>是一次性生产的少量资源</p>
-<p>游戏中的粮食由&quot;农田&quot;和&quot;猎人小屋&quot;提供</p>
-<p>其中&quot;农田&quot;仅消耗水墨，是游戏开始时必造的主要建筑，&ldquo;猎人小屋&quot;消耗人口，水墨，木材，是游戏中期生产粮食的主要建筑</p>
-<p>对于&quot;农田&rdquo;，游戏中设定了&quot;肥沃度&quot;系统，每一个空地地块都有一个&quot;肥沃度&quot;值，特别地，肥沃度为0的空地即为&quot;荒地&quot;，在只有荒地的地块无法建造农田</p>
-<p>肥沃度仅由地图决定</p>
-<p>对于&quot;猎人小屋&quot;，其存在一个&quot;影响范围&quot;，在该影响范围内的树木会为玩家提供一次性的粮食值，树木量与粮食量关联函数暂未知，反正多多益善</p>
-<p>特殊地，猎人小屋的影响范围不能重叠（要求玩家通过合理城市规划来最大化资源生产）</p>
-<p>是建造住房类建筑的核心资源，前期的资源循环存在于&quot;水墨&quot;-&gt;&ldquo;粮食&rdquo;-&gt;&ldquo;人口&rdquo;+&ldquo;水墨&quot;中</p>
-<h4>木材<span class="hx:absolute hx:-mt-20" id="木材"></span>
-    <a href="#%e6%9c%a8%e6%9d%90" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>是周期性生产的大量资源</p>
-<p>游戏中的木材由伐木场类建筑提供，同&quot;猎人小屋&rdquo;，只不过其生产资源是周期性的</p>
-<h4>石材<span class="hx:absolute hx:-mt-20" id="石材"></span>
-    <a href="#%e7%9f%b3%e6%9d%90" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>是周期性生产的少量资源</p>
-<p>游戏中存在&quot;石头&quot;地块，在该地块上建造采石场类建筑，保证石头在采石场影响范围内即可为玩家周期性地提供石材资源</p>
-<h4>乌薪<span class="hx:absolute hx:-mt-20" id="乌薪"></span>
-    <a href="#%e4%b9%8c%e8%96%aa" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>完全同&quot;石材&quot;，只不过量更少</p>
-<h4>水墨<span class="hx:absolute hx:-mt-20" id="水墨"></span>
-    <a href="#%e6%b0%b4%e5%a2%a8" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>可以广义地理解为&quot;钱&quot;，基本所有建筑建造，单位训练，地图扩张都需要&quot;水墨&quot;</p>
-<h4>产业链<span class="hx:absolute hx:-mt-20" id="产业链"></span>
-    <a href="#%e4%ba%a7%e4%b8%9a%e9%93%be" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>是一种只有顶级建筑一次性生产，专门用于升级顶级部队的个位数资源</p>
-<p>（这个资源让玩家必须去考虑建造顶级建筑，导致建筑种类实在太多了，而且这些顶级建筑还基本不可复用，占地又大，到了游戏后期根本没有地方放这些东西，又联动了它一个细节：不同类建筑必须间隔1格距离，导致玩家左右为难或许要拆一些建筑，难评）</p>
-<h3>军队系统<span class="hx:absolute hx:-mt-20" id="军队系统"></span>
-    <a href="#%e5%86%9b%e9%98%9f%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>感觉更像3选项肉鸽机制+RTT的结合</p>
-<p>为什么像RTT？游戏中的军队系统更强调&quot;派哪些部队守哪些点&quot;，在游戏中玩家通过拖拽军队的图标指示军队向某些特定的地方移动（特殊地，存在建筑类型的军队，玩家需要通过有冷却无消耗地建造来部署这些建筑），单位会在该地自动攻击并坚守，直到死完或者玩家将他们移动到其他地方（像王座陨落）</p>
-<p>3选项肉鸽机制在哪？游戏中玩家需要消耗资源来&quot;训练&quot;军队，在这个训练系统中，玩家可以招募新的军队/升星已有军队或为已有军队添加buff，这两个动作的出现频率为1：1，即第一次训练时为前者，下一次训练就为后者，以此反复</p>
-<p>游戏中训练的消耗是单调无函数递增的，从&quot;水墨+人口&quot;到&quot;水墨+人口+粮食+木材+石材+墨薪&quot;种类和数量均递增</p>
-<h4>军队的养成系统<span class="hx:absolute hx:-mt-20" id="军队的养成系统"></span>
-    <a href="#%e5%86%9b%e9%98%9f%e7%9a%84%e5%85%bb%e6%88%90%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>类皇室战争卡牌收集与升级</p>
-<p>高级的卡牌（包括建造的建筑和训练的军队的初始数值）会有更好的面板数值</p>
-<p>由于游戏中的建筑只有种类区别不会升级，军队升级只涉及buff，故而这些不会受到该养成系统的影响而增加复杂度</p>
-<h4>军队的羁绊系统<span class="hx:absolute hx:-mt-20" id="军队的羁绊系统"></span>
-    <a href="#%e5%86%9b%e9%98%9f%e7%9a%84%e7%be%81%e7%bb%8a%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>基本照抄自走棋，玩家招募拥有相同羁绊标签的单位达到2，3个时会获得额外收益</p>
-<p>相当于给军队的预设方案和局内招募的选择加了变数</p>
-<h3>科技/研究系统<span class="hx:absolute hx:-mt-20" id="科技研究系统"></span>
-    <a href="#%e7%a7%91%e6%8a%80%e7%a0%94%e7%a9%b6%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>一个用于标志游戏进度，简化原有的复杂的建筑系统，提供及时奖励的系统</p>
-<p>游戏中用于研究的资源为&quot;经验值&quot;，该资源可以通过建造建筑，升级建筑，训练军队，击杀敌人等各种方式获得，且仅用于研究，泛用性和与其他资源的联系程度低，故而在经济系统里没有提到该资源</p>
-<p>研究系统通过城镇中心等级来标志游戏进度，玩家需要更高级的城镇中心来开启研究更多选项</p>
-<p>在游戏外，玩家可以解锁非常多的建筑可供建造（涉及卡牌收集与养成），这些建筑如果一股脑地塞到玩家可建造的列表里，会让玩家直接删除游戏，于是有了这样一个研究系统，玩家只能通过研究系统开启建造更多的建筑，起始玩家可以建造的建筑只有用于早期资源循环的&quot;民宅&quot;和&quot;农田&quot;，在研究后，玩家才能解锁更多诸如&quot;伐木场&quot;，&ldquo;猎人小屋&rdquo;，&ldquo;二级城镇中心&rdquo;，&ldquo;采石场&quot;及各类城墙的建造，这些可研究选项的生成是根据当前科技树不完全随机出来的，选项个数不固定，有1（必选研究）~6项不等，有些科技需要前置科技或前置建筑才能刷出来或研究</p>
-<p>科技研究中有一个获得资源的选项，相当于玩家可以放弃本次科技研究选择获得一些资源用于应急</p>
-<h3>地图系统<span class="hx:absolute hx:-mt-20" id="地图系统"></span>
-    <a href="#%e5%9c%b0%e5%9b%be%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>游戏中的地图仅涉及到&quot;探索&quot;这一机制</p>
-<p>游戏中的地图不是程序化生成的，而是固定的地图</p>
-<p>不涉及RTS中的&quot;视野&rdquo;，所有探索过的地图常亮</p>
-<p>在游戏开始时，玩家会有一片照亮城镇中心的已探索区域，玩家可以消耗水墨从任何已探索区域临接区域向外探索（该水墨消耗根据将探索的地块数量无规则递增，在游戏初始阶段这个值会很小，即使要探索的区域很大），探索会点亮一定数量的地块，这个地块的区域大小是程序化生成的，但其内容不是（因为地图永远是固定的），该地块会在玩家将要探索时用虚线指示出来（参照海岛奇兵）</p>
+          <h1>2025TapTap聚光灯48Hgamejam成都场复盘</h1>
+          <p>放一下官方给的时间安排</p>
+<p>
+    <img src="../2025taptap_chengdu.jpg" alt=""  loading="lazy" /></p>
+<p>不想听经历的话可以直接看本文的文件汇总，那里面的东西看完也差不多能知道这次做了什么</p>
+<div class="hextra-cards hx:mt-4 hx:gap-4 hx:grid not-prose" style="--hextra-cards-grid-cols: 1;">
+  <a
+    class="hextra-card hx:group hx:flex hx:flex-col hx:justify-start hx:overflow-hidden hx:rounded-lg hx:border hx:border-gray-200 hx:text-current hx:no-underline hx:dark:shadow-none hx:hover:shadow-gray-100 hx:dark:hover:shadow-none hx:shadow-gray-100 hx:active:shadow-sm hx:active:shadow-gray-200 hx:transition-all hx:duration-200 hx:hover:border-gray-300 hx:bg-transparent hx:shadow-xs hx:dark:border-neutral-800 hx:hover:bg-slate-50 hx:hover:shadow-md hx:dark:hover:border-neutral-700 hx:dark:hover:bg-neutral-900"href="https://fcncf7veiygr.feishu.cn/drive/folder/Jp3rfY6TBl8Cykdpr9mcYq96nig"
+      target="_blank" rel="noreferrer"><span class="hextra-card-icon hx:flex hx:font-semibold hx:items-start hx:gap-2 hx:p-4 hx:text-gray-700 hx:hover:text-gray-900 hx:dark:text-neutral-200 hx:dark:hover:text-neutral-50">文件汇总 ↗</span><div class="hextra-badge hextra-card-tag">
+    <div class="hx:inline-flex hx:gap-1 hx:items-center hx:rounded-full hx:px-2.5 hx:leading-6 hx:text-[.65rem] hx:border hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200">飞书</div>
+  </div></a>
+</div>
+
+<p>注：由于我不是上帝，我复盘只能以自己的视角看，所以我自己的部分会写的更详细一些，本文中描述各人的文字长度不能代表各人的工作量（手动叠甲）</p>
+<h2>我们的状况<span class="hx:absolute hx:-mt-20" id="我们的状况"></span>
+    <a href="#%e6%88%91%e4%bb%ac%e7%9a%84%e7%8a%b6%e5%86%b5" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>成员组成：系统/数值策划+副程+地编+ui美术（大二程策美，后文称&quot;我&quot;），主程+地编（大二程序，组长，因为拿的牌子是&quot;程序&quot;，故后文称&quot;程序&quot;），玩法策划+原画（大四美术，线上美术，因大部分时间在干美术，故后文称&quot;美术&quot;），动画+管理（在职策划，因拿的牌子是&quot;策划&quot;，故后文称&quot;策划&quot;）</p>
+<p>我和程序原先一直在合作做长期项目，本来因为要上课而不想打这场gamejam，但美术和策划在同一天找上了程序要组队，于是便因这样的机缘巧合组了队</p>
+<h3>脑暴<span class="hx:absolute hx:-mt-20" id="脑暴"></span>
+    <a href="#%e8%84%91%e6%9a%b4" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>先说主题，&ldquo;模拟器&rdquo;</p>
+<p>在这个阶段，那位在职策划很自然地展现了他的职业素养，她第一时间明确了脑暴需要产出的成果：（原文）</p>
+<p><strong>每个人可以去steam，tap或者微信小游戏排行榜，或者ai创作想法搜集一下，模拟器这个主题沾边的或者不沾边的都可。每个人准备2-3个及以上，写出①推荐原因比如趣味性可玩性②简要玩法，③可实现性。时间截止：下午四点</strong></p>
+<p>后面也是自然而然地大家都按着这个标准来，得到了以下结果：</p>
+<div class="hextra-cards hx:mt-4 hx:gap-4 hx:grid not-prose" style="--hextra-cards-grid-cols: 1;">
+  <a
+    class="hextra-card hx:group hx:flex hx:flex-col hx:justify-start hx:overflow-hidden hx:rounded-lg hx:border hx:border-gray-200 hx:text-current hx:no-underline hx:dark:shadow-none hx:hover:shadow-gray-100 hx:dark:hover:shadow-none hx:shadow-gray-100 hx:active:shadow-sm hx:active:shadow-gray-200 hx:transition-all hx:duration-200 hx:hover:border-gray-300 hx:bg-transparent hx:shadow-xs hx:dark:border-neutral-800 hx:hover:bg-slate-50 hx:hover:shadow-md hx:dark:hover:border-neutral-700 hx:dark:hover:bg-neutral-900"href="https://fcncf7veiygr.feishu.cn/file/HF3dbOKcsoJaCDx9exgc3g5Inyb"
+      target="_blank" rel="noreferrer"><span class="hextra-card-icon hx:flex hx:font-semibold hx:items-start hx:gap-2 hx:p-4 hx:text-gray-700 hx:hover:text-gray-900 hx:dark:text-neutral-200 hx:dark:hover:text-neutral-50">策划灵感 ↗</span><div class="hextra-badge hextra-card-tag">
+    <div class="hx:inline-flex hx:gap-1 hx:items-center hx:rounded-full hx:px-2.5 hx:leading-6 hx:text-[.65rem] hx:border hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200">飞书</div>
+  </div></a>
+  <a
+    class="hextra-card hx:group hx:flex hx:flex-col hx:justify-start hx:overflow-hidden hx:rounded-lg hx:border hx:border-gray-200 hx:text-current hx:no-underline hx:dark:shadow-none hx:hover:shadow-gray-100 hx:dark:hover:shadow-none hx:shadow-gray-100 hx:active:shadow-sm hx:active:shadow-gray-200 hx:transition-all hx:duration-200 hx:hover:border-gray-300 hx:bg-transparent hx:shadow-xs hx:dark:border-neutral-800 hx:hover:bg-slate-50 hx:hover:shadow-md hx:dark:hover:border-neutral-700 hx:dark:hover:bg-neutral-900"href="https://fcncf7veiygr.feishu.cn/docx/GLqMd19iVo7m1dxFZKXcfuxXnMg"
+      target="_blank" rel="noreferrer"><span class="hextra-card-icon hx:flex hx:font-semibold hx:items-start hx:gap-2 hx:p-4 hx:text-gray-700 hx:hover:text-gray-900 hx:dark:text-neutral-200 hx:dark:hover:text-neutral-50">我的灵感 ↗</span><div class="hextra-badge hextra-card-tag">
+    <div class="hx:inline-flex hx:gap-1 hx:items-center hx:rounded-full hx:px-2.5 hx:leading-6 hx:text-[.65rem] hx:border hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200">飞书</div>
+  </div></a>
+  <a
+    class="hextra-card hx:group hx:flex hx:flex-col hx:justify-start hx:overflow-hidden hx:rounded-lg hx:border hx:border-gray-200 hx:text-current hx:no-underline hx:dark:shadow-none hx:hover:shadow-gray-100 hx:dark:hover:shadow-none hx:shadow-gray-100 hx:active:shadow-sm hx:active:shadow-gray-200 hx:transition-all hx:duration-200 hx:hover:border-gray-300 hx:bg-transparent hx:shadow-xs hx:dark:border-neutral-800 hx:hover:bg-slate-50 hx:hover:shadow-md hx:dark:hover:border-neutral-700 hx:dark:hover:bg-neutral-900"href="https://fcncf7veiygr.feishu.cn/docx/MPVPdctqjolpJNxLNQrct2kdnBb"
+      target="_blank" rel="noreferrer"><span class="hextra-card-icon hx:flex hx:font-semibold hx:items-start hx:gap-2 hx:p-4 hx:text-gray-700 hx:hover:text-gray-900 hx:dark:text-neutral-200 hx:dark:hover:text-neutral-50">程序的灵感 ↗</span><div class="hextra-badge hextra-card-tag">
+    <div class="hx:inline-flex hx:gap-1 hx:items-center hx:rounded-full hx:px-2.5 hx:leading-6 hx:text-[.65rem] hx:border hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200">飞书</div>
+  </div></a>
+  <a
+    class="hextra-card hx:group hx:flex hx:flex-col hx:justify-start hx:overflow-hidden hx:rounded-lg hx:border hx:border-gray-200 hx:text-current hx:no-underline hx:dark:shadow-none hx:hover:shadow-gray-100 hx:dark:hover:shadow-none hx:shadow-gray-100 hx:active:shadow-sm hx:active:shadow-gray-200 hx:transition-all hx:duration-200 hx:hover:border-gray-300 hx:bg-transparent hx:shadow-xs hx:dark:border-neutral-800 hx:hover:bg-slate-50 hx:hover:shadow-md hx:dark:hover:border-neutral-700 hx:dark:hover:bg-neutral-900"href="https://fcncf7veiygr.feishu.cn/file/KDAYbki4WoAxqfxaBQ6cnMM1neg"
+      target="_blank" rel="noreferrer"><span class="hextra-card-icon hx:flex hx:font-semibold hx:items-start hx:gap-2 hx:p-4 hx:text-gray-700 hx:hover:text-gray-900 hx:dark:text-neutral-200 hx:dark:hover:text-neutral-50">美术灵感1 ↗</span><div class="hextra-badge hextra-card-tag">
+    <div class="hx:inline-flex hx:gap-1 hx:items-center hx:rounded-full hx:px-2.5 hx:leading-6 hx:text-[.65rem] hx:border hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200">飞书</div>
+  </div></a>
+  <a
+    class="hextra-card hx:group hx:flex hx:flex-col hx:justify-start hx:overflow-hidden hx:rounded-lg hx:border hx:border-gray-200 hx:text-current hx:no-underline hx:dark:shadow-none hx:hover:shadow-gray-100 hx:dark:hover:shadow-none hx:shadow-gray-100 hx:active:shadow-sm hx:active:shadow-gray-200 hx:transition-all hx:duration-200 hx:hover:border-gray-300 hx:bg-transparent hx:shadow-xs hx:dark:border-neutral-800 hx:hover:bg-slate-50 hx:hover:shadow-md hx:dark:hover:border-neutral-700 hx:dark:hover:bg-neutral-900"href="https://fcncf7veiygr.feishu.cn/file/N99cbgS3ioOckuxJ5cmc4xU5nZg"
+      target="_blank" rel="noreferrer"><span class="hextra-card-icon hx:flex hx:font-semibold hx:items-start hx:gap-2 hx:p-4 hx:text-gray-700 hx:hover:text-gray-900 hx:dark:text-neutral-200 hx:dark:hover:text-neutral-50">美术灵感2 ↗</span><div class="hextra-badge hextra-card-tag">
+    <div class="hx:inline-flex hx:gap-1 hx:items-center hx:rounded-full hx:px-2.5 hx:leading-6 hx:text-[.65rem] hx:border hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200">飞书</div>
+  </div></a>
+</div>
+
+<p>最终我们拍板了美术灵感1，决定做出：玩家扮演一个狡诈的哥布林，利用陷阱来吓跑或杀死进犯洞穴的人类，保护洞穴深处核心，的横版动作游戏，原型名为&quot;哥布林模拟器&quot;，最终名为&quot;我是哥布林&quot;</p>
+<p>这里提一嘴，在脑暴末尾有两个可选的灵感，一个是这个，还有一个是我的&quot;gamejam模拟器&quot;，但由于我和主程做卡牌做吐了想换换胃口（不过想换胃口为什么我还要写这个灵感？因为我的灵感大多都是兜底的，保证能做的），且策划说可能会和别人的想法撞车（不过吧要说撞车我感觉什么想法都能撞车，而且最终也没有团队做gamejam模拟器）</p>
+<h3>开发<span class="hx:absolute hx:-mt-20" id="开发"></span>
+    <a href="#%e5%bc%80%e5%8f%91" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>一如上面的脑暴环节，这位在职策划又很快在脑暴结束后展现了他的职业素养，很快就给出了人员分工（不过嘛&hellip;额&hellip;某些人的工作量溢出来了，然后由于我做我的部分很快，我就把这些溢出来的工作量也揽了，所以分工后我在无限转职（那你问我，那我问你！我工作效率高我有错吗！））</p>
+<p>先说说游戏吧，下面分别给出系统策划案、数值策划案（第二版，完全体）、数值策划案（第三版，因工期不足而砍过内容的版本）
+<div class="hextra-cards hx:mt-4 hx:gap-4 hx:grid not-prose" style="--hextra-cards-grid-cols: 1;">
+  <a
+    class="hextra-card hx:group hx:flex hx:flex-col hx:justify-start hx:overflow-hidden hx:rounded-lg hx:border hx:border-gray-200 hx:text-current hx:no-underline hx:dark:shadow-none hx:hover:shadow-gray-100 hx:dark:hover:shadow-none hx:shadow-gray-100 hx:active:shadow-sm hx:active:shadow-gray-200 hx:transition-all hx:duration-200 hx:hover:border-gray-300 hx:bg-transparent hx:shadow-xs hx:dark:border-neutral-800 hx:hover:bg-slate-50 hx:hover:shadow-md hx:dark:hover:border-neutral-700 hx:dark:hover:bg-neutral-900"href="https://fcncf7veiygr.feishu.cn/docx/QsHndjZ38osH1vx9hJPcW74wn9c"
+      target="_blank" rel="noreferrer"><span class="hextra-card-icon hx:flex hx:font-semibold hx:items-start hx:gap-2 hx:p-4 hx:text-gray-700 hx:hover:text-gray-900 hx:dark:text-neutral-200 hx:dark:hover:text-neutral-50">系统策划案 ↗</span><div class="hextra-badge hextra-card-tag">
+    <div class="hx:inline-flex hx:gap-1 hx:items-center hx:rounded-full hx:px-2.5 hx:leading-6 hx:text-[.65rem] hx:border hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200">飞书</div>
+  </div></a>
+  <a
+    class="hextra-card hx:group hx:flex hx:flex-col hx:justify-start hx:overflow-hidden hx:rounded-lg hx:border hx:border-gray-200 hx:text-current hx:no-underline hx:dark:shadow-none hx:hover:shadow-gray-100 hx:dark:hover:shadow-none hx:shadow-gray-100 hx:active:shadow-sm hx:active:shadow-gray-200 hx:transition-all hx:duration-200 hx:hover:border-gray-300 hx:bg-transparent hx:shadow-xs hx:dark:border-neutral-800 hx:hover:bg-slate-50 hx:hover:shadow-md hx:dark:hover:border-neutral-700 hx:dark:hover:bg-neutral-900"href="https://fcncf7veiygr.feishu.cn/docx/IlM6dZjlZoDOvfxaY9acNFs0nKd"
+      target="_blank" rel="noreferrer"><span class="hextra-card-icon hx:flex hx:font-semibold hx:items-start hx:gap-2 hx:p-4 hx:text-gray-700 hx:hover:text-gray-900 hx:dark:text-neutral-200 hx:dark:hover:text-neutral-50">数值策划案完全体 ↗</span><div class="hextra-badge hextra-card-tag">
+    <div class="hx:inline-flex hx:gap-1 hx:items-center hx:rounded-full hx:px-2.5 hx:leading-6 hx:text-[.65rem] hx:border hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200">飞书</div>
+  </div></a>
+  <a
+    class="hextra-card hx:group hx:flex hx:flex-col hx:justify-start hx:overflow-hidden hx:rounded-lg hx:border hx:border-gray-200 hx:text-current hx:no-underline hx:dark:shadow-none hx:hover:shadow-gray-100 hx:dark:hover:shadow-none hx:shadow-gray-100 hx:active:shadow-sm hx:active:shadow-gray-200 hx:transition-all hx:duration-200 hx:hover:border-gray-300 hx:bg-transparent hx:shadow-xs hx:dark:border-neutral-800 hx:hover:bg-slate-50 hx:hover:shadow-md hx:dark:hover:border-neutral-700 hx:dark:hover:bg-neutral-900"href="https://fcncf7veiygr.feishu.cn/docx/UuuFd7wdEoxQaqxC6wmcxCiEn2b"
+      target="_blank" rel="noreferrer"><span class="hextra-card-icon hx:flex hx:font-semibold hx:items-start hx:gap-2 hx:p-4 hx:text-gray-700 hx:hover:text-gray-900 hx:dark:text-neutral-200 hx:dark:hover:text-neutral-50">数值策划案阉割版 ↗</span><div class="hextra-badge hextra-card-tag">
+    <div class="hx:inline-flex hx:gap-1 hx:items-center hx:rounded-full hx:px-2.5 hx:leading-6 hx:text-[.65rem] hx:border hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200">飞书</div>
+  </div></a>
+</div>
+</p>
+<p>还有玩法策划案是那位线上美术口述的，就是上面的&quot;美术灵感1&quot;</p>
+<p>然后就直接写开发过程中出现的问题吧</p>
+<h4>程序框架<span class="hx:absolute hx:-mt-20" id="程序框架"></span>
+    <a href="#%e7%a8%8b%e5%ba%8f%e6%a1%86%e6%9e%b6" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>我和组长都是做程序的，其中组长主程，我辅助，我做的部分主要是耦合性不强的科技树系统和简单的敌人ai系统</p>
+<p>但在此之前，主程没有做过横板动作游戏的长期项目，在打框架上出了些漏洞，我由于拿ue做过类似的游戏，所以我还是勉强能接住的</p>
+<p>或许下次应该多考虑之前做过的游戏类型，当然，平时也得试着去做其他的游戏类型扩展模板库</p>
+<h4>策划的对接<span class="hx:absolute hx:-mt-20" id="策划的对接"></span>
+    <a href="#%e7%ad%96%e5%88%92%e7%9a%84%e5%af%b9%e6%8e%a5" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>这场比赛有三个名义上的策划，其中美术负责玩法策划，他会在会议里告诉我他想把这个游戏做成什么样，有哪些机制，然后我就按他的描述把游戏拆分成一个个系统（我拆解那么多游戏的经历终于派上用场了），写出来上文的&quot;系统策划案&quot;</p>
+<p>在这个过程中两边传输的信息有些明显的失真，导致我还需要额外花些时间去问某些系统的具体细节（当然也有我的问题，在一次开会中没有把需要的信息完全问清楚）</p>
+<h4>美术的对接<span class="hx:absolute hx:-mt-20" id="美术的对接"></span>
+    <a href="#%e7%be%8e%e6%9c%af%e7%9a%84%e5%af%b9%e6%8e%a5" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>这场比赛有两个名义上的美术，其中线上美术负责画人物/道具/场景原画，策划负责拿人物原画生成人物移动/攻击/死亡动画，我负责把原画和动画转成程序能直接用的资源（比如把动画转成精灵表），同时也负责设计ui和地编</p>
+<p>在脑暴后的分工环节，我是不负责任何美术部分的，但由于动画直接给的序列帧的大小有些偏差，导致给出的资源程序不能直接用，所以我接手了转换工作，由于美术产出有点赶，为了能快些做出原型，所以我负责了设计ui和地编（当然，上面这些我还是有些经验的，不然我也不会接）</p>
+<h3>结果<span class="hx:absolute hx:-mt-20" id="结果"></span>
+    <a href="#%e7%bb%93%e6%9e%9c" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><div class="hextra-cards hx:mt-4 hx:gap-4 hx:grid not-prose" style="--hextra-cards-grid-cols: 1;">
+  <a
+    class="hextra-card hx:group hx:flex hx:flex-col hx:justify-start hx:overflow-hidden hx:rounded-lg hx:border hx:border-gray-200 hx:text-current hx:no-underline hx:dark:shadow-none hx:hover:shadow-gray-100 hx:dark:hover:shadow-none hx:shadow-gray-100 hx:active:shadow-sm hx:active:shadow-gray-200 hx:transition-all hx:duration-200 hx:hover:border-gray-300 hx:bg-transparent hx:shadow-xs hx:dark:border-neutral-800 hx:hover:bg-slate-50 hx:hover:shadow-md hx:dark:hover:border-neutral-700 hx:dark:hover:bg-neutral-900"href="https://github.com/qfwj-lyy/GBL"
+      target="_blank" rel="noreferrer"><span class="hextra-card-icon hx:flex hx:font-semibold hx:items-start hx:gap-2 hx:p-4 hx:text-gray-700 hx:hover:text-gray-900 hx:dark:text-neutral-200 hx:dark:hover:text-neutral-50">项目仓库 ↗</span><div class="hextra-badge hextra-card-tag">
+    <div class="hx:inline-flex hx:gap-1 hx:items-center hx:rounded-full hx:px-2.5 hx:leading-6 hx:text-[.65rem] hx:border hx:border-red-200 hx:bg-red-100 hx:text-red-900 hx:dark:border-red-200/30 hx:dark:bg-red-900/30 hx:dark:text-red-200">GitHub</div>
+  </div></a>
+  <a
+    class="hextra-card hx:group hx:flex hx:flex-col hx:justify-start hx:overflow-hidden hx:rounded-lg hx:border hx:border-gray-200 hx:text-current hx:no-underline hx:dark:shadow-none hx:hover:shadow-gray-100 hx:dark:hover:shadow-none hx:shadow-gray-100 hx:active:shadow-sm hx:active:shadow-gray-200 hx:transition-all hx:duration-200 hx:hover:border-gray-300 hx:bg-transparent hx:shadow-xs hx:dark:border-neutral-800 hx:hover:bg-slate-50 hx:hover:shadow-md hx:dark:hover:border-neutral-700 hx:dark:hover:bg-neutral-900"href="https://www.taptap.cn/app/797076"
+      target="_blank" rel="noreferrer"><span class="hextra-card-icon hx:flex hx:font-semibold hx:items-start hx:gap-2 hx:p-4 hx:text-gray-700 hx:hover:text-gray-900 hx:dark:text-neutral-200 hx:dark:hover:text-neutral-50">发布页面 ↗</span><div class="hextra-badge hextra-card-tag">
+    <div class="hx:inline-flex hx:gap-1 hx:items-center hx:rounded-full hx:px-2.5 hx:leading-6 hx:text-[.65rem] hx:border hx:border-yellow-100 hx:bg-yellow-50 hx:text-yellow-900 hx:dark:border-yellow-200/30 hx:dark:bg-yellow-700/30 hx:dark:text-yellow-200">TapTap</div>
+  </div></a>
+</div>
+
+<p>不论如何，比上2025ggj还是好不少的（不和21天聚光灯比是因为时间不等没有比较价值），好歹我们也只是大二，还在慢慢积累经验</p>
+<p>不过到最后大家都心照不宣地没有摆摊，这还是有些遗憾的</p>
+<h2>别人的情况<span class="hx:absolute hx:-mt-20" id="别人的情况"></span>
+    <a href="#%e5%88%ab%e4%ba%ba%e7%9a%84%e6%83%85%e5%86%b5" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>如某位大佬所说，打gamejam的动机可以有很多，有的是来挑战自己的，有的是来丰富简历的，有的是来拉投资的，有的是来找idea的，有的是来找队伍的，有的是来旅游的，有的是来找男女朋友的（这是能说的吗&hellip;）</p>
+<h3>好的游戏<span class="hx:absolute hx:-mt-20" id="好的游戏"></span>
+    <a href="#%e5%a5%bd%e7%9a%84%e6%b8%b8%e6%88%8f" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>以下列出几个我印象深刻的游戏和它的拆解</p>
+<h4>某忘记名字的国风九宫格游戏<span class="hx:absolute hx:-mt-20" id="某忘记名字的国风九宫格游戏"></span>
+    <a href="#%e6%9f%90%e5%bf%98%e8%ae%b0%e5%90%8d%e5%ad%97%e7%9a%84%e5%9b%bd%e9%a3%8e%e4%b9%9d%e5%ae%ab%e6%a0%bc%e6%b8%b8%e6%88%8f" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>参考：九王，小丑牌</p>
+<p>游戏是永续的有肉鸽元素的回合制的，目标是在各个回合得到目标分数</p>
+<p>游戏中玩家需要将手中的卡牌（表现形式是国风的墨点，但为了方便就写卡牌了）摆放到一个九宫格中，获得每个卡牌的分数，同时触发某些卡牌相互之间的联动效果，如A效果：使上下左右的B类型分数+10，这种依位置关系产生更多分数是游戏的核心玩法</p>
+<p>游戏每回合结束时，会清空九宫格中的牌放回玩家手牌</p>
+<p>游戏的肉鸽元素在于，每张牌在每个回合的效果不是固定的，如A牌有6个可能的效果：①分数5，使上下左右的B类型分数+10②分数10</p>
+<p>还有一个地方的肉鸽是，每回合结束时，玩家可以从随机的三张牌中选择一张加入手牌</p>
+<p>游戏有一个创新点，在此称为覆盖机制，游戏中存在一类特殊的牌，只能通过卡牌三选一获得，仅能使用一次，使用它的方式是将它覆盖在已经放在九宫格中的牌上，这样已经放在九宫格中的牌的当前效果就会变成该覆盖牌的效果，且永久保留这个覆盖产生的变更</p>
+<p>覆盖的创新点在于，比如有一张好牌A，默认有五个好效果和一个坏效果，由于每个回合都会随机这张牌的某个效果，那么这张牌就有可能会随到这个坏效果导致这回合用不出这张牌，造成资源浪费，但假如我将一个好效果的特殊牌覆盖到这个效果上，就可以保证这张牌每回合都可以发挥作用</p>
+<p>（吐槽一句，作为我们团队的数值策划，我实在不敢恭维这个游戏的数值策划，因为数值实在是有点难堪，但也体现出来这类游戏数值或许就是难策划）</p>
+<h4>某忘记名字的吃人模拟器<span class="hx:absolute hx:-mt-20" id="某忘记名字的吃人模拟器"></span>
+    <a href="#%e6%9f%90%e5%bf%98%e8%ae%b0%e5%90%8d%e5%ad%97%e7%9a%84%e5%90%83%e4%ba%ba%e6%a8%a1%e6%8b%9f%e5%99%a8" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>参考：苏丹的游戏（制作人是这样说的，但我没玩过这个游戏）</p>
+<p>游戏是永续的有肉鸽元素的回合制的，目标是指挥五个人生存下去</p>
+<p>游戏中主要分为如下ui：</p>
+<p>执行栏，人物栏，手牌栏，时间指示器，火堆，分解台</p>
+<p>（火堆和分解台就不讲了，这两个都是用于和其他牌产生联动的）</p>
+<h5>执行栏<span class="hx:absolute hx:-mt-20" id="执行栏"></span>
+    <a href="#%e6%89%a7%e8%a1%8c%e6%a0%8f" class="subheading-anchor" aria-label="Permalink for this section"></a></h5><p>游戏中的执行栏默认包含&quot;治疗&quot;和&quot;探索&quot;位，每个位都可以放置人物牌或手牌来达成相应的目标，比如玩家可以将人物牌派去探索，当人物牌有&quot;受伤&quot;状态时，可以将人物牌派去治疗</p>
+<p>执行栏可以理解为&quot;目标集&quot;，后续玩家会通过拖拽手牌作用到其他栏位来增多这个目标，比如玩家可以将兔子拖到分解台，产生&quot;分解兔子&quot;的目标，随后玩家再拖拽某个人物牌执行这个目标，再比如玩家可以将冰块拖到火堆，产生&quot;融化冰水&quot;的目标，随后玩家再拖拽某个人物牌执行这个目标</p>
+<h5>人物栏<span class="hx:absolute hx:-mt-20" id="人物栏"></span>
+    <a href="#%e4%ba%ba%e7%89%a9%e6%a0%8f" class="subheading-anchor" aria-label="Permalink for this section"></a></h5><p>人物栏默认包含五个人物，这五个人物都有相应的&quot;饱食度&quot;和&quot;需水量&quot;，当这两个中任意一个值降为0时，人物死亡</p>
+<p>特殊地，探索有一个机制，当某个人物进行探索时，他将不能执行额外的动作，人物会在最长一天内回来，饱食度和需水量降低，随机产生手牌资源（也可能不产生），同时也会产生随机的buff</p>
+<p>人物身上可以有多种buff，比如&quot;恐慌&quot;，恐慌中的人物无法行动，当人物在探索时受伤并回来时，手牌会多出一张对应人物的恐慌牌，玩家需要把这张牌拖拽到分解台，随后执行栏会产生&quot;分解恐慌&quot;任务，玩家需要派其它人物执行这个任务来让其摆脱恐慌，或者派手牌&quot;圣经&quot;执行这个任务</p>
+<h5>时间指示器<span class="hx:absolute hx:-mt-20" id="时间指示器"></span>
+    <a href="#%e6%97%b6%e9%97%b4%e6%8c%87%e7%a4%ba%e5%99%a8" class="subheading-anchor" aria-label="Permalink for this section"></a></h5><p>游戏中的最小时间单位是&quot;回合&quot;，每4个回合算1天，玩家在拖动手牌和人物牌后需要点击时间指示器来度过该回合</p>
+<h5>吸引点<span class="hx:absolute hx:-mt-20" id="吸引点"></span>
+    <a href="#%e5%90%b8%e5%bc%95%e7%82%b9" class="subheading-anchor" aria-label="Permalink for this section"></a></h5><p>要说创新点吧，也只能说游戏的逻辑在模拟经营卡牌里算是清晰的了，所以这里就说吸引点吧</p>
+<p>游戏中的分解台是可以分解人的，所以假如某个人物身上的debuff太多，属性值也太低，那么完全可以把这个人分解了当成食物，可以让其他人更好地活下去</p>
+<h4>《武器大师》（我更想叫它&quot;打铁模拟器&quot;）<span class="hx:absolute hx:-mt-20" id="武器大师我更想叫它打铁模拟器"></span>
+    <a href="#%e6%ad%a6%e5%99%a8%e5%a4%a7%e5%b8%88%e6%88%91%e6%9b%b4%e6%83%b3%e5%8f%ab%e5%ae%83%e6%89%93%e9%93%81%e6%a8%a1%e6%8b%9f%e5%99%a8" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>游戏是永续的有肉鸽元素的实时的，目标是赚够足够的钱让时间流逝到下一天</p>
+<p>游戏中玩家需要扮演一个铁匠经营一家铁匠铺，在游戏中会依实时时间流逝出现各种顾客，玩家需要通过购买材料，打造武器，售卖给对应的顾客来赚取资金，在一天中（大概6分钟还是几分钟，我不记得了）玩家需要赚够足够的资金，否则无法进入下一天</p>
+<p>其中，仓库系统为类暗黑的形式，即每个材料和打成的武器部件都是不一定只占一格的</p>
+<p>游戏中唯一的肉鸽元素就是顾客及顾客对武器提的要求（如：游戏初期有两种顾客，&ldquo;平民&quot;和&quot;贵族&rdquo;，平民对武器的要求会少一些，如&quot;我要一个可以刺击的武器&quot;，贵族对武器的要求会多一些，如&quot;我要一个长柄的可挥砍也可刺击的武器&quot;）</p>
+<p>游戏中存在多种材料和多种可生产的部位，材料有如：石头，木头，铁锭，银锭，部位有如：长柄，短柄，短剑刃，长剑刃，刺剑刃，玩家通过使用不同材料打出不同的部位，再按一刃一柄的标准来组装武器，有一种自由组合的效果，也算是一种扩展性</p>
+<p>游戏中的切题点在于，玩家在打铁的时候需要频繁点击鼠标左右键，来达到&quot;打铁&quot;的效果（有点沙威玛的味道），这与游戏中的其他系统的联动的地方在于，玩家使用不同材料打造不同部位所需要的时间是不同的，那么玩家就可以选择花很长时间打一把材料非常好，非常符合顾客要求的武器，也可以花很多零零散散的时间用垃圾材料供给零散顾客给的单子，也有模拟经营铁匠铺的味道</p>
+<h4>《逃离俄罗斯方块》<span class="hx:absolute hx:-mt-20" id="逃离俄罗斯方块"></span>
+    <a href="#%e9%80%83%e7%a6%bb%e4%bf%84%e7%bd%97%e6%96%af%e6%96%b9%e5%9d%97" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>这可得说道说道了，这是我全场给的评价最高的一款游戏</p>
+<p>游戏是永续的有肉鸽元素的实时的，目标是得到更多分数（说实在的，作为一个内核是类俄罗斯方块的游戏，我不认为这个游戏有明确的目标）</p>
+<p>游戏结合了&quot;俄罗斯方块&quot;和&quot;推箱子&quot;两个经典游戏的核心机制，随时间实时流逝，场景上方会有几种组合的方块慢慢落下（这里就不讲那么详细了，毕竟就是俄罗斯方块）</p>
+<p>同时，玩家可以操控场景中的一个小方块（这个方块是随着第一个方块落下的，当第一个方块落地时，玩家就可以操控这个小方块）在方块和空地间有子弹时间地移动</p>
+<p>当存在玩家将要移动的方向所在的方块后方有空地时，该方块将被移动到该空地处（或许听着有些绕，但可以直接理解为推箱子，任何已落地的方块都是箱子，玩家可以在箱子中穿梭，只要玩家推的箱子方向有空地，箱子就可以被推动）</p>
+<p>我问过这个作者有关这游戏的想法，也听了他的路演，他说切题点在于玩家通过模拟移动一大段路径来得到满足感（原话我不记得了，大致意思是玩家规划了一长串路径后让错误的方块得到消除可以让玩家很爽），说实在的，这似乎和&quot;模拟器&quot;搭不上边，只能勉强扯到&quot;模拟&quot;这样的元素</p>
+<p>这个游戏我评价为&quot;极简塔防&quot;级游戏，机制简单但太有深度了，要是能扩展些东西不敢说比肩《极简塔防》，也得有一小批忠实受众</p>
+<h3>好的团队<span class="hx:absolute hx:-mt-20" id="好的团队"></span>
+    <a href="#%e5%a5%bd%e7%9a%84%e5%9b%a2%e9%98%9f" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>额标题取的不是很好，但不需要在意。。。接下来内容不是很多，就不取小标题了</p>
+<p>在开发过程中，我们对面那桌是五人组团（这次比赛组队上限是五人），他们有很明确的分工，一个策划，一个程序，一个美术，一个音乐，一个动画</p>
+<p>哇，作为一个程策美三手抓的人，我想象不到到这种一个人专职一个部分的工作流有多爽，那个策划是多年在职的，我想应该是他做的项目管理</p>
+<p>这也就是说，只要是团队，就不可避免地需要一个很有经验的人来做项目管理，否则各个成员后面一定会乱成一团</p>
+<p>哦说句题外话，坐我对面的是主美，还是大三的（不要小瞧一个梦想过当嗨客的人的信息收集能力哇），woc，素颜真好看吧🤤坐我右上角对桌的是主音，画的妆有些浓，不一定好看，而且香水味有些重，打扰我写案子</p>
+<p>还有一个团队，组长应该是记得很清楚的，他在回酒店之后特意跟我讨论了一会这个团队，他们做的是一个梦核的2D上帝视角移动游戏（我不知道怎么形容那种游戏类型），游戏中玩家需要移动一个小人收集地图中的某些收集物（可以简单理解为走迷宫），同时躲避这些收集物旁边环绕的怪物</p>
+<p>它有吸引人的一点就是，地图不仅是有模板随机生成的，还是重复生成的，玩家视野外的所有场景都是会改变的，即玩家走过这一段地形后，往回走可能就是另一种地形，这是拿来切&quot;梦核&quot;这个主题的</p>
+<p>除此之外我不敢恭维这款游戏，组长也说这个游戏做的有些烂</p>
+<p>但他们团队里有一个很nb的路演，可以把游戏吹的天花乱坠，在他慢慢吹的过程中，这个游戏似乎就真的变得切题而且有深度了，就连平时二郎腿翘到天上的那俩评委也得低下头来在地上拾掇这个游戏的优点（有些夸张，但就是能阻止别人往坏的方面看，而且还引导别人往好的方面看，而且这个&quot;好的方面&quot;还不一定是真实存在的，大部分都是捏造的，没有体现在游戏里的，比如背景故事什么的）</p>
+<p>不管怎么说，能来参加这个比赛的人都是经过筛选过的，至少有一技之长的，如前面提到的大佬所说，我们此行见识也结识了更多的人，也是一种收获</p>
 <hr>
 <p>以上</p>
 
         </div>
         
-    <div class="hx:mt-12 hx:mb-8 hx:block hx:text-xs hx:text-gray-500 hx:ltr:text-right hx:rtl:text-left hx:dark:text-gray-400">最后更新于 <time datetime="2025-11-21T00:00:00.000Z">2025年11月21日</time></div>
+    <div class="hx:mt-12 hx:mb-8 hx:block hx:text-xs hx:text-gray-500 hx:ltr:text-right hx:rtl:text-left hx:dark:text-gray-400">最后更新于 <time datetime="2025-12-22T00:00:00.000Z">2025年12月22日</time></div>
         <div class="hx:mb-8 hx:flex hx:items-center hx:border-t hx:pt-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-neutral-400 hx:dark:contrast-more:border-neutral-400 hx:print:hidden"><a
-        href="/game/ai_decision_tree_state_machine/"
-        title="AI决策-状态机"
+        href="/game/godot_code_framework/"
+        title="Godot或许合格的程序架构"
         class="hx:flex hx:max-w-[50%] hx:items-center hx:gap-1 hx:py-4 hx:text-base hx:font-medium hx:text-gray-600 hx:transition-colors [word-break:break-word] hx:hover:text-primary-600 hx:dark:text-gray-300 hx:md:text-lg hx:ltr:pr-4 hx:rtl:pl-4"
-      ><svg class="hx:inline hx:h-5 hx:shrink-0 hx:ltr:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>AI决策-状态机</a><a
-        href="/game/nine_kings/"
-        title="九王"
-        class="hx:flex hx:max-w-[50%] hx:items-center hx:gap-1 hx:py-4 hx:text-base hx:font-medium hx:text-gray-600 hx:transition-colors [word-break:break-word] hx:hover:text-primary-600 hx:dark:text-gray-300 hx:md:text-lg hx:ltr:ml-auto hx:ltr:pl-4 hx:ltr:text-right hx:rtl:mr-auto hx:rtl:pr-4 hx:rtl:text-left"
-      >九王<svg class="hx:inline hx:h-5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a></div>
+      ><svg class="hx:inline hx:h-5 hx:shrink-0 hx:ltr:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>Godot或许合格的程序架构</a></div>
         
       </main>
     </article>

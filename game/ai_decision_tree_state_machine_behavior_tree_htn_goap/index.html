@@ -14,19 +14,7 @@
 17.游戏引擎Gameplay玩法系统：高级AI (Part 1) | GAMES104-现代游戏引擎：从入门到实践
 本篇是基于该games104视频内容的笔记性质的总结，根本目的是为本人理顺其中略微混乱的内容，具体内容以该视频为准（手动叠甲）
 再放一篇大佬的帖子🙏受益匪浅
-# GOAP与游戏AI简述 —— 技术篇
-2 主观概述 简单ai中最古老最基础也是最容易理解的就是状态机，状态机的写法要求开发者给ai体设置多个&#34;状态&#34;，具体表现为——规定ai体在某个&#34;状态&#34;下执行的动作，为状态之间的转换设置条件
-其中需要明确的是，
-在任何时刻下的ai体都需要处于某&#34;状态&#34;中（可以不止一个，详见&#34;并发状态机&#34;） 任何状态都需要有被转换和转换为其他状态的条件（否则就相当于走进死胡同了） 状态的转换条件需要是可量化的（不然机器读不懂） 我对状态机的理解是特殊的循环，还有进阶一点的分层和并发状态机此处不赘述
-状态机概念图 但当外界情况复杂起来，ai体有大量状态时（或许可以用分层状态机简化，但这里假设分层之后仍复杂），常规的状态机写起来就会让人头大，毕竟新的状态很可能要飞很多根线连到原先的状态，这个时候我们就得用到行为树了（提一嘴，视频里提到行为树起源于03-04年间的halo）
-我主观认为基础行为树是可以脱离状态机来理解的（因为我玩UE的时候是先接触了行为树再接触状态机的💦）
-我对行为树的理解是特殊的遍历&#43;if-else，至于有多特殊就等下展开
-行为树概念图 到后面的HTN（Hierarchical Tasks Network 层次任务网络）和GOAP（Goal-Oriented Action Planning 目标导向行为规划）就必须要提到，前面的状态机和行为树像是条件反射般地执行开发者设定的任务，而这两个ai就更像是开发者给ai设定一系列可选的行为，ai通过感知这个世界自己设定目的，然后根据开发者所给来选择要做的事
-我们可以简记为：前两者是条件反射，后两者是目标导向
-HTN概念图 GOAP概念图 2.1 全篇速览举例 （这个例子看不懂的话就是不会接下来要讲的东西）
-此处举一个比较直观的例子：我们需要做一个项羽和一个刘邦
-2.1.1 用状态机的写法 项羽有&#34;巡逻&#34;，“冲锋”，“开大”，这三个的转换关系分别是，默认处于巡逻状态，在看到敌人后向其冲锋，当与敌人距离小于某个值时开大，随后直接进入巡逻状态，以此反复
-刘邦就有&#34;待命&#34;，“摇人”，“撤退”，这三个的转换关系分别是，默认处于待命状态，看到敌人后进入摇人状态，随后直接进入撤退状态，在看不到敌人后进入待命状态，以此反复" /><link rel="canonical" href="http://localhost:1313/game/ai_decision_tree_state_machine_behavior_tree_htn_goap/" itemprop="url" />
+# GOAP与游戏AI简述 —— 技术篇 博客 2 主观概述 简单ai中最古老最基础也是最容易理解的就是状态机，状态机的写法要求开发者给ai体设置多个&#34;状态&#34;，具体表现为——规定ai体在某个&#34;状态&#34;下执行的动作，为状态之间的转换设置条件" /><link rel="canonical" href="http://localhost:1313/game/ai_decision_tree_state_machine_behavior_tree_htn_goap/" itemprop="url" />
 
 <meta property="og:title" content="AI决策-状态机&#43;行为树&#43;HTN&#43;GOAP">
 <meta
@@ -39,48 +27,15 @@ HTN概念图 GOAP概念图 2.1 全篇速览举例 （这个例子看不懂的话
 17.游戏引擎Gameplay玩法系统：高级AI (Part 1) | GAMES104-现代游戏引擎：从入门到实践
 本篇是基于该games104视频内容的笔记性质的总结，根本目的是为本人理顺其中略微混乱的内容，具体内容以该视频为准（手动叠甲）
 再放一篇大佬的帖子🙏受益匪浅
-# GOAP与游戏AI简述 —— 技术篇
+
+  # GOAP与游戏AI简述 —— 技术篇
+    博客
+  
+
+
 
 2 主观概述
     简单ai中最古老最基础也是最容易理解的就是状态机，状态机的写法要求开发者给ai体设置多个&quot;状态&quot;，具体表现为——规定ai体在某个&quot;状态&quot;下执行的动作，为状态之间的转换设置条件
-其中需要明确的是，
-
-在任何时刻下的ai体都需要处于某&quot;状态&quot;中（可以不止一个，详见&quot;并发状态机&quot;）
-任何状态都需要有被转换和转换为其他状态的条件（否则就相当于走进死胡同了）
-状态的转换条件需要是可量化的（不然机器读不懂）
-
-我对状态机的理解是特殊的循环，还有进阶一点的分层和并发状态机此处不赘述
-
-    
-    
-    状态机概念图
-  
-但当外界情况复杂起来，ai体有大量状态时（或许可以用分层状态机简化，但这里假设分层之后仍复杂），常规的状态机写起来就会让人头大，毕竟新的状态很可能要飞很多根线连到原先的状态，这个时候我们就得用到行为树了（提一嘴，视频里提到行为树起源于03-04年间的halo）
-我主观认为基础行为树是可以脱离状态机来理解的（因为我玩UE的时候是先接触了行为树再接触状态机的💦）
-我对行为树的理解是特殊的遍历&#43;if-else，至于有多特殊就等下展开
-
-    
-    
-    行为树概念图
-  
-到后面的HTN（Hierarchical Tasks Network 层次任务网络）和GOAP（Goal-Oriented Action Planning 目标导向行为规划）就必须要提到，前面的状态机和行为树像是条件反射般地执行开发者设定的任务，而这两个ai就更像是开发者给ai设定一系列可选的行为，ai通过感知这个世界自己设定目的，然后根据开发者所给来选择要做的事
-我们可以简记为：前两者是条件反射，后两者是目标导向
-
-    
-    
-    HTN概念图
-  
-
-    
-    
-    GOAP概念图
-  
-2.1 全篇速览举例
-    （这个例子看不懂的话就是不会接下来要讲的东西）
-此处举一个比较直观的例子：我们需要做一个项羽和一个刘邦
-2.1.1 用状态机的写法
-    项羽有&quot;巡逻&quot;，&ldquo;冲锋&rdquo;，&ldquo;开大&rdquo;，这三个的转换关系分别是，默认处于巡逻状态，在看到敌人后向其冲锋，当与敌人距离小于某个值时开大，随后直接进入巡逻状态，以此反复
-刘邦就有&quot;待命&quot;，&ldquo;摇人&rdquo;，&ldquo;撤退&rdquo;，这三个的转换关系分别是，默认处于待命状态，看到敌人后进入摇人状态，随后直接进入撤退状态，在看不到敌人后进入待命状态，以此反复
     
   ">
 <meta
@@ -107,22 +62,10 @@ HTN概念图 GOAP概念图 2.1 全篇速览举例 （这个例子看不懂的话
 17.游戏引擎Gameplay玩法系统：高级AI (Part 1) | GAMES104-现代游戏引擎：从入门到实践
 本篇是基于该games104视频内容的笔记性质的总结，根本目的是为本人理顺其中略微混乱的内容，具体内容以该视频为准（手动叠甲）
 再放一篇大佬的帖子🙏受益匪浅
-# GOAP与游戏AI简述 —— 技术篇
-2 主观概述 简单ai中最古老最基础也是最容易理解的就是状态机，状态机的写法要求开发者给ai体设置多个&#34;状态&#34;，具体表现为——规定ai体在某个&#34;状态&#34;下执行的动作，为状态之间的转换设置条件
-其中需要明确的是，
-在任何时刻下的ai体都需要处于某&#34;状态&#34;中（可以不止一个，详见&#34;并发状态机&#34;） 任何状态都需要有被转换和转换为其他状态的条件（否则就相当于走进死胡同了） 状态的转换条件需要是可量化的（不然机器读不懂） 我对状态机的理解是特殊的循环，还有进阶一点的分层和并发状态机此处不赘述
-状态机概念图 但当外界情况复杂起来，ai体有大量状态时（或许可以用分层状态机简化，但这里假设分层之后仍复杂），常规的状态机写起来就会让人头大，毕竟新的状态很可能要飞很多根线连到原先的状态，这个时候我们就得用到行为树了（提一嘴，视频里提到行为树起源于03-04年间的halo）
-我主观认为基础行为树是可以脱离状态机来理解的（因为我玩UE的时候是先接触了行为树再接触状态机的💦）
-我对行为树的理解是特殊的遍历&#43;if-else，至于有多特殊就等下展开
-行为树概念图 到后面的HTN（Hierarchical Tasks Network 层次任务网络）和GOAP（Goal-Oriented Action Planning 目标导向行为规划）就必须要提到，前面的状态机和行为树像是条件反射般地执行开发者设定的任务，而这两个ai就更像是开发者给ai设定一系列可选的行为，ai通过感知这个世界自己设定目的，然后根据开发者所给来选择要做的事
-我们可以简记为：前两者是条件反射，后两者是目标导向
-HTN概念图 GOAP概念图 2.1 全篇速览举例 （这个例子看不懂的话就是不会接下来要讲的东西）
-此处举一个比较直观的例子：我们需要做一个项羽和一个刘邦
-2.1.1 用状态机的写法 项羽有&#34;巡逻&#34;，“冲锋”，“开大”，这三个的转换关系分别是，默认处于巡逻状态，在看到敌人后向其冲锋，当与敌人距离小于某个值时开大，随后直接进入巡逻状态，以此反复
-刘邦就有&#34;待命&#34;，“摇人”，“撤退”，这三个的转换关系分别是，默认处于待命状态，看到敌人后进入摇人状态，随后直接进入撤退状态，在看不到敌人后进入待命状态，以此反复">
+# GOAP与游戏AI简述 —— 技术篇 博客 2 主观概述 简单ai中最古老最基础也是最容易理解的就是状态机，状态机的写法要求开发者给ai体设置多个&#34;状态&#34;，具体表现为——规定ai体在某个&#34;状态&#34;下执行的动作，为状态之间的转换设置条件">
   <meta itemprop="datePublished" content="2025-11-25T00:00:00+00:00">
   <meta itemprop="dateModified" content="2025-11-25T00:00:00+00:00">
-  <meta itemprop="wordCount" content="549">
+  <meta itemprop="wordCount" content="550">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="AI决策-状态机&#43;行为树&#43;HTN&#43;GOAP">
   <meta name="twitter:description" content="1 前言 先放一下b站上games104关于简单ai的介绍视频
@@ -130,19 +73,7 @@ HTN概念图 GOAP概念图 2.1 全篇速览举例 （这个例子看不懂的话
 17.游戏引擎Gameplay玩法系统：高级AI (Part 1) | GAMES104-现代游戏引擎：从入门到实践
 本篇是基于该games104视频内容的笔记性质的总结，根本目的是为本人理顺其中略微混乱的内容，具体内容以该视频为准（手动叠甲）
 再放一篇大佬的帖子🙏受益匪浅
-# GOAP与游戏AI简述 —— 技术篇
-2 主观概述 简单ai中最古老最基础也是最容易理解的就是状态机，状态机的写法要求开发者给ai体设置多个&#34;状态&#34;，具体表现为——规定ai体在某个&#34;状态&#34;下执行的动作，为状态之间的转换设置条件
-其中需要明确的是，
-在任何时刻下的ai体都需要处于某&#34;状态&#34;中（可以不止一个，详见&#34;并发状态机&#34;） 任何状态都需要有被转换和转换为其他状态的条件（否则就相当于走进死胡同了） 状态的转换条件需要是可量化的（不然机器读不懂） 我对状态机的理解是特殊的循环，还有进阶一点的分层和并发状态机此处不赘述
-状态机概念图 但当外界情况复杂起来，ai体有大量状态时（或许可以用分层状态机简化，但这里假设分层之后仍复杂），常规的状态机写起来就会让人头大，毕竟新的状态很可能要飞很多根线连到原先的状态，这个时候我们就得用到行为树了（提一嘴，视频里提到行为树起源于03-04年间的halo）
-我主观认为基础行为树是可以脱离状态机来理解的（因为我玩UE的时候是先接触了行为树再接触状态机的💦）
-我对行为树的理解是特殊的遍历&#43;if-else，至于有多特殊就等下展开
-行为树概念图 到后面的HTN（Hierarchical Tasks Network 层次任务网络）和GOAP（Goal-Oriented Action Planning 目标导向行为规划）就必须要提到，前面的状态机和行为树像是条件反射般地执行开发者设定的任务，而这两个ai就更像是开发者给ai设定一系列可选的行为，ai通过感知这个世界自己设定目的，然后根据开发者所给来选择要做的事
-我们可以简记为：前两者是条件反射，后两者是目标导向
-HTN概念图 GOAP概念图 2.1 全篇速览举例 （这个例子看不懂的话就是不会接下来要讲的东西）
-此处举一个比较直观的例子：我们需要做一个项羽和一个刘邦
-2.1.1 用状态机的写法 项羽有&#34;巡逻&#34;，“冲锋”，“开大”，这三个的转换关系分别是，默认处于巡逻状态，在看到敌人后向其冲锋，当与敌人距离小于某个值时开大，随后直接进入巡逻状态，以此反复
-刘邦就有&#34;待命&#34;，“摇人”，“撤退”，这三个的转换关系分别是，默认处于待命状态，看到敌人后进入摇人状态，随后直接进入撤退状态，在看不到敌人后进入待命状态，以此反复">
+# GOAP与游戏AI简述 —— 技术篇 博客 2 主观概述 简单ai中最古老最基础也是最容易理解的就是状态机，状态机的写法要求开发者给ai体设置多个&#34;状态&#34;，具体表现为——规定ai体在某个&#34;状态&#34;下执行的动作，为状态之间的转换设置条件">
 <link href="/css/compiled/main.css" rel="stylesheet" />
     <link href="/css/variables.css" rel="stylesheet" />
     <link href="/css/custom.css" rel="stylesheet" />
@@ -155,7 +86,7 @@ HTN概念图 GOAP概念图 2.1 全篇速览举例 （这个例子看不懂的话
   </head>
 <body>
 <div class="hextra-banner hx:max-md:sticky hx:top-0 hx:z-20 hx:px-6 hx:text-center hx:text-slate-50 hx:dark:text-white hx:bg-neutral-900 hx:dark:bg-neutral-800 hx:print:[display:none]">
-  <div class="hx:relative hx:flex hx:items-center hx:justify-center hx:font-medium hx:text-sm hx:py-2.5"><div style="white-space: pre-wrap" class="hx:px-8">Welcome ! Last updated date -&gt; 2025-12-16</div><button
+  <div class="hx:relative hx:flex hx:items-center hx:justify-center hx:font-medium hx:text-sm hx:py-2.5"><div style="white-space: pre-wrap" class="hx:px-8">Welcome ! Last updated date -&gt; 2025-12-23</div><button
       class="hextra-banner-close-button hx:cursor-pointer hx:absolute hx:right-0 hx:text-white hx:font-bold hx:leading-none hx:hover:opacity-75 hx:transition hx:w-10 hx:h-10 hx:-mr-2 hx:md:mr-0 hx:flex hx:items-center hx:justify-center"
     ><svg height=16 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button>
   </div>
@@ -285,93 +216,6 @@ HTN概念图 GOAP概念图 2.1 全篇速览举例 （这个例子看不懂的话
     
   >关于
     </a></li>
-          <li class=""><a
-    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="/essay/"
-    
-  >随笔
-        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></span>
-    </a><div class="hx:ltr:pr-0 hx:overflow-hidden">
-        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><a
-    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="/essay/the_legend_of_the_white_eye_wolf/"
-    
-  >白眼狼传
-    </a>
-              
-            </li></ul>
-      </div></li>
-          <li class=""><a
-    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="/dae/"
-    
-  >王朝与帝国
-        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></span>
-    </a><div class="hx:ltr:pr-0 hx:overflow-hidden">
-        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><a
-    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="/dae/xu/"
-    
-  >序：台土
-    </a>
-              
-            </li><li class="hx:flex hx:flex-col open"><a
-    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="/dae/century1normal/"
-    
-  >初世纪正篇：帝王不孤
-        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></span>
-    </a>
-              <div class="hx:ltr:pr-0 hx:overflow-hidden">
-        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><a
-    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="/dae/century1normal/passage1/"
-    
-  >（一）·《王朝轩辕衍公世家（一）》
-    </a>
-              
-            </li><li class="hx:flex hx:flex-col "><a
-    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="/dae/century1normal/passage2/"
-    
-  >（二）·《东帝国：乂字军欧荣·海德生平（一）》
-    </a>
-              
-            </li><li class="hx:flex hx:flex-col "><a
-    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="/dae/century1normal/passage3/"
-    
-  >（三）·《王朝司马相宜公世家（一）》
-    </a>
-              
-            </li><li class="hx:flex hx:flex-col "><a
-    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="/dae/century1normal/passage4/"
-    
-  >（四）·《王朝轩辕衍公世家（二）》
-    </a>
-              
-            </li><li class="hx:flex hx:flex-col "><a
-    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="/dae/century1normal/passage5/"
-    
-  >（五）·《东帝国：乂字军欧荣·海德生平（二）》
-    </a>
-              
-            </li></ul>
-      </div>
-            </li></ul>
-      </div></li>
           <li class="open"><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
@@ -469,6 +313,101 @@ HTN概念图 GOAP概念图 2.1 全篇速览举例 （这个例子看不懂的话
   >Godot或许合格的程序架构
     </a>
               
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/game/2025taptap_spotlight_48hgamejam_chengdu/"
+    
+  >2025TapTap聚光灯48Hgamejam成都场复盘
+    </a>
+              
+            </li></ul>
+      </div></li>
+          <li class=""><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/essay/"
+    
+  >随笔
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></span>
+    </a><div class="hx:ltr:pr-0 hx:overflow-hidden">
+        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/essay/the_legend_of_the_white_eye_wolf/"
+    
+  >白眼狼传
+    </a>
+              
+            </li></ul>
+      </div></li>
+          <li class=""><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/dae/"
+    
+  >王朝与帝国
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></span>
+    </a><div class="hx:ltr:pr-0 hx:overflow-hidden">
+        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/dae/xu/"
+    
+  >序：台土
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col open"><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/dae/century1normal/"
+    
+  >初世纪正篇：帝王不孤
+        <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></span>
+    </a>
+              <div class="hx:ltr:pr-0 hx:overflow-hidden">
+        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/dae/century1normal/passage1/"
+    
+  >（一）·《王朝轩辕衍公世家（一）》
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/dae/century1normal/passage2/"
+    
+  >（二）·《东帝国：乂字军欧荣·海德生平（一）》
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/dae/century1normal/passage3/"
+    
+  >（三）·《王朝司马相宜公世家（一）》
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/dae/century1normal/passage4/"
+    
+  >（四）·《王朝轩辕衍公世家（二）》
+    </a>
+              
+            </li><li class="hx:flex hx:flex-col "><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/dae/century1normal/passage5/"
+    
+  >（五）·《东帝国：乂字军欧荣·海德生平（二）》
+    </a>
+              
+            </li></ul>
+      </div>
             </li></ul>
       </div></li>
       <li class="[word-break:break-word] hx:mt-5 hx:mb-2 hx:px-2 hx:py-1.5 hx:text-sm hx:font-semibold hx:text-gray-900 hx:first:mt-0 hx:dark:text-gray-100">
@@ -539,6 +478,13 @@ HTN概念图 GOAP概念图 2.1 全篇速览举例 （这个例子看不懂的话
     href="/game/godot_code_framework/"
     
   >Godot或许合格的程序架构
+    </a></li>
+          <li class=""><a
+    class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="/game/2025taptap_spotlight_48hgamejam_chengdu/"
+    
+  >2025TapTap聚光灯48Hgamejam成都场复盘
     </a></li>
         
       <li class="[word-break:break-word] hx:mt-5 hx:mb-2 hx:px-2 hx:py-1.5 hx:text-sm hx:font-semibold hx:text-gray-900 hx:first:mt-0 hx:dark:text-gray-100">
@@ -792,7 +738,14 @@ HTN概念图 GOAP概念图 2.1 全篇速览举例 （这个例子看不懂的话
 <p><a href="https://www.bilibili.com/video/BV1iG4y1i78Q/?share_source=copy_web&amp;vd_source=ff55028a1f378d23599a756d4f11c840"target="_blank" rel="noopener">17.游戏引擎Gameplay玩法系统：高级AI (Part 1) | GAMES104-现代游戏引擎：从入门到实践</a></p>
 <p>本篇是基于该games104视频内容的笔记性质的总结，根本目的是为本人理顺其中略微混乱的内容，具体内容以该视频为准（手动叠甲）</p>
 <p>再放一篇大佬的帖子🙏受益匪浅</p>
-<p><a href="http://blog.cyasylum.top/index.php/2024/10/07/brief-description-of-goap-and-game-ai-technical-articles-ff4ha/"target="_blank" rel="noopener"># GOAP与游戏AI简述 —— 技术篇</a></p>
+<div class="hextra-cards hx:mt-4 hx:gap-4 hx:grid not-prose" style="--hextra-cards-grid-cols: 1;">
+  <a
+    class="hextra-card hx:group hx:flex hx:flex-col hx:justify-start hx:overflow-hidden hx:rounded-lg hx:border hx:border-gray-200 hx:text-current hx:no-underline hx:dark:shadow-none hx:hover:shadow-gray-100 hx:dark:hover:shadow-none hx:shadow-gray-100 hx:active:shadow-sm hx:active:shadow-gray-200 hx:transition-all hx:duration-200 hx:hover:border-gray-300 hx:bg-transparent hx:shadow-xs hx:dark:border-neutral-800 hx:hover:bg-slate-50 hx:hover:shadow-md hx:dark:hover:border-neutral-700 hx:dark:hover:bg-neutral-900"href="http://blog.cyasylum.top/index.php/2024/10/07/brief-description-of-goap-and-game-ai-technical-articles-ff4ha/"
+      target="_blank" rel="noreferrer"><span class="hextra-card-icon hx:flex hx:font-semibold hx:items-start hx:gap-2 hx:p-4 hx:text-gray-700 hx:hover:text-gray-900 hx:dark:text-neutral-200 hx:dark:hover:text-neutral-50"># GOAP与游戏AI简述 —— 技术篇</span><div class="hextra-badge hextra-card-tag">
+    <div class="hx:inline-flex hx:gap-1 hx:items-center hx:rounded-full hx:px-2.5 hx:leading-6 hx:text-[.65rem] hx:border hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200">博客</div>
+  </div></a>
+</div>
+
 <hr>
 <h2>2 主观概述<span class="hx:absolute hx:-mt-20" id="2-主观概述"></span>
     <a href="#2-%e4%b8%bb%e8%a7%82%e6%a6%82%e8%bf%b0" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>简单ai中最古老最基础也是最容易理解的就是状态机，状态机的写法要求开发者给ai体设置多个&quot;状态&quot;，具体表现为——规定ai体在某个&quot;状态&quot;下执行的动作，为状态之间的转换设置条件</p>
@@ -830,7 +783,7 @@ HTN概念图 GOAP概念图 2.1 全篇速览举例 （这个例子看不懂的话
   </figure></p>
 <h3>2.1 全篇速览举例<span class="hx:absolute hx:-mt-20" id="21-全篇速览举例"></span>
     <a href="#21-%e5%85%a8%e7%af%87%e9%80%9f%e8%a7%88%e4%b8%be%e4%be%8b" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>（这个例子看不懂的话就是不会接下来要讲的东西）</p>
-<p>此处举一个比较直观的例子：我们需要做一个项羽和一个刘邦</p>
+<p>此处举一个比较直观的例子：我们需要做一个项羽和一个刘邦(实际上是一个勇敢的小兵和一个有智慧的小兵)</p>
 <h4>2.1.1 用状态机的写法<span class="hx:absolute hx:-mt-20" id="211-用状态机的写法"></span>
     <a href="#211-%e7%94%a8%e7%8a%b6%e6%80%81%e6%9c%ba%e7%9a%84%e5%86%99%e6%b3%95" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>项羽有&quot;巡逻&quot;，&ldquo;冲锋&rdquo;，&ldquo;开大&rdquo;，这三个的转换关系分别是，默认处于巡逻状态，在看到敌人后向其冲锋，当与敌人距离小于某个值时开大，随后直接进入巡逻状态，以此反复</p>
 <p>刘邦就有&quot;待命&quot;，&ldquo;摇人&rdquo;，&ldquo;撤退&rdquo;，这三个的转换关系分别是，默认处于待命状态，看到敌人后进入摇人状态，随后直接进入撤退状态，在看不到敌人后进入待命状态，以此反复</p>
