@@ -33,7 +33,7 @@ function scrollUp() {
     document.documentElement.classList.add("hextra-banner-hidden");
     document.documentElement.style.setProperty("--hextra-banner-height", "0px");
 
-    localStorage.setItem('announcement-v0.11', "0");
+    localStorage.setItem('announcement', "0");
   });
 })();
 //

@@ -1,13 +1,13 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>乂轶·轶名_y1s – 游戏</title>
-    <link>http://localhost:1313/game/</link>
-    <description>Recent content in 游戏 on 乂轶·轶名_y1s</description>
+    <title>乂轶·轶名_y1s – 技术</title>
+    <link>http://localhost:1313/tech/</link>
+    <description>Recent content in 技术 on 乂轶·轶名_y1s</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Sun, 28 Dec 2025 00:00:00 +0000</lastBuildDate>
     
-	  <atom:link href="http://localhost:1313/game/index.xml" rel="self" type="application/rss+xml" />
+	  <atom:link href="http://localhost:1313/tech/index.xml" rel="self" type="application/rss+xml" />
     
     
       
