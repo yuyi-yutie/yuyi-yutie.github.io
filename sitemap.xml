@@ -13,6 +13,9 @@
   </url><url>
     <loc>http://localhost:1313/dae/xu/</loc>
   </url><url>
+    <loc>http://localhost:1313/dae/century1normal/</loc>
+    <lastmod>2026-02-06T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/tech/ai_decision_tree_state_machine_behavior_tree_htn_goap/</loc>
     <lastmod>2025-11-25T00:00:00+00:00</lastmod>
   </url><url>
@@ -21,9 +24,6 @@
   </url><url>
     <loc>http://localhost:1313/dae/century1normal/passage2/</loc>
     <lastmod>2025-08-21T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/dae/century1normal/</loc>
-    <lastmod>2025-08-18T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tech/godot_a_star/</loc>
     <lastmod>2025-12-03T00:00:00+00:00</lastmod>
@@ -48,6 +48,9 @@
   </url><url>
     <loc>http://localhost:1313/dae/century1normal/passage5/</loc>
     <lastmod>2025-10-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/dae/century1normal/passage6/</loc>
+    <lastmod>2026-02-06T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/about/</loc>
     <lastmod>2026-02-04T00:00:00+00:00</lastmod>
