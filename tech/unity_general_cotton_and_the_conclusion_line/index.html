@@ -713,15 +713,15 @@ public class IntClass { private int data; public void SetData(int _data) =&gt; d
 <p>通常的写法是</p>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">IntClass</span>
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> data;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> SetData(<span style="color:#66d9ef">int</span> _data) =&gt; data = _data;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> GetData() =&gt; <span style="color:#66d9ef">return</span> data;
-</span></span><span style="display:flex;"><span>}
+<div><div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">class</span> <span style="color:#8fbcbb">IntClass</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">private</span> <span style="color:#81a1c1">int</span> data<span style="color:#eceff4">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">void</span> SetData<span style="color:#eceff4">(</span><span style="color:#81a1c1">int</span> _data<span style="color:#eceff4">)</span> <span style="color:#eceff4">=&gt;</span> data <span style="color:#eceff4">=</span> _data<span style="color:#eceff4">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1">int</span> GetData<span style="color:#eceff4">()</span> <span style="color:#eceff4">=&gt;</span> <span style="color:#81a1c1;font-weight:bold">return</span> data<span style="color:#eceff4">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">}</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">//然后cv这一段，把里面的int改成float和string</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">//我偷懒不想cv了</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic">//然后cv这一段，把里面的int改成float和string</span>
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic">//我偷懒不想cv了</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="复制代码"
@@ -735,22 +735,22 @@ public class IntClass { private int data; public void SetData(int _data) =&gt; d
 <p>因为可以用泛型做到简化形式</p>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DataClass</span>&lt;T&gt;
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> T data;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> SetData(T _data) =&gt; data = _data;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> T GetData() =&gt; <span style="color:#66d9ef">return</span> data;
-</span></span><span style="display:flex;"><span>}
+<div><div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">class</span> <span style="color:#8fbcbb">DataClass</span><span style="color:#eceff4">&lt;</span>T<span style="color:#eceff4">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">private</span> T data<span style="color:#eceff4">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">void</span> SetData<span style="color:#eceff4">(</span>T _data<span style="color:#eceff4">)</span> <span style="color:#eceff4">=&gt;</span> data <span style="color:#eceff4">=</span> _data<span style="color:#eceff4">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">public</span> T GetData<span style="color:#eceff4">()</span> <span style="color:#eceff4">=&gt;</span> <span style="color:#81a1c1;font-weight:bold">return</span> data<span style="color:#eceff4">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">}</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">//假如要声明一个具体的类，就加一点点字段</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> Function()
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>    DataClass&lt;<span style="color:#66d9ef">int</span>&gt; intClass = <span style="color:#66d9ef">new</span> DataClass&lt;<span style="color:#66d9ef">int</span>&gt;();
-</span></span><span style="display:flex;"><span>    intClass.SetData(<span style="color:#ae81ff">100</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//或者直接写成var形式</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">var</span> floatClass = <span style="color:#66d9ef">new</span> DataClass&lt;<span style="color:#66d9ef">float</span>&gt;();
-</span></span><span style="display:flex;"><span>    floatClass.SetData(<span style="color:#ae81ff">1.0f</span>);
-</span></span><span style="display:flex;"><span>}</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic">//假如要声明一个具体的类，就加一点点字段</span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">private</span> <span style="color:#81a1c1;font-weight:bold">void</span> Function<span style="color:#eceff4">()</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>    DataClass<span style="color:#eceff4">&lt;</span><span style="color:#81a1c1">int</span><span style="color:#eceff4">&gt;</span> intClass <span style="color:#eceff4">=</span> <span style="color:#81a1c1;font-weight:bold">new</span> DataClass<span style="color:#eceff4">&lt;</span><span style="color:#81a1c1">int</span><span style="color:#eceff4">&gt;();</span>
+</span></span><span style="display:flex;"><span>    intClass<span style="color:#eceff4">.</span>SetData<span style="color:#eceff4">(</span><span style="color:#b48ead">100</span><span style="color:#eceff4">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#616e87;font-style:italic">//或者直接写成var形式</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1">var</span> floatClass <span style="color:#eceff4">=</span> <span style="color:#81a1c1;font-weight:bold">new</span> DataClass<span style="color:#eceff4">&lt;</span><span style="color:#81a1c1">float</span><span style="color:#eceff4">&gt;();</span>
+</span></span><span style="display:flex;"><span>    floatClass<span style="color:#eceff4">.</span>SetData<span style="color:#eceff4">(</span><span style="color:#b48ead">1.0f</span><span style="color:#eceff4">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="复制代码"
@@ -766,22 +766,22 @@ public class IntClass { private int data; public void SetData(int _data) =&gt; d
     <a href="#%e5%a7%94%e6%89%98" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>比如我们要写多个函数同时调用</p>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">delegate</span> <span style="color:#66d9ef">void</span> ReturnSomething();
+<div><div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">delegate</span> <span style="color:#81a1c1;font-weight:bold">void</span> ReturnSomething<span style="color:#eceff4">();</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Test</span>
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> ReturnA() =&gt; Debug.Log(<span style="color:#e6db74">&#34;A&#34;</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> ReturnB() =&gt; Debug.Log(<span style="color:#e6db74">&#34;B&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">class</span> <span style="color:#8fbcbb">Test</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">private</span> <span style="color:#81a1c1;font-weight:bold">void</span> ReturnA<span style="color:#eceff4">()</span> <span style="color:#eceff4">=&gt;</span> Debug<span style="color:#eceff4">.</span>Log<span style="color:#eceff4">(</span><span style="color:#a3be8c">&#34;A&#34;</span><span style="color:#eceff4">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">private</span> <span style="color:#81a1c1;font-weight:bold">void</span> ReturnB<span style="color:#eceff4">()</span> <span style="color:#eceff4">=&gt;</span> Debug<span style="color:#eceff4">.</span>Log<span style="color:#eceff4">(</span><span style="color:#a3be8c">&#34;B&#34;</span><span style="color:#eceff4">);</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> Function()
-</span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>        ReturnSomething remote = ReturnA; 
-</span></span><span style="display:flex;"><span>        remote();
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">void</span> Function<span style="color:#eceff4">()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>        ReturnSomething remote <span style="color:#eceff4">=</span> ReturnA<span style="color:#eceff4">;</span> 
+</span></span><span style="display:flex;"><span>        remote<span style="color:#eceff4">();</span>
 </span></span><span style="display:flex;"><span> 
-</span></span><span style="display:flex;"><span>        remote = ReturnB;
-</span></span><span style="display:flex;"><span>        remote();
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+</span></span><span style="display:flex;"><span>        remote <span style="color:#eceff4">=</span> ReturnB<span style="color:#eceff4">;</span>
+</span></span><span style="display:flex;"><span>        remote<span style="color:#eceff4">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="复制代码"
@@ -794,23 +794,23 @@ public class IntClass { private int data; public void SetData(int _data) =&gt; d
 <p>以上是最原始的委托写法，当然，我们也可以使用Action来简化一些代码</p>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Test</span>
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Action ReturnSomething;
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//这里的ReturnSomething现在是变量而不是变量类型</span>
+<div><div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">class</span> <span style="color:#8fbcbb">Test</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">private</span> Action ReturnSomething<span style="color:#eceff4">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#616e87;font-style:italic">//这里的ReturnSomething现在是变量而不是变量类型</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> ReturnA() =&gt; Debug.Log(<span style="color:#e6db74">&#34;A&#34;</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> ReturnB() =&gt; Debug.Log(<span style="color:#e6db74">&#34;B&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">private</span> <span style="color:#81a1c1;font-weight:bold">void</span> ReturnA<span style="color:#eceff4">()</span> <span style="color:#eceff4">=&gt;</span> Debug<span style="color:#eceff4">.</span>Log<span style="color:#eceff4">(</span><span style="color:#a3be8c">&#34;A&#34;</span><span style="color:#eceff4">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">private</span> <span style="color:#81a1c1;font-weight:bold">void</span> ReturnB<span style="color:#eceff4">()</span> <span style="color:#eceff4">=&gt;</span> Debug<span style="color:#eceff4">.</span>Log<span style="color:#eceff4">(</span><span style="color:#a3be8c">&#34;B&#34;</span><span style="color:#eceff4">);</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> Function()
-</span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>        ReturnSomething = ReturnA; 
-</span></span><span style="display:flex;"><span>        ReturnSomething();
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">void</span> Function<span style="color:#eceff4">()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>        ReturnSomething <span style="color:#eceff4">=</span> ReturnA<span style="color:#eceff4">;</span> 
+</span></span><span style="display:flex;"><span>        ReturnSomething<span style="color:#eceff4">();</span>
 </span></span><span style="display:flex;"><span> 
-</span></span><span style="display:flex;"><span>        ReturnSomething = ReturnB; 
-</span></span><span style="display:flex;"><span>        ReturnSomething();
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+</span></span><span style="display:flex;"><span>        ReturnSomething <span style="color:#eceff4">=</span> ReturnB<span style="color:#eceff4">;</span> 
+</span></span><span style="display:flex;"><span>        ReturnSomething<span style="color:#eceff4">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="复制代码"
@@ -824,22 +824,22 @@ public class IntClass { private int data; public void SetData(int _data) =&gt; d
 <p>多播的写法如下</p>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Test</span>
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Action returnSomething;
+<div><div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">class</span> <span style="color:#8fbcbb">Test</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">private</span> Action returnSomething<span style="color:#eceff4">;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> ReturnA() =&gt; Debug.Log(<span style="color:#e6db74">&#34;A&#34;</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> ReturnB() =&gt; Debug.Log(<span style="color:#e6db74">&#34;B&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">private</span> <span style="color:#81a1c1;font-weight:bold">void</span> ReturnA<span style="color:#eceff4">()</span> <span style="color:#eceff4">=&gt;</span> Debug<span style="color:#eceff4">.</span>Log<span style="color:#eceff4">(</span><span style="color:#a3be8c">&#34;A&#34;</span><span style="color:#eceff4">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">private</span> <span style="color:#81a1c1;font-weight:bold">void</span> ReturnB<span style="color:#eceff4">()</span> <span style="color:#eceff4">=&gt;</span> Debug<span style="color:#eceff4">.</span>Log<span style="color:#eceff4">(</span><span style="color:#a3be8c">&#34;B&#34;</span><span style="color:#eceff4">);</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> Function()
-</span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>        returnSomething += ReturnA;
-</span></span><span style="display:flex;"><span>        returnSomething += ReturnB;
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">void</span> Function<span style="color:#eceff4">()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>        returnSomething <span style="color:#eceff4">+=</span> ReturnA<span style="color:#eceff4">;</span>
+</span></span><span style="display:flex;"><span>        returnSomething <span style="color:#eceff4">+=</span> ReturnB<span style="color:#eceff4">;</span>
 </span></span><span style="display:flex;"><span>        
-</span></span><span style="display:flex;"><span>        returnSomething();
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#75715e">//输出和上面的代码相同</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+</span></span><span style="display:flex;"><span>        returnSomething<span style="color:#eceff4">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic">//输出和上面的代码相同</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="复制代码"
@@ -852,23 +852,23 @@ public class IntClass { private int data; public void SetData(int _data) =&gt; d
 <p>以上就是委托的基本用法，但通常在项目中我们是不会拿委托干这么低能的事的，以下是使用委托调用多个有参数的函数的写法</p>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Test</span>
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Action&lt;<span style="color:#66d9ef">int</span>&gt; returnSomething;
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//它对应的原始写法是</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//public delegate void ReturnSomething&lt;int&gt;(int num);</span>
+<div><div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">class</span> <span style="color:#8fbcbb">Test</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">private</span> Action<span style="color:#eceff4">&lt;</span><span style="color:#81a1c1">int</span><span style="color:#eceff4">&gt;</span> returnSomething<span style="color:#eceff4">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#616e87;font-style:italic">//它对应的原始写法是</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#616e87;font-style:italic">//public delegate void ReturnSomething&lt;int&gt;(int num);</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> ReturnNumber(<span style="color:#66d9ef">int</span> num) =&gt; Debug.Log(<span style="color:#e6db74">$&#34;{num}&#34;</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> ReturnDoubleNumber(<span style="color:#66d9ef">int</span> num) =&gt; Debug.Log(<span style="color:#e6db74">$&#34;{num * 2}&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">private</span> <span style="color:#81a1c1;font-weight:bold">void</span> ReturnNumber<span style="color:#eceff4">(</span><span style="color:#81a1c1">int</span> num<span style="color:#eceff4">)</span> <span style="color:#eceff4">=&gt;</span> Debug<span style="color:#eceff4">.</span>Log<span style="color:#eceff4">(</span><span style="color:#a3be8c">$&#34;{num}&#34;</span><span style="color:#eceff4">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">private</span> <span style="color:#81a1c1;font-weight:bold">void</span> ReturnDoubleNumber<span style="color:#eceff4">(</span><span style="color:#81a1c1">int</span> num<span style="color:#eceff4">)</span> <span style="color:#eceff4">=&gt;</span> Debug<span style="color:#eceff4">.</span>Log<span style="color:#eceff4">(</span><span style="color:#a3be8c">$&#34;{num * 2}&#34;</span><span style="color:#eceff4">);</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> Function()
-</span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>        returnSomething += ReturnNumber;
-</span></span><span style="display:flex;"><span>        returnSomething += ReturnDoubleNumber;
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">void</span> Function<span style="color:#eceff4">()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>        returnSomething <span style="color:#eceff4">+=</span> ReturnNumber<span style="color:#eceff4">;</span>
+</span></span><span style="display:flex;"><span>        returnSomething <span style="color:#eceff4">+=</span> ReturnDoubleNumber<span style="color:#eceff4">;</span>
 </span></span><span style="display:flex;"><span>        
-</span></span><span style="display:flex;"><span>        returnSomething(<span style="color:#ae81ff">100</span>);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+</span></span><span style="display:flex;"><span>        returnSomething<span style="color:#eceff4">(</span><span style="color:#b48ead">100</span><span style="color:#eceff4">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="复制代码"
@@ -878,7 +878,7 @@ public class IntClass { private int data; public void SetData(int _data) =&gt; d
   </button>
 </div>
 </div>
-<p>显然地，注意力强的人可能已经注意到了（我在说些什么），Action其本身就是一个泛型委托，在上面的例子中，Action<!-- raw HTML omitted -->就是Action<!-- raw HTML omitted -->的一种实现，那么相应的，也存在Action<!-- raw HTML omitted -->，Action<!-- raw HTML omitted -->的写法，Action也同时支持多个参数，也就是说，Action&lt;T1 , T2 &hellip; Tn&gt;是合法的</p>
+<p>显然地，注意力强的人可能已经注意到了（我在说些什么），Action其本身就是一个泛型委托，在上面的例子中，Action<int>就是Action<T>的一种实现，那么相应的，也存在Action<float>，Action<string>的写法，Action也同时支持多个参数，也就是说，Action&lt;T1 , T2 &hellip; Tn&gt;是合法的</p>
 <p>出于某些考虑，强烈建议在具体工程中不要把给委托附加函数和调用委托放在一起写，比如上面的例子中，假如我调用两次Function()，那么第二次调用Fuction时就将调用两次ReturnNumber()和两次ReturnDoubleNumber()（因为这两个函数都被两次加入委托中）</p>
 <p>在Unity中，给委托附加函数（或者说在委托中注册函数）通常会在Awake()里面写好，且在OnDestroy()中退订这些函数（退订用-=）</p>
 <p>提一嘴，使用delegate声明和使用Action声明在返回值上有本质的区别：前者可以返回值，而后者不可（毕竟我们也能看到，使用Action声明的时候没有写返回值类型的地方）</p>
@@ -887,12 +887,12 @@ public class IntClass { private int data; public void SetData(int _data) =&gt; d
 <p>传统的写法可能是，在函数A触发时直接调用这些函数，如下</p>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> A()
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>    B.E();
-</span></span><span style="display:flex;"><span>    C.F();
-</span></span><span style="display:flex;"><span>    D.G();
-</span></span><span style="display:flex;"><span>}</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+<div><div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">void</span> A<span style="color:#eceff4">()</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>    B<span style="color:#eceff4">.</span>E<span style="color:#eceff4">();</span>
+</span></span><span style="display:flex;"><span>    C<span style="color:#eceff4">.</span>F<span style="color:#eceff4">();</span>
+</span></span><span style="display:flex;"><span>    D<span style="color:#eceff4">.</span>G<span style="color:#eceff4">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="复制代码"
@@ -913,33 +913,33 @@ public class IntClass { private int data; public void SetData(int _data) =&gt; d
 <h4>EventBus结构<span class="hx:absolute hx:-mt-20" id="eventbus结构"></span>
     <a href="#eventbus%e7%bb%93%e6%9e%84" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#66d9ef">namespace</span> EventBus
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">EventBus</span>
-</span></span><span style="display:flex;"><span>    {
+<div><div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">namespace</span> <span style="color:#8fbcbb">EventBus</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">static</span> <span style="color:#81a1c1;font-weight:bold">class</span> <span style="color:#8fbcbb">EventBus</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">{</span>
 </span></span><span style="display:flex;"><span>        
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> Raise(EventType eventType)
-</span></span><span style="display:flex;"><span>        {
-</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//发出广播</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//其中，eventType是要发出的广播</span>
-</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">static</span> <span style="color:#81a1c1;font-weight:bold">void</span> Raise<span style="color:#eceff4">(</span>EventType eventType<span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#616e87;font-style:italic">//发出广播</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#616e87;font-style:italic">//其中，eventType是要发出的广播</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#eceff4">}</span>
 </span></span><span style="display:flex;"><span>        
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> Subscribe(EventType eventType , Action action)
-</span></span><span style="display:flex;"><span>        {
-</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//订阅广播</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//其中，eventType是要订阅的广播</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//action是接收消息时触发的函数</span>
-</span></span><span style="display:flex;"><span>        }
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> Unsubscribe(EventType eventType , Action action)
-</span></span><span style="display:flex;"><span>        {
-</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//取消订阅广播</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//参数含义同上</span>
-</span></span><span style="display:flex;"><span>        }
-</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>        <span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">static</span> <span style="color:#81a1c1;font-weight:bold">void</span> Subscribe<span style="color:#eceff4">(</span>EventType eventType <span style="color:#eceff4">,</span> Action action<span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#616e87;font-style:italic">//订阅广播</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#616e87;font-style:italic">//其中，eventType是要订阅的广播</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#616e87;font-style:italic">//action是接收消息时触发的函数</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#eceff4">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">static</span> <span style="color:#81a1c1;font-weight:bold">void</span> Unsubscribe<span style="color:#eceff4">(</span>EventType eventType <span style="color:#eceff4">,</span> Action action<span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#616e87;font-style:italic">//取消订阅广播</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#616e87;font-style:italic">//参数含义同上</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#eceff4">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">}</span>
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">enum</span> EventType {CustomEvent}
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//这里将包含所有可以发送的广播，声明为一个枚举，当要发送广播时，就Raise这其中的枚举值</span>
-</span></span><span style="display:flex;"><span>}</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">enum</span> EventType <span style="color:#eceff4">{</span>CustomEvent<span style="color:#eceff4">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#616e87;font-style:italic">//这里将包含所有可以发送的广播，声明为一个枚举，当要发送广播时，就Raise这其中的枚举值</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="复制代码"
@@ -953,18 +953,18 @@ public class IntClass { private int data; public void SetData(int _data) =&gt; d
     <a href="#raise" class="subheading-anchor" aria-label="Permalink for this section"></a></h5><p>接下来一一填充以上的函数，对于Raise函数，我们需要根据订阅的广播消息调用对应的函数，那么就有</p>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> Dictionary&lt;EventType , Action&gt; assignedActions = <span style="color:#66d9ef">new</span>();
-</span></span><span style="display:flex;"><span><span style="color:#75715e">//这个字典将存储广播和其对应的函数</span>
+<div><div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">private</span> <span style="color:#81a1c1;font-weight:bold">static</span> Dictionary<span style="color:#eceff4">&lt;</span>EventType <span style="color:#eceff4">,</span> Action<span style="color:#eceff4">&gt;</span> assignedActions <span style="color:#eceff4">=</span> <span style="color:#81a1c1;font-weight:bold">new</span><span style="color:#eceff4">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic">//这个字典将存储广播和其对应的函数</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> Raise(EventType eventType)
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (assignedActions.TryGetValue(eventType , <span style="color:#66d9ef">out</span> Action existingAction))
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//尝试查找字典中是否含有订阅了该广播的函数委托</span>
-</span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>        existingAction?.Invoke();
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//如果有，执行委托中的所有函数</span>
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">static</span> <span style="color:#81a1c1;font-weight:bold">void</span> Raise<span style="color:#eceff4">(</span>EventType eventType<span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">if</span> <span style="color:#eceff4">(</span>assignedActions<span style="color:#eceff4">.</span>TryGetValue<span style="color:#eceff4">(</span>eventType <span style="color:#eceff4">,</span> <span style="color:#81a1c1;font-weight:bold">out</span> Action existingAction<span style="color:#eceff4">))</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#616e87;font-style:italic">//尝试查找字典中是否含有订阅了该广播的函数委托</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>        existingAction<span style="color:#eceff4">?.</span>Invoke<span style="color:#eceff4">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#616e87;font-style:italic">//如果有，执行委托中的所有函数</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="复制代码"
@@ -977,7 +977,7 @@ public class IntClass { private int data; public void SetData(int _data) =&gt; d
 <p>这其中一点简单的细节，在此一并给出解释（其实是因为我有点忘了）</p>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (assignedActions.TryGetValue(eventType , <span style="color:#66d9ef">out</span> Action existingAction))</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+<div><div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">if</span> <span style="color:#eceff4">(</span>assignedActions<span style="color:#eceff4">.</span>TryGetValue<span style="color:#eceff4">(</span>eventType <span style="color:#eceff4">,</span> <span style="color:#81a1c1;font-weight:bold">out</span> Action existingAction<span style="color:#eceff4">))</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="复制代码"
@@ -990,7 +990,7 @@ public class IntClass { private int data; public void SetData(int _data) =&gt; d
 <p>该段代码的作用是尝试在assignedActions中寻找是否有eventType类型的键，如果有，则返回Action类型的existingAction</p>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span>existingAction?.Invoke();</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+<div><div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span>existingAction<span style="color:#eceff4">?.</span>Invoke<span style="color:#eceff4">();</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="复制代码"
@@ -1005,17 +1005,17 @@ public class IntClass { private int data; public void SetData(int _data) =&gt; d
     <a href="#%e8%ae%a2%e9%98%85" class="subheading-anchor" aria-label="Permalink for this section"></a></h5><p>然后就是简单的订阅和取消订阅了</p>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> Subscribe(EventType eventType , Action action)
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (assignedActions.ContainKey(eventType))
-</span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>        assignedActions[eventType] += action;
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>
-</span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>        assignedActions[eventType] = action;
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+<div><div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">static</span> <span style="color:#81a1c1;font-weight:bold">void</span> Subscribe<span style="color:#eceff4">(</span>EventType eventType <span style="color:#eceff4">,</span> Action action<span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">if</span> <span style="color:#eceff4">(</span>assignedActions<span style="color:#eceff4">.</span>ContainKey<span style="color:#eceff4">(</span>eventType<span style="color:#eceff4">))</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>        assignedActions<span style="color:#eceff4">[</span>eventType<span style="color:#eceff4">]</span> <span style="color:#eceff4">+=</span> action<span style="color:#eceff4">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">else</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>        assignedActions<span style="color:#eceff4">[</span>eventType<span style="color:#eceff4">]</span> <span style="color:#eceff4">=</span> action<span style="color:#eceff4">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="复制代码"
@@ -1028,13 +1028,13 @@ public class IntClass { private int data; public void SetData(int _data) =&gt; d
 <p>订阅部分也完全可以不加条件判断直接+=，但为了得到某些心理安慰，还是建议把代码写得更健壮些</p>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> Unsubscribe(EventType eventType , Action action)
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (assignedActions.ContainKey(eventType))
-</span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>        assignedActions[eventType] -= action;
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+<div><div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">static</span> <span style="color:#81a1c1;font-weight:bold">void</span> Unsubscribe<span style="color:#eceff4">(</span>EventType eventType <span style="color:#eceff4">,</span> Action action<span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">if</span> <span style="color:#eceff4">(</span>assignedActions<span style="color:#eceff4">.</span>ContainKey<span style="color:#eceff4">(</span>eventType<span style="color:#eceff4">))</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>        assignedActions<span style="color:#eceff4">[</span>eventType<span style="color:#eceff4">]</span> <span style="color:#eceff4">-=</span> action<span style="color:#eceff4">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="复制代码"
@@ -1048,7 +1048,7 @@ public class IntClass { private int data; public void SetData(int _data) =&gt; d
     <a href="#%e5%8f%91%e9%80%81%e5%b9%bf%e6%92%ad" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>首先需要保证using事件总线的命名空间，干脆让发送广播的脚本与事件总线位于同一命名空间（后者的方案通常不会被采用，但教程里是这么写的），即</p>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#66d9ef">using</span> EventBus;</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+<div><div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">using</span> <span style="color:#8fbcbb">EventBus</span><span style="color:#eceff4">;</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="复制代码"
@@ -1061,10 +1061,10 @@ public class IntClass { private int data; public void SetData(int _data) =&gt; d
 <p>或者</p>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#66d9ef">namespace</span> EventBus
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//Code Block</span>
-</span></span><span style="display:flex;"><span>}</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+<div><div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">namespace</span> <span style="color:#8fbcbb">EventBus</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#616e87;font-style:italic">//Code Block</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="复制代码"
@@ -1077,7 +1077,7 @@ public class IntClass { private int data; public void SetData(int _data) =&gt; d
 <p>要发送广播，只需要一行</p>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span>EventBus.Raise(EventType.CustomEvent);</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+<div><div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span>EventBus<span style="color:#eceff4">.</span>Raise<span style="color:#eceff4">(</span>EventType<span style="color:#eceff4">.</span>CustomEvent<span style="color:#eceff4">);</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="复制代码"
@@ -1092,15 +1092,15 @@ public class IntClass { private int data; public void SetData(int _data) =&gt; d
 <p>要订阅广播，也只需要一行</p>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> Fuction()
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>    EventBus.Subscribe(EventType.CustomEvent,AdjointFunction);
-</span></span><span style="display:flex;"><span>}
+<div><div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">private</span> <span style="color:#81a1c1;font-weight:bold">void</span> Fuction<span style="color:#eceff4">()</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>    EventBus<span style="color:#eceff4">.</span>Subscribe<span style="color:#eceff4">(</span>EventType<span style="color:#eceff4">.</span>CustomEvent<span style="color:#eceff4">,</span>AdjointFunction<span style="color:#eceff4">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">}</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> AdjointFunction()
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//Code Block</span>
-</span></span><span style="display:flex;"><span>}</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">private</span> <span style="color:#81a1c1;font-weight:bold">void</span> AdjointFunction<span style="color:#eceff4">()</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#616e87;font-style:italic">//Code Block</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="复制代码"
@@ -1116,17 +1116,17 @@ public class IntClass { private int data; public void SetData(int _data) =&gt; d
     <a href="#eventbus%e7%bb%93%e6%9e%84-1" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>这里一次性给出EventBus的完整代码，可能会让人费解，但无妨</p>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#66d9ef">namespace</span> EventBus
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Bus</span>&lt;T&gt; <span style="color:#66d9ef">where</span> T : IEvent
-</span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">delegate</span> <span style="color:#66d9ef">void</span> Event(T evt);
+<div><div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">namespace</span> <span style="color:#8fbcbb">EventBus</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">static</span> <span style="color:#81a1c1;font-weight:bold">class</span> <span style="color:#8fbcbb">Bus</span><span style="color:#eceff4">&lt;</span>T<span style="color:#eceff4">&gt;</span> <span style="color:#81a1c1;font-weight:bold">where</span> T <span style="color:#eceff4">:</span> IEvent
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">delegate</span> <span style="color:#81a1c1;font-weight:bold">void</span> Event<span style="color:#eceff4">(</span>T evt<span style="color:#eceff4">);</span>
 </span></span><span style="display:flex;"><span>        
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">event</span> Event OnEvent;
+</span></span><span style="display:flex;"><span>        <span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">static</span> <span style="color:#81a1c1;font-weight:bold">event</span> Event OnEvent<span style="color:#eceff4">;</span>
 </span></span><span style="display:flex;"><span>        
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> Raise(T evt) =&gt; OnEvent?.Invoke(evt);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+</span></span><span style="display:flex;"><span>        <span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">static</span> <span style="color:#81a1c1;font-weight:bold">void</span> Raise<span style="color:#eceff4">(</span>T evt<span style="color:#eceff4">)</span> <span style="color:#eceff4">=&gt;</span> OnEvent<span style="color:#eceff4">?.</span>Invoke<span style="color:#eceff4">(</span>evt<span style="color:#eceff4">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="复制代码"
@@ -1139,7 +1139,7 @@ public class IntClass { private int data; public void SetData(int _data) =&gt; d
 <p>当然，这其中也可以加入上面enum-based写法中的Subscribe和Unsubscribe，但这不是重点</p>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#66d9ef">where</span> T : IEvent</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+<div><div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">where</span> T <span style="color:#eceff4">:</span> IEvent</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="复制代码"
@@ -1153,7 +1153,7 @@ public class IntClass { private int data; public void SetData(int _data) =&gt; d
 <p>这里的IEvent接口是这个架构中新加入的东西，不过它在此其实起的是标识的作用，当某个gameObject需要参与事件总线时，就实现IEvent接口，IEvent中不需要有任何内容，它长这样：</p>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">IEvent</span> {<span style="color:#75715e">//No Code Block}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+<div><div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">interface</span> <span style="color:#8fbcbb">IEvent</span> <span style="color:#eceff4">{</span><span style="color:#616e87;font-style:italic">//No Code Block}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="复制代码"
@@ -1166,11 +1166,11 @@ public class IntClass { private int data; public void SetData(int _data) =&gt; d
 <p>接下来是声明委托</p>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">delegate</span> <span style="color:#66d9ef">void</span> Event(T evt);
-</span></span><span style="display:flex;"><span><span style="color:#75715e">//声明传入参数为一个泛型参数，返回值为空的委托类型</span>
+<div><div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">delegate</span> <span style="color:#81a1c1;font-weight:bold">void</span> Event<span style="color:#eceff4">(</span>T evt<span style="color:#eceff4">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic">//声明传入参数为一个泛型参数，返回值为空的委托类型</span>
 </span></span><span style="display:flex;"><span>        
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">event</span> Event OnEvent;
-</span></span><span style="display:flex;"><span><span style="color:#75715e">//根据上面定义的Event委托，声明一个静态的成员OnEvent</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">static</span> <span style="color:#81a1c1;font-weight:bold">event</span> Event OnEvent<span style="color:#eceff4">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic">//根据上面定义的Event委托，声明一个静态的成员OnEvent</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="复制代码"
@@ -1183,8 +1183,8 @@ public class IntClass { private int data; public void SetData(int _data) =&gt; d
 <p>这两行可以使用以下一行完全代替</p>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">event</span> Action&lt;T&gt; OnEvent;
-</span></span><span style="display:flex;"><span><span style="color:#75715e">//声明传入一个泛型参数且无返回值的委托OnEvent</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+<div><div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">static</span> <span style="color:#81a1c1;font-weight:bold">event</span> Action<span style="color:#eceff4">&lt;</span>T<span style="color:#eceff4">&gt;</span> OnEvent<span style="color:#eceff4">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic">//声明传入一个泛型参数且无返回值的委托OnEvent</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="复制代码"
@@ -1197,7 +1197,7 @@ public class IntClass { private int data; public void SetData(int _data) =&gt; d
 <p>接下来是触发委托的函数</p>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> Raise(T evt) =&gt; OnEvent?.Invoke(evt);</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+<div><div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">static</span> <span style="color:#81a1c1;font-weight:bold">void</span> Raise<span style="color:#eceff4">(</span>T evt<span style="color:#eceff4">)</span> <span style="color:#eceff4">=&gt;</span> OnEvent<span style="color:#eceff4">?.</span>Invoke<span style="color:#eceff4">(</span>evt<span style="color:#eceff4">);</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="复制代码"
@@ -1212,16 +1212,16 @@ public class IntClass { private int data; public void SetData(int _data) =&gt; d
     <a href="#events%e7%bb%93%e6%9e%84" class="subheading-anchor" aria-label="Permalink for this section"></a></h4><p>在这种写法中，我们将自定义一个Events结构用于定义消息类型（对应enum-based中的枚举），即</p>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#66d9ef">using</span> EventBus
-</span></span><span style="display:flex;"><span><span style="color:#75715e">//同上，注意引用</span>
+<div><div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">using</span> <span style="color:#8fbcbb">EventBus</span>
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic">//同上，注意引用</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">namespace</span> Events
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CustomEvent</span> : IEvent
-</span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//Code Block</span>
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">namespace</span> <span style="color:#8fbcbb">Events</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">class</span> <span style="color:#8fbcbb">CustomEvent</span> <span style="color:#eceff4">:</span> IEvent
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#616e87;font-style:italic">//Code Block</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="复制代码"
@@ -1237,17 +1237,17 @@ public class IntClass { private int data; public void SetData(int _data) =&gt; d
 <p>EventBus和IEvent仍可使用上方模板，在此复制下来</p>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#66d9ef">namespace</span> EventBus
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Bus</span>&lt;T&gt; <span style="color:#66d9ef">where</span> T : IEvent
-</span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">delegate</span> <span style="color:#66d9ef">void</span> Event(T evt);
+<div><div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">namespace</span> <span style="color:#8fbcbb">EventBus</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">static</span> <span style="color:#81a1c1;font-weight:bold">class</span> <span style="color:#8fbcbb">Bus</span><span style="color:#eceff4">&lt;</span>T<span style="color:#eceff4">&gt;</span> <span style="color:#81a1c1;font-weight:bold">where</span> T <span style="color:#eceff4">:</span> IEvent
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">delegate</span> <span style="color:#81a1c1;font-weight:bold">void</span> Event<span style="color:#eceff4">(</span>T evt<span style="color:#eceff4">);</span>
 </span></span><span style="display:flex;"><span>        
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">event</span> Event OnEvent;
+</span></span><span style="display:flex;"><span>        <span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">static</span> <span style="color:#81a1c1;font-weight:bold">event</span> Event OnEvent<span style="color:#eceff4">;</span>
 </span></span><span style="display:flex;"><span>        
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> Raise(T evt) =&gt; OnEvent?.Invoke(evt);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+</span></span><span style="display:flex;"><span>        <span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">static</span> <span style="color:#81a1c1;font-weight:bold">void</span> Raise<span style="color:#eceff4">(</span>T evt<span style="color:#eceff4">)</span> <span style="color:#eceff4">=&gt;</span> OnEvent<span style="color:#eceff4">?.</span>Invoke<span style="color:#eceff4">(</span>evt<span style="color:#eceff4">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="复制代码"
@@ -1259,10 +1259,10 @@ public class IntClass { private int data; public void SetData(int _data) =&gt; d
 </div>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">IEvent</span> 
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//No Code Block</span>
-</span></span><span style="display:flex;"><span>}</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+<div><div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">interface</span> <span style="color:#8fbcbb">IEvent</span> 
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#616e87;font-style:italic">//No Code Block</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="复制代码"
@@ -1275,22 +1275,22 @@ public class IntClass { private int data; public void SetData(int _data) =&gt; d
 <p>那么就有事件</p>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#66d9ef">using</span> EventBus;
+<div><div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">using</span> <span style="color:#8fbcbb">EventBus</span><span style="color:#eceff4">;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">namespace</span> Events
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SendSelf</span> : IEvent
-</span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> Unit unit { <span style="color:#66d9ef">get</span>; <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">set</span>; }
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//定义一个只读的Unit，保证安全，当然要是不想保证安全可以把getset都去掉</span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">namespace</span> <span style="color:#8fbcbb">Events</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">class</span> <span style="color:#8fbcbb">SendSelf</span> <span style="color:#eceff4">:</span> IEvent
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#81a1c1;font-weight:bold">public</span> Unit unit <span style="color:#eceff4">{</span> <span style="color:#81a1c1;font-weight:bold">get</span><span style="color:#eceff4">;</span> <span style="color:#81a1c1;font-weight:bold">private</span> <span style="color:#81a1c1;font-weight:bold">set</span><span style="color:#eceff4">;</span> <span style="color:#eceff4">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#616e87;font-style:italic">//定义一个只读的Unit，保证安全，当然要是不想保证安全可以把getset都去掉</span>
 </span></span><span style="display:flex;"><span>        
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> SendSelf(Unit _unit)
-</span></span><span style="display:flex;"><span>        {
-</span></span><span style="display:flex;"><span>            unit = _unit;
-</span></span><span style="display:flex;"><span>        }
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//这是该事件的构造函数，配合上方的getset是用于保证安全的，也是可以去掉的</span>
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+</span></span><span style="display:flex;"><span>        <span style="color:#81a1c1;font-weight:bold">public</span> SendSelf<span style="color:#eceff4">(</span>Unit _unit<span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>            unit <span style="color:#eceff4">=</span> _unit<span style="color:#eceff4">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#eceff4">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#616e87;font-style:italic">//这是该事件的构造函数，配合上方的getset是用于保证安全的，也是可以去掉的</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="复制代码"
@@ -1303,15 +1303,15 @@ public class IntClass { private int data; public void SetData(int _data) =&gt; d
 <p>依上方注释所说，该事件的最简化形式为</p>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#66d9ef">using</span> EventBus;
+<div><div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">using</span> <span style="color:#8fbcbb">EventBus</span><span style="color:#eceff4">;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">namespace</span> Events
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SendSelf</span> : IEvent
-</span></span><span style="display:flex;"><span>  {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Unit unit;
-</span></span><span style="display:flex;"><span>  }
-</span></span><span style="display:flex;"><span>}</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">namespace</span> <span style="color:#8fbcbb">Events</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">class</span> <span style="color:#8fbcbb">SendSelf</span> <span style="color:#eceff4">:</span> IEvent
+</span></span><span style="display:flex;"><span>  <span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">public</span> Unit unit<span style="color:#eceff4">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#eceff4">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="复制代码"
@@ -1324,19 +1324,19 @@ public class IntClass { private int data; public void SetData(int _data) =&gt; d
 <p>对于UnitA和UnitB，它们都将创建一个SendSelf事件实例，随后将自身this作为参数发送广播，即</p>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#66d9ef">using</span> EventBus;
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> Events;
+<div><div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">using</span> <span style="color:#8fbcbb">EventBus</span><span style="color:#eceff4">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">using</span> <span style="color:#8fbcbb">Events</span><span style="color:#eceff4">;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UnitAB</span> : Unit
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> Function()
-</span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">var</span> evt = <span style="color:#66d9ef">new</span> SendSelf(<span style="color:#66d9ef">this</span>);
-</span></span><span style="display:flex;"><span>        Bus&lt;SendSelf&gt;.Raise(evt);
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//当然，也可以直接写成一行</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//Bus&lt;SendSelf&gt;.Raise(new SendSelf(this));</span>
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">class</span> <span style="color:#8fbcbb">UnitAB</span> <span style="color:#eceff4">:</span> Unit
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">private</span> <span style="color:#81a1c1;font-weight:bold">void</span> Function<span style="color:#eceff4">()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#81a1c1">var</span> evt <span style="color:#eceff4">=</span> <span style="color:#81a1c1;font-weight:bold">new</span> SendSelf<span style="color:#eceff4">(</span><span style="color:#81a1c1;font-weight:bold">this</span><span style="color:#eceff4">);</span>
+</span></span><span style="display:flex;"><span>        Bus<span style="color:#eceff4">&lt;</span>SendSelf<span style="color:#eceff4">&gt;.</span>Raise<span style="color:#eceff4">(</span>evt<span style="color:#eceff4">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#616e87;font-style:italic">//当然，也可以直接写成一行</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#616e87;font-style:italic">//Bus&lt;SendSelf&gt;.Raise(new SendSelf(this));</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="复制代码"
@@ -1349,29 +1349,29 @@ public class IntClass { private int data; public void SetData(int _data) =&gt; d
 <p>对于UnitC，它需要声明一个存储收到的参数的列表，在Awake()中订阅广播，在OnDestroy()中退订广播，并定义一个操作收到的参数的函数</p>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#66d9ef">using</span> EventBus;
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> Events;
+<div><div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">using</span> <span style="color:#8fbcbb">EventBus</span><span style="color:#eceff4">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">using</span> <span style="color:#8fbcbb">Events</span><span style="color:#eceff4">;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UnitC</span> : Unit
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> List&lt;Unit&gt; units = <span style="color:#66d9ef">new</span> List&lt;Unit&gt;();
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">class</span> <span style="color:#8fbcbb">UnitC</span> <span style="color:#eceff4">:</span> Unit
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">private</span> List<span style="color:#eceff4">&lt;</span>Unit<span style="color:#eceff4">&gt;</span> units <span style="color:#eceff4">=</span> <span style="color:#81a1c1;font-weight:bold">new</span> List<span style="color:#eceff4">&lt;</span>Unit<span style="color:#eceff4">&gt;();</span>
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> Function(SendSelf evt)
-</span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>        units.Add(evt.unit);
-</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">private</span> <span style="color:#81a1c1;font-weight:bold">void</span> Function<span style="color:#eceff4">(</span>SendSelf evt<span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>        units<span style="color:#eceff4">.</span>Add<span style="color:#eceff4">(</span>evt<span style="color:#eceff4">.</span>unit<span style="color:#eceff4">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">}</span>
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> Awake()
-</span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>        Bus&lt;SendSelf&gt;.OnEvent += Function;
-</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">private</span> <span style="color:#81a1c1;font-weight:bold">void</span> Awake<span style="color:#eceff4">()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>        Bus<span style="color:#eceff4">&lt;</span>SendSelf<span style="color:#eceff4">&gt;.</span>OnEvent <span style="color:#eceff4">+=</span> Function<span style="color:#eceff4">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">}</span>
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> OnDestroy()
-</span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>        Bus&lt;SendSelf&gt;.OnEvent -= Function;
-</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#81a1c1;font-weight:bold">private</span> <span style="color:#81a1c1;font-weight:bold">void</span> OnDestroy<span style="color:#eceff4">()</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>        Bus<span style="color:#eceff4">&lt;</span>SendSelf<span style="color:#eceff4">&gt;.</span>OnEvent <span style="color:#eceff4">-=</span> Function<span style="color:#eceff4">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#eceff4">}</span>
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>}</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="复制代码"
@@ -1382,7 +1382,7 @@ public class IntClass { private int data; public void SetData(int _data) =&gt; d
 </div>
 </div>
 <h2>总结<span class="hx:absolute hx:-mt-20" id="总结"></span>
-    <a href="#%e6%80%bb%e7%bb%93" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>依上方例子，很明显地，SendSelf完全可以替换成任意其他实现了IEvent的事件类，这依托于强大的泛型，而Bus<!-- raw HTML omitted -->.OnEvent也可以同时触发更多的函数，这依赖于伟大的委托（我在说些什么）</p>
+    <a href="#%e6%80%bb%e7%bb%93" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>依上方例子，很明显地，SendSelf完全可以替换成任意其他实现了IEvent的事件类，这依托于强大的泛型，而Bus<SendSelf>.OnEvent也可以同时触发更多的函数，这依赖于伟大的委托（我在说些什么）</p>
 <p>当场景中有更多Unit需要根据SendSelf触发反应时，也无需获取UnitAB的引用，只需要using EventBus和Events，绑定相应的函数即可，这就是强大又伟大的事件总线！</p>
 <p>(已经不知所云了，手动狗头)</p>
 <hr>

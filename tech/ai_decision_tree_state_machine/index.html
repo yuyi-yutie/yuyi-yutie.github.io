@@ -764,51 +764,51 @@ extends Node enum STATE { PATROL , CHASE , ATTACK } #在此定义状态机中的
 <p>（记住，不要用硬代码写状态机，除非你敢拿头保证你不会增加很多很复杂的状态或复合状态！）</p>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><pre><code>extends Node
-
-enum STATE {
-PATROL ,
-CHASE ,
-ATTACK
-} #在此定义状态机中的所有状态
-
-@export Player : PLAYER #对玩家引用来判断是否在侦查范围内
-
-var current_state : STATE = PATROL #定义&#34;当前状态&#34;并赋初始值为PATROL
-@export var animation : AnimatedSprite2D #这个动画状态机没有任何架构上的意义，你可以不用管它，我只是想突出状态应该要有的enter函数而已，让我的那个更改状态的函数变得不那么蠢
-
-@export var detect_distance : float #侦查范围
-@export var attack_distance : float #攻击范围
-
-func change_state(new_state : STATE) :
-	current_state = new_state
-	match current_state :
-		STATE.PATROL :
-			animation.play(&#34;patrol&#34;)
-		STATE.CHASE :
-			animation.play(&#34;chase&#34;)
-		STATE.ATTACK :
-			animation.play(&#34;attack&#34;)
-			change_state(PATROL)
-
-func _process(delta) :
-	match current_state :
-		STATE.PATROL :
-			if Player.position.distance_to(position) &lt; detect_distance :
-				change_state(STATE.CHASE)
-		STATE.CHASE :
-			if Player.position.distance_to(position) &lt; attack_distance :
-				change_state(STATE.ATTACK)
-
-func _physics_process(delta) :
-	match current_state :
-		#这下面的函数我就不写了，毕竟重心不在实现enemy动作，而是实现状态机的结构
-		STATE.PATROL :
-			random_move()
-		STATE.CHASE :
-			move_to_player(Player)
-		STATE.ATTACK :
-			attack(Player)</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+<div><div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-GDScript" data-lang="GDScript"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">extends</span> <span style="color:#8fbcbb">Node</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">enum</span> STATE <span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>PATROL <span style="color:#eceff4">,</span>
+</span></span><span style="display:flex;"><span>CHASE <span style="color:#eceff4">,</span>
+</span></span><span style="display:flex;"><span>ATTACK
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">}</span> <span style="color:#616e87;font-style:italic">#在此定义状态机中的所有状态</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#d08770">@export</span> Player <span style="color:#eceff4">:</span> PLAYER <span style="color:#616e87;font-style:italic">#对玩家引用来判断是否在侦查范围内</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">var</span> current_state <span style="color:#eceff4">:</span> STATE <span style="color:#81a1c1">=</span> PATROL <span style="color:#616e87;font-style:italic">#定义&#34;当前状态&#34;并赋初始值为PATROL</span>
+</span></span><span style="display:flex;"><span><span style="color:#d08770">@export</span> <span style="color:#81a1c1;font-weight:bold">var</span> animation <span style="color:#eceff4">:</span> <span style="color:#8fbcbb">AnimatedSprite2D</span> <span style="color:#616e87;font-style:italic">#这个动画状态机没有任何架构上的意义，你可以不用管它，我只是想突出状态应该要有的enter函数而已，让我的那个更改状态的函数变得不那么蠢</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#d08770">@export</span> <span style="color:#81a1c1;font-weight:bold">var</span> detect_distance <span style="color:#eceff4">:</span> <span style="color:#81a1c1">float</span> <span style="color:#616e87;font-style:italic">#侦查范围</span>
+</span></span><span style="display:flex;"><span><span style="color:#d08770">@export</span> <span style="color:#81a1c1;font-weight:bold">var</span> attack_distance <span style="color:#eceff4">:</span> <span style="color:#81a1c1">float</span> <span style="color:#616e87;font-style:italic">#攻击范围</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">func</span> <span style="color:#88c0d0">change_state</span><span style="color:#eceff4">(</span>new_state <span style="color:#eceff4">:</span> STATE<span style="color:#eceff4">)</span> <span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>	current_state <span style="color:#81a1c1">=</span> new_state
+</span></span><span style="display:flex;"><span>	<span style="color:#81a1c1;font-weight:bold">match</span> current_state <span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>		STATE<span style="color:#81a1c1">.</span>PATROL <span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>			animation<span style="color:#81a1c1">.</span><span style="color:#88c0d0">play</span><span style="color:#eceff4">(</span><span style="color:#a3be8c">&#34;patrol&#34;</span><span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span>		STATE<span style="color:#81a1c1">.</span>CHASE <span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>			animation<span style="color:#81a1c1">.</span><span style="color:#88c0d0">play</span><span style="color:#eceff4">(</span><span style="color:#a3be8c">&#34;chase&#34;</span><span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span>		STATE<span style="color:#81a1c1">.</span>ATTACK <span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>			animation<span style="color:#81a1c1">.</span><span style="color:#88c0d0">play</span><span style="color:#eceff4">(</span><span style="color:#a3be8c">&#34;attack&#34;</span><span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#88c0d0">change_state</span><span style="color:#eceff4">(</span>PATROL<span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">func</span> <span style="color:#88c0d0">_process</span><span style="color:#eceff4">(</span>delta<span style="color:#eceff4">)</span> <span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#81a1c1;font-weight:bold">match</span> current_state <span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>		STATE<span style="color:#81a1c1">.</span>PATROL <span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#81a1c1;font-weight:bold">if</span> Player<span style="color:#81a1c1">.</span>position<span style="color:#81a1c1">.</span><span style="color:#88c0d0">distance_to</span><span style="color:#eceff4">(</span>position<span style="color:#eceff4">)</span> <span style="color:#81a1c1">&lt;</span> detect_distance <span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#88c0d0">change_state</span><span style="color:#eceff4">(</span>STATE<span style="color:#81a1c1">.</span>CHASE<span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span>		STATE<span style="color:#81a1c1">.</span>CHASE <span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#81a1c1;font-weight:bold">if</span> Player<span style="color:#81a1c1">.</span>position<span style="color:#81a1c1">.</span><span style="color:#88c0d0">distance_to</span><span style="color:#eceff4">(</span>position<span style="color:#eceff4">)</span> <span style="color:#81a1c1">&lt;</span> attack_distance <span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#88c0d0">change_state</span><span style="color:#eceff4">(</span>STATE<span style="color:#81a1c1">.</span>ATTACK<span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">func</span> <span style="color:#88c0d0">_physics_process</span><span style="color:#eceff4">(</span>delta<span style="color:#eceff4">)</span> <span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#81a1c1;font-weight:bold">match</span> current_state <span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#616e87;font-style:italic">#这下面的函数我就不写了，毕竟重心不在实现enemy动作，而是实现状态机的结构</span>
+</span></span><span style="display:flex;"><span>		STATE<span style="color:#81a1c1">.</span>PATROL <span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#88c0d0">random_move</span><span style="color:#eceff4">()</span>
+</span></span><span style="display:flex;"><span>		STATE<span style="color:#81a1c1">.</span>CHASE <span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#88c0d0">move_to_player</span><span style="color:#eceff4">(</span>Player<span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span>		STATE<span style="color:#81a1c1">.</span>ATTACK <span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#88c0d0">attack</span><span style="color:#eceff4">(</span>Player<span style="color:#eceff4">)</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="复制代码"
@@ -852,24 +852,24 @@ func _physics_process(delta) :
 <p>首先定义STATE这个东西，我们得知道STATE是什么，有什么默认函数（定义STATE类）</p>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><pre><code>#STATE.gd
-
-extends Node
-class_name STATE #这里就是定义STATE
-
-signal ChangeState #在要更改状态时发出信号，这个信号将附带有将要转向的状态的字符串形式，然后我们在状态机中用字符串查找到的状态来替换当前状态
-
-func Enter() :  #这个函数将在进入该状态时调用
-	pass
-
-func Exit() : #在退出该状态时调用
-	pass
-
-func Update(delta) : #和_process绑定，用于处理渲染tick
-	pass
-
-func Physics_Update(delta) : #和_physics_process绑定，用于处理逻辑tick
-	pass</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+<div><div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-GDScript" data-lang="GDScript"><span style="display:flex;"><span><span style="color:#616e87;font-style:italic">#STATE.gd</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">extends</span> <span style="color:#8fbcbb">Node</span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">class_name</span> <span style="color:#8fbcbb">STATE</span> <span style="color:#616e87;font-style:italic">#这里就是定义STATE</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">signal</span> ChangeState <span style="color:#616e87;font-style:italic">#在要更改状态时发出信号，这个信号将附带有将要转向的状态的字符串形式，然后我们在状态机中用字符串查找到的状态来替换当前状态</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">func</span> <span style="color:#88c0d0">Enter</span><span style="color:#eceff4">()</span> <span style="color:#eceff4">:</span>  <span style="color:#616e87;font-style:italic">#这个函数将在进入该状态时调用</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#81a1c1;font-weight:bold">pass</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">func</span> <span style="color:#88c0d0">Exit</span><span style="color:#eceff4">()</span> <span style="color:#eceff4">:</span> <span style="color:#616e87;font-style:italic">#在退出该状态时调用</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#81a1c1;font-weight:bold">pass</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">func</span> <span style="color:#88c0d0">Update</span><span style="color:#eceff4">(</span>delta<span style="color:#eceff4">)</span> <span style="color:#eceff4">:</span> <span style="color:#616e87;font-style:italic">#和_process绑定，用于处理渲染tick</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#81a1c1;font-weight:bold">pass</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">func</span> <span style="color:#88c0d0">Physics_Update</span><span style="color:#eceff4">(</span>delta<span style="color:#eceff4">)</span> <span style="color:#eceff4">:</span> <span style="color:#616e87;font-style:italic">#和_physics_process绑定，用于处理逻辑tick</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#81a1c1;font-weight:bold">pass</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="复制代码"
@@ -892,44 +892,44 @@ func Physics_Update(delta) : #和_physics_process绑定，用于处理逻辑tick
 <p>没了！那就写吧！</p>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><pre><code>#StateMachine.gd
-
-extends Node
-class_name state_machine
-
-var state_dictionary := {} #这里是2
-var current_state : STATE #这里是3
-@export var init_state : STATE #这里是1
-
-
-func _ready() :
-	
-	#这里是2
-	for child in get_children() :
-		if child is STATE :
-			state_dictionary[child.name.to_lower()] = child #状态字典，键为状态的小写字符串形式，值为状态（子节点），这里的小写是用于保证代码安全的写法，避免因为大小写不同而检索不到相应的状态名
-			child.change_state.connect(_change_state) #绑定信号到函数
-			
-	#这里是1
-	if init_state :
-		current_state = init_state
-		current_state.Enter()
-
-#这里是3
-func _process(delta) :
-	if current_state :
-		current_state.Update(delta)
-
-func _physics_process(delta) :
-	if current_state :
-		current_state.Physics_Update(delta)
-
-#这里是4
-func _change_state(new_state) :
-	if current_state :
-		current_state.Exit()
-	current_state = state_dictionary[new_state]
-	current_state.Enter()</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+<div><div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-GDScript" data-lang="GDScript"><span style="display:flex;"><span><span style="color:#616e87;font-style:italic">#StateMachine.gd</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">extends</span> <span style="color:#8fbcbb">Node</span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">class_name</span> <span style="color:#8fbcbb">state_machine</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">var</span> state_dictionary <span style="color:#81a1c1">:=</span> <span style="color:#eceff4">{}</span> <span style="color:#616e87;font-style:italic">#这里是2</span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">var</span> current_state <span style="color:#eceff4">:</span> STATE <span style="color:#616e87;font-style:italic">#这里是3</span>
+</span></span><span style="display:flex;"><span><span style="color:#d08770">@export</span> <span style="color:#81a1c1;font-weight:bold">var</span> init_state <span style="color:#eceff4">:</span> STATE <span style="color:#616e87;font-style:italic">#这里是1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">func</span> <span style="color:#88c0d0">_ready</span><span style="color:#eceff4">()</span> <span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	<span style="color:#616e87;font-style:italic">#这里是2</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#81a1c1;font-weight:bold">for</span> child <span style="color:#81a1c1;font-weight:bold">in</span> <span style="color:#88c0d0">get_children</span><span style="color:#eceff4">()</span> <span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#81a1c1;font-weight:bold">if</span> child <span style="color:#81a1c1;font-weight:bold">is</span> STATE <span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>			state_dictionary<span style="color:#eceff4">[</span>child<span style="color:#81a1c1">.</span>name<span style="color:#81a1c1">.</span><span style="color:#88c0d0">to_lower</span><span style="color:#eceff4">()]</span> <span style="color:#81a1c1">=</span> child <span style="color:#616e87;font-style:italic">#状态字典，键为状态的小写字符串形式，值为状态（子节点），这里的小写是用于保证代码安全的写法，避免因为大小写不同而检索不到相应的状态名</span>
+</span></span><span style="display:flex;"><span>			child<span style="color:#81a1c1">.</span>change_state<span style="color:#81a1c1">.</span><span style="color:#88c0d0">connect</span><span style="color:#eceff4">(</span>_change_state<span style="color:#eceff4">)</span> <span style="color:#616e87;font-style:italic">#绑定信号到函数</span>
+</span></span><span style="display:flex;"><span>			
+</span></span><span style="display:flex;"><span>	<span style="color:#616e87;font-style:italic">#这里是1</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#81a1c1;font-weight:bold">if</span> init_state <span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>		current_state <span style="color:#81a1c1">=</span> init_state
+</span></span><span style="display:flex;"><span>		current_state<span style="color:#81a1c1">.</span><span style="color:#88c0d0">Enter</span><span style="color:#eceff4">()</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic">#这里是3</span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">func</span> <span style="color:#88c0d0">_process</span><span style="color:#eceff4">(</span>delta<span style="color:#eceff4">)</span> <span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#81a1c1;font-weight:bold">if</span> current_state <span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>		current_state<span style="color:#81a1c1">.</span><span style="color:#88c0d0">Update</span><span style="color:#eceff4">(</span>delta<span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">func</span> <span style="color:#88c0d0">_physics_process</span><span style="color:#eceff4">(</span>delta<span style="color:#eceff4">)</span> <span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#81a1c1;font-weight:bold">if</span> current_state <span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>		current_state<span style="color:#81a1c1">.</span><span style="color:#88c0d0">Physics_Update</span><span style="color:#eceff4">(</span>delta<span style="color:#eceff4">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#616e87;font-style:italic">#这里是4</span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">func</span> <span style="color:#88c0d0">_change_state</span><span style="color:#eceff4">(</span>new_state<span style="color:#eceff4">)</span> <span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#81a1c1;font-weight:bold">if</span> current_state <span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>		current_state<span style="color:#81a1c1">.</span><span style="color:#88c0d0">Exit</span><span style="color:#eceff4">()</span>
+</span></span><span style="display:flex;"><span>	current_state <span style="color:#81a1c1">=</span> state_dictionary<span style="color:#eceff4">[</span>new_state<span style="color:#eceff4">]</span>
+</span></span><span style="display:flex;"><span>	current_state<span style="color:#81a1c1">.</span><span style="color:#88c0d0">Enter</span><span style="color:#eceff4">()</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="复制代码"
@@ -942,36 +942,36 @@ func _change_state(new_state) :
 <p>接下来用patrol-chase-attack循环来演示状态节点</p>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><pre><code>#patrol.gd
-
-extends STATE
-class_name PATROL
-
-@export var enemy : ENEMY #这里是用引用的方法来让根节点实现当前状态的逻辑的
-@export var player : PLAYER #引用Player检测玩家是否进入侦查距离
-
-var detect_distance : float #侦查距离，当玩家与敌人的距离小于这一距离时，更改状态为chase
-var wander_time : float #为了不用强制多线程的timer，这里用最朴素的方法写计时器
-var current_wander_time : float
-
-func random_move() :
-	pass
-	#这里我就不演示了，反正就是enemy的运动逻辑
-
-func Enter() :
-	random_move()
-
-func Update(delta) :
-	if wander_time &gt; 0 :
-		current_wander_time -= delta
-	else :
-		random_move()
-		current_wander_time = wander_time
-
-func _Physics_Update(delta) :
-	#当玩家与敌人距离比侦查距离小时，将状态转换为chase
-	if player.position.distance_to(position) &lt; detect_distance :
-		change_state.emit(&#34;chase&#34;)</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+<div><div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-GDScript" data-lang="GDScript"><span style="display:flex;"><span><span style="color:#616e87;font-style:italic">#patrol.gd</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">extends</span> <span style="color:#8fbcbb">STATE</span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">class_name</span> <span style="color:#8fbcbb">PATROL</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#d08770">@export</span> <span style="color:#81a1c1;font-weight:bold">var</span> enemy <span style="color:#eceff4">:</span> ENEMY <span style="color:#616e87;font-style:italic">#这里是用引用的方法来让根节点实现当前状态的逻辑的</span>
+</span></span><span style="display:flex;"><span><span style="color:#d08770">@export</span> <span style="color:#81a1c1;font-weight:bold">var</span> player <span style="color:#eceff4">:</span> PLAYER <span style="color:#616e87;font-style:italic">#引用Player检测玩家是否进入侦查距离</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">var</span> detect_distance <span style="color:#eceff4">:</span> <span style="color:#81a1c1">float</span> <span style="color:#616e87;font-style:italic">#侦查距离，当玩家与敌人的距离小于这一距离时，更改状态为chase</span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">var</span> wander_time <span style="color:#eceff4">:</span> <span style="color:#81a1c1">float</span> <span style="color:#616e87;font-style:italic">#为了不用强制多线程的timer，这里用最朴素的方法写计时器</span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">var</span> current_wander_time <span style="color:#eceff4">:</span> <span style="color:#81a1c1">float</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">func</span> <span style="color:#88c0d0">random_move</span><span style="color:#eceff4">()</span> <span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#81a1c1;font-weight:bold">pass</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#616e87;font-style:italic">#这里我就不演示了，反正就是enemy的运动逻辑</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">func</span> <span style="color:#88c0d0">Enter</span><span style="color:#eceff4">()</span> <span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#88c0d0">random_move</span><span style="color:#eceff4">()</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">func</span> <span style="color:#88c0d0">Update</span><span style="color:#eceff4">(</span>delta<span style="color:#eceff4">)</span> <span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#81a1c1;font-weight:bold">if</span> wander_time <span style="color:#81a1c1">&gt;</span> <span style="color:#b48ead">0</span> <span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>		current_wander_time <span style="color:#81a1c1">-=</span> delta
+</span></span><span style="display:flex;"><span>	<span style="color:#81a1c1;font-weight:bold">else</span> <span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#88c0d0">random_move</span><span style="color:#eceff4">()</span>
+</span></span><span style="display:flex;"><span>		current_wander_time <span style="color:#81a1c1">=</span> wander_time
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">func</span> <span style="color:#88c0d0">_Physics_Update</span><span style="color:#eceff4">(</span>delta<span style="color:#eceff4">)</span> <span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#616e87;font-style:italic">#当玩家与敌人距离比侦查距离小时，将状态转换为chase</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#81a1c1;font-weight:bold">if</span> player<span style="color:#81a1c1">.</span>position<span style="color:#81a1c1">.</span><span style="color:#88c0d0">distance_to</span><span style="color:#eceff4">(</span>position<span style="color:#eceff4">)</span> <span style="color:#81a1c1">&lt;</span> detect_distance <span style="color:#eceff4">:</span>
+</span></span><span style="display:flex;"><span>		change_state<span style="color:#81a1c1">.</span><span style="color:#88c0d0">emit</span><span style="color:#eceff4">(</span><span style="color:#a3be8c">&#34;chase&#34;</span><span style="color:#eceff4">)</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="复制代码"
