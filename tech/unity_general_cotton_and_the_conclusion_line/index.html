@@ -88,7 +88,7 @@ Event Bus &amp; Scriptable Object Event Channels | Unity Game Architecture Tutor
 public class IntClass { private int data; public void SetData(int _data) =&gt; data = _data; public int GetData() =&gt; return data; } //然后cv这一段，把里面的int改成float和string //我偷懒不想cv了 可以，但是不好">
   <meta itemprop="datePublished" content="2026-02-16T00:00:00+00:00">
   <meta itemprop="dateModified" content="2026-02-16T00:00:00+00:00">
-  <meta itemprop="wordCount" content="692">
+  <meta itemprop="wordCount" content="694">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Unity泛型·委托及事件总线">
   <meta name="twitter:description" content="前言 学习这个的起因是我在假期没项目期间尝试从godot转unity（当然也不算是转，只能说是复习，因为很久以前我就是从unity转godot的），在学习某个RTS教程时，教程使用了事件总线EventBus来解耦
@@ -1153,7 +1153,10 @@ public class IntClass { private int data; public void SetData(int _data) =&gt; d
 <p>这里的IEvent接口是这个架构中新加入的东西，不过它在此其实起的是标识的作用，当某个gameObject需要参与事件总线时，就实现IEvent接口，IEvent中不需要有任何内容，它长这样：</p>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">interface</span> <span style="color:#8fbcbb">IEvent</span> <span style="color:#eceff4">{</span><span style="color:#616e87;font-style:italic">//No Code Block}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+<div><div class="highlight"><pre tabindex="0" style="color:#d8dee9;background-color:#2e3440;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C#" data-lang="C#"><span style="display:flex;"><span><span style="color:#81a1c1;font-weight:bold">public</span> <span style="color:#81a1c1;font-weight:bold">interface</span> <span style="color:#8fbcbb">IEvent</span> 
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#616e87;font-style:italic">//No Code Block</span>
+</span></span><span style="display:flex;"><span><span style="color:#eceff4">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="复制代码"
