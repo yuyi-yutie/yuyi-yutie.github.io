@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr"><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="robots" content="noindex, nofollow" />
+  <link rel="icon shortcut" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" id="favicon-svg" />
+<link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
+<link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+<link fetchpriority="low" href="/site.webmanifest" rel="manifest" />
+<title>《要战便战》 – 乂轶·轶名_yy</title>
+  <meta name="description" content="游戏类型：单机RTS
+画风：LowPoly
+时间：2026.3.8
+游戏进度：常规难度反抗军线通关（亡灵线此处不考虑）
+一句话总结：要塞的简化版，侧重防守的rts，ai类型简单但深度不错，可能是rts在pve方面发展的新方向
+（帝4也开了专门的轻肉鸽pve模式，和《要战便战》有点像）
+（提一嘴，前面写过的《墨守孤城》应该是以这个游戏为蓝本的）
+（叠甲：文中在双引号内的游戏内特定名词可能会不准确，因为部分名词官方没有给出，此处仅用作代指）
+1. 基本玩法 游戏中玩家将扮演一个阵营的集体意识，独立自主控制己方所有单位和建筑，完成每个&#34;战役&#34;关卡中的预设任务（如击杀单位或坚守市政厅）
+2. 核心系统：战役 2.1 时间系统 游戏中的时间是随现实时间实时流逝的
+游戏中存在昼夜系统，但昼夜系统截至目前除了会使游戏画面亮度变化外毫无用处
+2.2 资源系统 游戏中显示在面板的资源共有：（时间及增长率相关不计入在内）
+人口，食物，木材，石料，钢铁，金币，宝石
+2.2.1 人口 游戏中的人口没有固定上限，而是根据玩家建造的房屋数量、等级及其他建筑buff效果实时计算上限
+游戏中玩家的人口若未分配工作则从称为&#34;空闲工人&#34;
+人口的增长以&#34;天&#34;为单位，每天开始时，若当前人口数低于人口上限，则为玩家补充人口，这些人口将直接变为&#34;空闲工人&#34;，补充的人口数与人口上限呈正相关
+2.2.2 资源采集系统 游戏中玩家可以建造资源采集相关建筑，将&#34;空闲工人&#34;转化为&#34;资源采集人口&#34;，资源采集人口会依次自动行动经过&#34;资源点&#34;——“资源采集建筑”——“资源存储建筑”，以此将资源点中的资源转化为玩家拥有的资源
+游戏中的资源存储建筑均单独计算存放上限
+2.2.3 食物 游戏中食物没有固定上限，而是根据玩家建造的粮仓数量及等级实时计算上限
+游戏中玩家将在每天开始时消耗食物，消耗量取决于当前人口数及其他建筑buff效果，若玩家食物不足以供人口消耗，则消耗玩家所有食物，没有分配到食物的人口将获得&#34;饥饿&#34;buff，有饥饿buff的人口随时间流逝可能&#34;得病&#34;，饥饿buff可叠加，当该人口分配到食物时，饥饿buff清空，长时间拥有饥饿buff有概率死亡
+（有关&#34;得病&#34;见下文疾病系统）
+玩家可以建造产粮相关建筑随时间流逝获取食物，食物来源可以是：
+树莓丛，鱼群，农田
+树莓丛为周期性资源，在游戏开始时固定在地图上刷新，玩家可以建造&#34;采莓人小屋&#34;将空闲工人转化为&#34;采莓人&#34;，当采莓人将某个树莓丛采集完毕时，树莓丛将进入冷却，冷却结束后树莓丛所包含的食物数量将回复至上限
+鱼群为一次性资源，在游戏开始时固定在地图的水域地块的边缘刷新，玩家可以在鱼群附近建造&#34;渔场&#34;将空闲工人转化为&#34;渔夫&#34;，当渔夫将某个鱼群采集完毕时，鱼群消失（此后该鱼群对应的渔场将毫无作用，可以直接拆除）
+农田为永久资源，由玩家建造，玩家可以建造&#34;农场&#34;将空闲工人转化为&#34;农夫&#34;，农田不会耗尽，农夫可以持续采集，但采集速率较低
+农田的建造机制为，玩家需要在空地处选定位置建造&#34;农场&#34;，随后玩家需要在农场附近选定5个空间上连续的位置建造&#34;农田&#34;，建造农田不需要时间，当农场被摧毁时农田会自动摧毁，农场间不能共享农田
+2.2.4 木材，石料，钢铁 可以简单分类为：木材为一本资源，石料为二本资源，钢铁为三本资源
+（有关&#34;一本二本三本&#34;见下文建筑系统）
+（下文将统称为&#34;材料&#34;）
+游戏中材料没有固定上限，而是通过玩家建造的仓库数量及等级实时计算上限，三种材料的上限共享
+（如某仓库可存放100单位的材料，则存放100木材或50木材50石材或10木材10石材80钢铁均可）
+玩家可以建造材料采集相关建筑随时间流逝获取材料
+木材为可再生资源，游戏开始时会固定在地图上刷新初始树木，玩家可以建造&#34;伐木场&#34;将空闲工人转化为&#34;伐木工&#34;，当某个树木所含木材量被收集完时，树木消失，玩家可通过建造&#34;植树人小屋&#34;将空闲工人转化为&#34;植树人&#34;，植树人将有冷却地在植树人小屋旁生产树木
+石料为一次性/永久资源，在游戏开始时固定在地图的山脉地块刷新石矿和石矿床，玩家可以在石矿附近建造&#34;采石厂&#34;将空闲工人转化为&#34;采石工人&#34;，当某个石矿所含石料被收集完时，石矿消失，特殊地，玩家可以在石矿床附近建造&#34;永恒石矿厂&#34;，石矿床所含石料不会被收集完，永恒石矿厂需研究相关科技解锁
+（有关&#34;科技&#34;见下文科技系统）
+铁矿采集机制同石矿，此处不赘述
+2.2.5 金币 游戏中金币没有上限无存储建筑，为高级资源无法通过资源采集获得
+玩家需要在二本及以上时建造&#34;市场&#34;，在市场中周期性地交易物资，可交易的物资为食物，木材，石料，钢铁，金币，均可随意指向交换（但不存在同种资源交换）
+2.2.6 宝石 宝石有且仅有一个用途，消耗宝石以使用法术" /><link rel="canonical" href="http://localhost:1313/game/diplomacy_is_not_an_option/" itemprop="url" />
+
+<meta property="og:title" content="《要战便战》">
+<meta
+  property="og:description"
+  content="
+    
+      游戏类型：单机RTS
+画风：LowPoly
+时间：2026.3.8
+游戏进度：常规难度反抗军线通关（亡灵线此处不考虑）
+一句话总结：要塞的简化版，侧重防守的rts，ai类型简单但深度不错，可能是rts在pve方面发展的新方向
+（帝4也开了专门的轻肉鸽pve模式，和《要战便战》有点像）
+（提一嘴，前面写过的《墨守孤城》应该是以这个游戏为蓝本的）
+（叠甲：文中在双引号内的游戏内特定名词可能会不准确，因为部分名词官方没有给出，此处仅用作代指）
+1. 基本玩法
+    游戏中玩家将扮演一个阵营的集体意识，独立自主控制己方所有单位和建筑，完成每个&quot;战役&quot;关卡中的预设任务（如击杀单位或坚守市政厅）
+2. 核心系统：战役
+    2.1 时间系统
+    游戏中的时间是随现实时间实时流逝的
+游戏中存在昼夜系统，但昼夜系统截至目前除了会使游戏画面亮度变化外毫无用处
+2.2 资源系统
+    游戏中显示在面板的资源共有：（时间及增长率相关不计入在内）
+人口，食物，木材，石料，钢铁，金币，宝石
+2.2.1 人口
+    游戏中的人口没有固定上限，而是根据玩家建造的房屋数量、等级及其他建筑buff效果实时计算上限
+游戏中玩家的人口若未分配工作则从称为&quot;空闲工人&quot;
+人口的增长以&quot;天&quot;为单位，每天开始时，若当前人口数低于人口上限，则为玩家补充人口，这些人口将直接变为&quot;空闲工人&quot;，补充的人口数与人口上限呈正相关
+2.2.2 资源采集系统
+    游戏中玩家可以建造资源采集相关建筑，将&quot;空闲工人&quot;转化为&quot;资源采集人口&quot;，资源采集人口会依次自动行动经过&quot;资源点&quot;——&ldquo;资源采集建筑&rdquo;——&ldquo;资源存储建筑&rdquo;，以此将资源点中的资源转化为玩家拥有的资源
+游戏中的资源存储建筑均单独计算存放上限
+2.2.3 食物
+    游戏中食物没有固定上限，而是根据玩家建造的粮仓数量及等级实时计算上限
+游戏中玩家将在每天开始时消耗食物，消耗量取决于当前人口数及其他建筑buff效果，若玩家食物不足以供人口消耗，则消耗玩家所有食物，没有分配到食物的人口将获得&quot;饥饿&quot;buff，有饥饿buff的人口随时间流逝可能&quot;得病&quot;，饥饿buff可叠加，当该人口分配到食物时，饥饿buff清空，长时间拥有饥饿buff有概率死亡
+（有关&quot;得病&quot;见下文疾病系统）
+玩家可以建造产粮相关建筑随时间流逝获取食物，食物来源可以是：
+树莓丛，鱼群，农田
+树莓丛为周期性资源，在游戏开始时固定在地图上刷新，玩家可以建造&quot;采莓人小屋&quot;将空闲工人转化为&quot;采莓人&quot;，当采莓人将某个树莓丛采集完毕时，树莓丛将进入冷却，冷却结束后树莓丛所包含的食物数量将回复至上限
+鱼群为一次性资源，在游戏开始时固定在地图的水域地块的边缘刷新，玩家可以在鱼群附近建造&quot;渔场&quot;将空闲工人转化为&quot;渔夫&quot;，当渔夫将某个鱼群采集完毕时，鱼群消失（此后该鱼群对应的渔场将毫无作用，可以直接拆除）
+农田为永久资源，由玩家建造，玩家可以建造&quot;农场&quot;将空闲工人转化为&quot;农夫&quot;，农田不会耗尽，农夫可以持续采集，但采集速率较低
+农田的建造机制为，玩家需要在空地处选定位置建造&quot;农场&quot;，随后玩家需要在农场附近选定5个空间上连续的位置建造&quot;农田&quot;，建造农田不需要时间，当农场被摧毁时农田会自动摧毁，农场间不能共享农田
+2.2.4 木材，石料，钢铁
+    可以简单分类为：木材为一本资源，石料为二本资源，钢铁为三本资源
+（有关&quot;一本二本三本&quot;见下文建筑系统）
+（下文将统称为&quot;材料&quot;）
+游戏中材料没有固定上限，而是通过玩家建造的仓库数量及等级实时计算上限，三种材料的上限共享
+（如某仓库可存放100单位的材料，则存放100木材或50木材50石材或10木材10石材80钢铁均可）
+玩家可以建造材料采集相关建筑随时间流逝获取材料
+木材为可再生资源，游戏开始时会固定在地图上刷新初始树木，玩家可以建造&quot;伐木场&quot;将空闲工人转化为&quot;伐木工&quot;，当某个树木所含木材量被收集完时，树木消失，玩家可通过建造&quot;植树人小屋&quot;将空闲工人转化为&quot;植树人&quot;，植树人将有冷却地在植树人小屋旁生产树木
+石料为一次性/永久资源，在游戏开始时固定在地图的山脉地块刷新石矿和石矿床，玩家可以在石矿附近建造&quot;采石厂&quot;将空闲工人转化为&quot;采石工人&quot;，当某个石矿所含石料被收集完时，石矿消失，特殊地，玩家可以在石矿床附近建造&quot;永恒石矿厂&quot;，石矿床所含石料不会被收集完，永恒石矿厂需研究相关科技解锁
+（有关&quot;科技&quot;见下文科技系统）
+铁矿采集机制同石矿，此处不赘述
+2.2.5 金币
+    游戏中金币没有上限无存储建筑，为高级资源无法通过资源采集获得
+玩家需要在二本及以上时建造&quot;市场&quot;，在市场中周期性地交易物资，可交易的物资为食物，木材，石料，钢铁，金币，均可随意指向交换（但不存在同种资源交换）
+2.2.6 宝石
+    宝石有且仅有一个用途，消耗宝石以使用法术
+    
+  ">
+<meta
+  property="og:type"
+  content="
+    article
+  ">
+<meta property="og:url" content="http://localhost:1313/game/diplomacy_is_not_an_option/"><meta property="article:section" content="game">
+
+<meta
+  property="article:published_time"
+  content="2026-03-08T00:00:00+00:00">
+
+
+<meta
+  property="article:modified_time"
+  content="2026-03-08T00:00:00+00:00">
+
+
+
+  <meta itemprop="name" content="《要战便战》">
+  <meta itemprop="description" content="游戏类型：单机RTS
+画风：LowPoly
+时间：2026.3.8
+游戏进度：常规难度反抗军线通关（亡灵线此处不考虑）
+一句话总结：要塞的简化版，侧重防守的rts，ai类型简单但深度不错，可能是rts在pve方面发展的新方向
+（帝4也开了专门的轻肉鸽pve模式，和《要战便战》有点像）
+（提一嘴，前面写过的《墨守孤城》应该是以这个游戏为蓝本的）
+（叠甲：文中在双引号内的游戏内特定名词可能会不准确，因为部分名词官方没有给出，此处仅用作代指）
+1. 基本玩法 游戏中玩家将扮演一个阵营的集体意识，独立自主控制己方所有单位和建筑，完成每个&#34;战役&#34;关卡中的预设任务（如击杀单位或坚守市政厅）
+2. 核心系统：战役 2.1 时间系统 游戏中的时间是随现实时间实时流逝的
+游戏中存在昼夜系统，但昼夜系统截至目前除了会使游戏画面亮度变化外毫无用处
+2.2 资源系统 游戏中显示在面板的资源共有：（时间及增长率相关不计入在内）
+人口，食物，木材，石料，钢铁，金币，宝石
+2.2.1 人口 游戏中的人口没有固定上限，而是根据玩家建造的房屋数量、等级及其他建筑buff效果实时计算上限
+游戏中玩家的人口若未分配工作则从称为&#34;空闲工人&#34;
+人口的增长以&#34;天&#34;为单位，每天开始时，若当前人口数低于人口上限，则为玩家补充人口，这些人口将直接变为&#34;空闲工人&#34;，补充的人口数与人口上限呈正相关
+2.2.2 资源采集系统 游戏中玩家可以建造资源采集相关建筑，将&#34;空闲工人&#34;转化为&#34;资源采集人口&#34;，资源采集人口会依次自动行动经过&#34;资源点&#34;——“资源采集建筑”——“资源存储建筑”，以此将资源点中的资源转化为玩家拥有的资源
+游戏中的资源存储建筑均单独计算存放上限
+2.2.3 食物 游戏中食物没有固定上限，而是根据玩家建造的粮仓数量及等级实时计算上限
+游戏中玩家将在每天开始时消耗食物，消耗量取决于当前人口数及其他建筑buff效果，若玩家食物不足以供人口消耗，则消耗玩家所有食物，没有分配到食物的人口将获得&#34;饥饿&#34;buff，有饥饿buff的人口随时间流逝可能&#34;得病&#34;，饥饿buff可叠加，当该人口分配到食物时，饥饿buff清空，长时间拥有饥饿buff有概率死亡
+（有关&#34;得病&#34;见下文疾病系统）
+玩家可以建造产粮相关建筑随时间流逝获取食物，食物来源可以是：
+树莓丛，鱼群，农田
+树莓丛为周期性资源，在游戏开始时固定在地图上刷新，玩家可以建造&#34;采莓人小屋&#34;将空闲工人转化为&#34;采莓人&#34;，当采莓人将某个树莓丛采集完毕时，树莓丛将进入冷却，冷却结束后树莓丛所包含的食物数量将回复至上限
+鱼群为一次性资源，在游戏开始时固定在地图的水域地块的边缘刷新，玩家可以在鱼群附近建造&#34;渔场&#34;将空闲工人转化为&#34;渔夫&#34;，当渔夫将某个鱼群采集完毕时，鱼群消失（此后该鱼群对应的渔场将毫无作用，可以直接拆除）
+农田为永久资源，由玩家建造，玩家可以建造&#34;农场&#34;将空闲工人转化为&#34;农夫&#34;，农田不会耗尽，农夫可以持续采集，但采集速率较低
+农田的建造机制为，玩家需要在空地处选定位置建造&#34;农场&#34;，随后玩家需要在农场附近选定5个空间上连续的位置建造&#34;农田&#34;，建造农田不需要时间，当农场被摧毁时农田会自动摧毁，农场间不能共享农田
+2.2.4 木材，石料，钢铁 可以简单分类为：木材为一本资源，石料为二本资源，钢铁为三本资源
+（有关&#34;一本二本三本&#34;见下文建筑系统）
+（下文将统称为&#34;材料&#34;）
+游戏中材料没有固定上限，而是通过玩家建造的仓库数量及等级实时计算上限，三种材料的上限共享
+（如某仓库可存放100单位的材料，则存放100木材或50木材50石材或10木材10石材80钢铁均可）
+玩家可以建造材料采集相关建筑随时间流逝获取材料
+木材为可再生资源，游戏开始时会固定在地图上刷新初始树木，玩家可以建造&#34;伐木场&#34;将空闲工人转化为&#34;伐木工&#34;，当某个树木所含木材量被收集完时，树木消失，玩家可通过建造&#34;植树人小屋&#34;将空闲工人转化为&#34;植树人&#34;，植树人将有冷却地在植树人小屋旁生产树木
+石料为一次性/永久资源，在游戏开始时固定在地图的山脉地块刷新石矿和石矿床，玩家可以在石矿附近建造&#34;采石厂&#34;将空闲工人转化为&#34;采石工人&#34;，当某个石矿所含石料被收集完时，石矿消失，特殊地，玩家可以在石矿床附近建造&#34;永恒石矿厂&#34;，石矿床所含石料不会被收集完，永恒石矿厂需研究相关科技解锁
+（有关&#34;科技&#34;见下文科技系统）
+铁矿采集机制同石矿，此处不赘述
+2.2.5 金币 游戏中金币没有上限无存储建筑，为高级资源无法通过资源采集获得
+玩家需要在二本及以上时建造&#34;市场&#34;，在市场中周期性地交易物资，可交易的物资为食物，木材，石料，钢铁，金币，均可随意指向交换（但不存在同种资源交换）
+2.2.6 宝石 宝石有且仅有一个用途，消耗宝石以使用法术">
+  <meta itemprop="datePublished" content="2026-03-08T00:00:00+00:00">
+  <meta itemprop="dateModified" content="2026-03-08T00:00:00+00:00">
+  <meta itemprop="wordCount" content="255">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="《要战便战》">
+  <meta name="twitter:description" content="游戏类型：单机RTS
+画风：LowPoly
+时间：2026.3.8
+游戏进度：常规难度反抗军线通关（亡灵线此处不考虑）
+一句话总结：要塞的简化版，侧重防守的rts，ai类型简单但深度不错，可能是rts在pve方面发展的新方向
+（帝4也开了专门的轻肉鸽pve模式，和《要战便战》有点像）
+（提一嘴，前面写过的《墨守孤城》应该是以这个游戏为蓝本的）
+（叠甲：文中在双引号内的游戏内特定名词可能会不准确，因为部分名词官方没有给出，此处仅用作代指）
+1. 基本玩法 游戏中玩家将扮演一个阵营的集体意识，独立自主控制己方所有单位和建筑，完成每个&#34;战役&#34;关卡中的预设任务（如击杀单位或坚守市政厅）
+2. 核心系统：战役 2.1 时间系统 游戏中的时间是随现实时间实时流逝的
+游戏中存在昼夜系统，但昼夜系统截至目前除了会使游戏画面亮度变化外毫无用处
+2.2 资源系统 游戏中显示在面板的资源共有：（时间及增长率相关不计入在内）
+人口，食物，木材，石料，钢铁，金币，宝石
+2.2.1 人口 游戏中的人口没有固定上限，而是根据玩家建造的房屋数量、等级及其他建筑buff效果实时计算上限
+游戏中玩家的人口若未分配工作则从称为&#34;空闲工人&#34;
+人口的增长以&#34;天&#34;为单位，每天开始时，若当前人口数低于人口上限，则为玩家补充人口，这些人口将直接变为&#34;空闲工人&#34;，补充的人口数与人口上限呈正相关
+2.2.2 资源采集系统 游戏中玩家可以建造资源采集相关建筑，将&#34;空闲工人&#34;转化为&#34;资源采集人口&#34;，资源采集人口会依次自动行动经过&#34;资源点&#34;——“资源采集建筑”——“资源存储建筑”，以此将资源点中的资源转化为玩家拥有的资源
+游戏中的资源存储建筑均单独计算存放上限
+2.2.3 食物 游戏中食物没有固定上限，而是根据玩家建造的粮仓数量及等级实时计算上限
+游戏中玩家将在每天开始时消耗食物，消耗量取决于当前人口数及其他建筑buff效果，若玩家食物不足以供人口消耗，则消耗玩家所有食物，没有分配到食物的人口将获得&#34;饥饿&#34;buff，有饥饿buff的人口随时间流逝可能&#34;得病&#34;，饥饿buff可叠加，当该人口分配到食物时，饥饿buff清空，长时间拥有饥饿buff有概率死亡
+（有关&#34;得病&#34;见下文疾病系统）
+玩家可以建造产粮相关建筑随时间流逝获取食物，食物来源可以是：
+树莓丛，鱼群，农田
+树莓丛为周期性资源，在游戏开始时固定在地图上刷新，玩家可以建造&#34;采莓人小屋&#34;将空闲工人转化为&#34;采莓人&#34;，当采莓人将某个树莓丛采集完毕时，树莓丛将进入冷却，冷却结束后树莓丛所包含的食物数量将回复至上限
+鱼群为一次性资源，在游戏开始时固定在地图的水域地块的边缘刷新，玩家可以在鱼群附近建造&#34;渔场&#34;将空闲工人转化为&#34;渔夫&#34;，当渔夫将某个鱼群采集完毕时，鱼群消失（此后该鱼群对应的渔场将毫无作用，可以直接拆除）
+农田为永久资源，由玩家建造，玩家可以建造&#34;农场&#34;将空闲工人转化为&#34;农夫&#34;，农田不会耗尽，农夫可以持续采集，但采集速率较低
+农田的建造机制为，玩家需要在空地处选定位置建造&#34;农场&#34;，随后玩家需要在农场附近选定5个空间上连续的位置建造&#34;农田&#34;，建造农田不需要时间，当农场被摧毁时农田会自动摧毁，农场间不能共享农田
+2.2.4 木材，石料，钢铁 可以简单分类为：木材为一本资源，石料为二本资源，钢铁为三本资源
+（有关&#34;一本二本三本&#34;见下文建筑系统）
+（下文将统称为&#34;材料&#34;）
+游戏中材料没有固定上限，而是通过玩家建造的仓库数量及等级实时计算上限，三种材料的上限共享
+（如某仓库可存放100单位的材料，则存放100木材或50木材50石材或10木材10石材80钢铁均可）
+玩家可以建造材料采集相关建筑随时间流逝获取材料
+木材为可再生资源，游戏开始时会固定在地图上刷新初始树木，玩家可以建造&#34;伐木场&#34;将空闲工人转化为&#34;伐木工&#34;，当某个树木所含木材量被收集完时，树木消失，玩家可通过建造&#34;植树人小屋&#34;将空闲工人转化为&#34;植树人&#34;，植树人将有冷却地在植树人小屋旁生产树木
+石料为一次性/永久资源，在游戏开始时固定在地图的山脉地块刷新石矿和石矿床，玩家可以在石矿附近建造&#34;采石厂&#34;将空闲工人转化为&#34;采石工人&#34;，当某个石矿所含石料被收集完时，石矿消失，特殊地，玩家可以在石矿床附近建造&#34;永恒石矿厂&#34;，石矿床所含石料不会被收集完，永恒石矿厂需研究相关科技解锁
+（有关&#34;科技&#34;见下文科技系统）
+铁矿采集机制同石矿，此处不赘述
+2.2.5 金币 游戏中金币没有上限无存储建筑，为高级资源无法通过资源采集获得
+玩家需要在二本及以上时建造&#34;市场&#34;，在市场中周期性地交易物资，可交易的物资为食物，木材，石料，钢铁，金币，均可随意指向交换（但不存在同种资源交换）
+2.2.6 宝石 宝石有且仅有一个用途，消耗宝石以使用法术">
+<link href="/css/compiled/main.css" rel="stylesheet" />
+    <link href="/css/variables.css" rel="stylesheet" />
+    <link href="/css/custom.css" rel="stylesheet" />
+
+  
+<script src="/js/main-head.js" integrity=""></script>
+
+  
+  
+  </head>
+<body>
+    <a href="#content" class="hx:sr-only hx:focus-visible:not-sr-only hx:focus-visible:fixed hx:focus-visible:z-50 hx:focus-visible:top-2 hx:focus-visible:left-2 hx:focus-visible:bg-primary-500 hx:focus-visible:text-white hx:focus-visible:px-4 hx:focus-visible:py-2 hx:focus-visible:rounded-md hx:focus-visible:text-sm hx:focus-visible:font-medium">跳至内容</a>
+<div class="hextra-banner hx:max-md:sticky hx:top-0 hx:z-20 hx:px-6 hx:text-center hx:text-slate-50 hx:dark:text-white hx:bg-neutral-900 hx:dark:bg-neutral-800 hx:print:[display:none]">
+  <div class="hx:relative hx:flex hx:items-center hx:justify-center hx:font-medium hx:text-sm hx:py-2.5"><div style="white-space: pre-wrap" class="hx:px-8">Welcome 🎉 Last updated date -&gt; 2026-03-08</div><button
+      class="hextra-banner-close-button hx:cursor-pointer hx:absolute hx:right-0 hx:text-white hx:font-bold hx:leading-none hx:hover:opacity-75 hx:transition hx:w-10 hx:h-10 hx:-mr-2 hx:md:mr-0 hx:flex hx:items-center hx:justify-center"
+      aria-label="关闭横幅"
+    ><svg height=16 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button>
+  </div>
+</div><div class="hextra-nav-container hx:sticky hx:top-0 hx:z-20 hx:w-full hx:bg-transparent hx:print:hidden">
+  <div
+    class="hextra-nav-container-blur hx:pointer-events-none hx:absolute hx:z-[-1] hx:h-full hx:w-full hx:bg-white hx:dark:bg-dark hx:shadow-[0_2px_4px_rgba(0,0,0,.02),0_1px_0_rgba(0,0,0,.06)] hx:contrast-more:shadow-[0_0_0_1px_#000] hx:dark:shadow-[0_-1px_0_rgba(255,255,255,.1)_inset] hx:contrast-more:dark:shadow-[0_0_0_1px_#fff]"
+  ></div>
+
+  <nav class="hextra-max-navbar-width hx:mx-auto hx:flex hx:items-center hx:justify-end hx:gap-2 hx:h-16 hx:px-6">
+    <a class="hx:flex hx:items-center hx:hover:opacity-75 hx:ltr:mr-auto hx:rtl:ml-auto" href="/">
+    <img class="hx:mr-2 hx:block hx:dark:hidden" src="/images/logo.svg" alt="Logo" height="20" width="20" />
+    <img class="hx:mr-2 hx:hidden hx:dark:block" src="/images/logo.svg" alt="Dark Logo" height="20" width="20" />
+    <span class="hx:mr-2 hx:font-extrabold hx:inline hx:select-none">乂轶·轶名_yy</span>
+</a>
+<a
+  title=""
+  href="/essay"
+  
+  class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-flex hx:items-center hx:gap-1 hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"
+><span class="hx:text-center">随笔</span>
+</a><div class="hx:relative hx:hidden hx:md:inline-block">
+  <button
+    title="长篇"
+    data-state="closed"
+    class="hextra-nav-menu-toggle hx:cursor-pointer hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:whitespace-nowrap hx:p-2 hx:flex hx:items-center hx:gap-1 hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"
+    type="button"
+    aria-label="长篇"
+    aria-expanded="false"
+    aria-haspopup="menu"
+  ><span class="hx:text-center">长篇</span><svg height=12 class="hx:transition-transform hx:duration-200 hx:ease-in-out" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg></button>
+  <ul
+    class="hextra-nav-menu-items hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900"
+    style="min-width: 100px;"
+    role="menu"
+  >
+    <li role="none" class="hextra-nav-menu-item hx:flex hx:flex-col">
+      <a
+        href="/dae"
+        
+        role="menuitem"
+        class="hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:flex hx:items-center hx:gap-1 hx:hover:bg-gray-100 hx:dark:hover:bg-neutral-800"
+      >王朝与帝国</a>
+    </li><li role="none" class="hextra-nav-menu-item hx:flex hx:flex-col">
+      <a
+        href="/before18"
+        
+        role="menuitem"
+        class="hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:flex hx:items-center hx:gap-1 hx:hover:bg-gray-100 hx:dark:hover:bg-neutral-800"
+      >自传：18岁前的"我"们</a>
+    </li></ul>
+</div><a
+  title=""
+  href="/game"
+  
+  class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-flex hx:items-center hx:gap-1 hx:font-medium"
+><span class="hx:text-center">游戏</span>
+</a><a
+  title=""
+  href="/tech"
+  
+  class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-flex hx:items-center hx:gap-1 hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"
+><span class="hx:text-center">技术</span>
+</a><a
+  title=""
+  href="/about"
+  
+  class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-flex hx:items-center hx:gap-1 hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"
+><span class="hx:text-center">关于</span>
+</a><div class="hextra-search-wrapper hx:relative hx:md:w-64">
+  <div class="hx:relative hx:flex hx:items-center hx:text-gray-900 hx:contrast-more:text-gray-800 hx:dark:text-gray-300 hx:contrast-more:dark:text-gray-300">
+    <input
+      placeholder="搜索文档..."
+      aria-label="搜索文档..."
+      class="hextra-search-input hx:hextra-focus-visible hx:block hx:w-full hx:appearance-none hx:rounded-lg hx:px-3 hx:py-2 hx:transition-colors hx:text-base hx:leading-tight hx:md:text-sm hx:bg-black/[.05] hx:dark:bg-gray-50/10 hx:focus-visible:bg-white hx:dark:focus-visible:bg-dark hx:placeholder:text-gray-500 hx:dark:placeholder:text-gray-400 hx:contrast-more:border hx:contrast-more:border-current"
+      type="search"
+      autocomplete="off"
+      value=""
+      spellcheck="false"
+    />
+    <kbd
+      class="hx:absolute hx:my-1.5 hx:select-none hx:ltr:right-1.5 hx:rtl:left-1.5 hx:h-5 hx:rounded-sm hx:bg-white hx:px-1.5 hx:font-mono hx:text-[10px] hx:font-medium hx:text-gray-500 hx:border hx:border-gray-200 hx:dark:border-gray-100/20 hx:dark:bg-dark/50 hx:contrast-more:border-current hx:contrast-more:text-current hx:contrast-more:dark:border-current hx:items-center hx:gap-1 hx:transition-opacity hx:pointer-events-none hx:hidden hx:sm:flex"
+    >
+      CTRL K
+    </kbd>
+  </div>
+
+  <div>
+    <ul
+      class="hextra-search-results hextra-scrollbar hx:hidden hx:border hx:border-gray-200 hx:bg-white hx:text-gray-100 hx:dark:border-neutral-800 hx:dark:bg-neutral-900 hx:absolute hx:top-full hx:z-20 hx:mt-2 hx:overflow-auto hx:overscroll-contain hx:rounded-xl hx:py-2.5 hx:shadow-xl hx:max-h-[min(calc(50vh-11rem-env(safe-area-inset-bottom)),400px)] hx:md:max-h-[min(calc(100vh-5rem-env(safe-area-inset-bottom)),400px)] hx:inset-x-0 hx:ltr:md:left-auto hx:rtl:md:right-auto hx:contrast-more:border hx:contrast-more:border-gray-900 hx:contrast-more:dark:border-gray-50 hx:w-screen hx:min-h-[100px] hx:max-w-[min(calc(100vw-2rem),calc(100%+20rem))]"
+      aria-label="搜索结果"
+      style="transition: max-height 0.2s ease 0s;"
+    ></ul>
+    <div class="hextra-search-status hx:sr-only" aria-live="polite" role="status"></div>
+  </div>
+</div>
+
+          <a class="hx:p-2 hx:text-current" target="_blank" rel="noreferrer" href="https://github.com/yuyi-yutie" title="GitHub"><svg height=24 fill="currentColor" viewBox="3 3 18 18">
+  <path d="M12 3C7.0275 3 3 7.12937 3 12.2276C3 16.3109 5.57625 19.7597 9.15374 20.9824C9.60374 21.0631 9.77249 20.7863 9.77249 20.5441C9.77249 20.3249 9.76125 19.5982 9.76125 18.8254C7.5 19.2522 6.915 18.2602 6.735 17.7412C6.63375 17.4759 6.19499 16.6569 5.8125 16.4378C5.4975 16.2647 5.0475 15.838 5.80124 15.8264C6.51 15.8149 7.01625 16.4954 7.18499 16.7723C7.99499 18.1679 9.28875 17.7758 9.80625 17.5335C9.885 16.9337 10.1212 16.53 10.38 16.2993C8.3775 16.0687 6.285 15.2728 6.285 11.7432C6.285 10.7397 6.63375 9.9092 7.20749 9.26326C7.1175 9.03257 6.8025 8.08674 7.2975 6.81794C7.2975 6.81794 8.05125 6.57571 9.77249 7.76377C10.4925 7.55615 11.2575 7.45234 12.0225 7.45234C12.7875 7.45234 13.5525 7.55615 14.2725 7.76377C15.9937 6.56418 16.7475 6.81794 16.7475 6.81794C17.2424 8.08674 16.9275 9.03257 16.8375 9.26326C17.4113 9.9092 17.76 10.7281 17.76 11.7432C17.76 15.2843 15.6563 16.0687 13.6537 16.2993C13.98 16.5877 14.2613 17.1414 14.2613 18.0065C14.2613 19.2407 14.25 20.2326 14.25 20.5441C14.25 20.7863 14.4188 21.0746 14.8688 20.9824C16.6554 20.364 18.2079 19.1866 19.3078 17.6162C20.4077 16.0457 20.9995 14.1611 21 12.2276C21 7.12937 16.9725 3 12 3Z"></path>
+</svg>
+<span class="hx:sr-only">GitHub</span>
+          </a><button type="button" aria-label="菜单" aria-expanded="false" class="hextra-hamburger-menu hx:cursor-pointer hx:-mr-2 hx:rounded-sm hx:p-2 hx:active:bg-gray-400/20 hx:md:hidden hx:hextra-focus-visible-inset"><svg height=24 fill="none" viewBox="0 0 24 24" stroke="currentColor"><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8H20"></path></g><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16H20"></path></g></svg></button>
+  </nav>
+</div>
+
+  <div class='hx:mx-auto hx:flex hextra-max-page-width'>
+    <aside class="hextra-sidebar-container hx:flex hx:flex-col hx:print:hidden hx:md:top-16 hx:md:shrink-0 hx:md:w-64 hx:md:self-start hx:max-md:[transform:translate3d(0,-100%,0)] hx:md:sticky">
+    <div class="hx:px-4 hx:pt-4 hx:md:hidden">
+      <div class="hextra-search-wrapper hx:relative hx:md:w-64">
+  <div class="hx:relative hx:flex hx:items-center hx:text-gray-900 hx:contrast-more:text-gray-800 hx:dark:text-gray-300 hx:contrast-more:dark:text-gray-300">
+    <input
+      placeholder="搜索文档..."
+      aria-label="搜索文档..."
+      class="hextra-search-input hx:hextra-focus-visible hx:block hx:w-full hx:appearance-none hx:rounded-lg hx:px-3 hx:py-2 hx:transition-colors hx:text-base hx:leading-tight hx:md:text-sm hx:bg-black/[.05] hx:dark:bg-gray-50/10 hx:focus-visible:bg-white hx:dark:focus-visible:bg-dark hx:placeholder:text-gray-500 hx:dark:placeholder:text-gray-400 hx:contrast-more:border hx:contrast-more:border-current"
+      type="search"
+      autocomplete="off"
+      value=""
+      spellcheck="false"
+    />
+    <kbd
+      class="hx:absolute hx:my-1.5 hx:select-none hx:ltr:right-1.5 hx:rtl:left-1.5 hx:h-5 hx:rounded-sm hx:bg-white hx:px-1.5 hx:font-mono hx:text-[10px] hx:font-medium hx:text-gray-500 hx:border hx:border-gray-200 hx:dark:border-gray-100/20 hx:dark:bg-dark/50 hx:contrast-more:border-current hx:contrast-more:text-current hx:contrast-more:dark:border-current hx:items-center hx:gap-1 hx:transition-opacity hx:pointer-events-none hx:hidden hx:sm:flex"
+    >
+      CTRL K
+    </kbd>
+  </div>
+
+  <div>
+    <ul
+      class="hextra-search-results hextra-scrollbar hx:hidden hx:border hx:border-gray-200 hx:bg-white hx:text-gray-100 hx:dark:border-neutral-800 hx:dark:bg-neutral-900 hx:absolute hx:top-full hx:z-20 hx:mt-2 hx:overflow-auto hx:overscroll-contain hx:rounded-xl hx:py-2.5 hx:shadow-xl hx:max-h-[min(calc(50vh-11rem-env(safe-area-inset-bottom)),400px)] hx:md:max-h-[min(calc(100vh-5rem-env(safe-area-inset-bottom)),400px)] hx:inset-x-0 hx:ltr:md:left-auto hx:rtl:md:right-auto hx:contrast-more:border hx:contrast-more:border-gray-900 hx:contrast-more:dark:border-gray-50 hx:w-screen hx:min-h-[100px] hx:max-w-[min(calc(100vw-2rem),calc(100%+20rem))]"
+      aria-label="搜索结果"
+      style="transition: max-height 0.2s ease 0s;"
+    ></ul>
+    <div class="hextra-search-status hx:sr-only" aria-live="polite" role="status"></div>
+  </div>
+</div>
+
+    </div><div class="hextra-scrollbar hx:overflow-y-auto hx:overflow-x-hidden hx:p-4 hx:grow hx:md:h-[calc(100vh-var(--navbar-height)-var(--menu-height))]">
+    <ul class="hx:flex hx:flex-col hx:gap-1 hx:md:hidden">
+      
+      
+          <li class=""><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:ltr:pr-8 hx:rtl:pl-8
+      hx:hextra-focus-visible-inset
+        hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/essay/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">随笔</span>
+    </a>
+      <button type="button" class="hextra-sidebar-collapsible-button hx:absolute hx:top-1/2 hx:-translate-y-1/2 hx:ltr:right-2 hx:rtl:left-2 hx:shrink-0 hx:cursor-pointer hx:p-0 hx:text-gray-500 hx:dark:text-neutral-400 hx:group-hover:text-gray-900 hx:dark:group-hover:text-gray-50 hx:group-data-[active=true]:text-primary-800 hx:group-data-[active=true]:dark:text-primary-600 hx:hextra-focus-visible-inset" aria-label="切换章节" aria-expanded="false"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" focusable="false" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></button>
+  </div><div class="hextra-sidebar-children hx:ltr:pr-0 hx:rtl:pl-0 hx:overflow-hidden">
+        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none]
+      hx:hextra-focus-visible-inset
+        hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/essay/back2025/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">2025回顾</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none]
+      hx:hextra-focus-visible-inset
+        hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/essay/the_legend_of_the_white_eye_wolf/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">白眼狼传</span>
+    </a>
+  </div>
+              
+            </li></ul>
+      </div></li>
+          <li class="open"><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:ltr:pr-8 hx:rtl:pl-8
+      hx:hextra-focus-visible-inset
+        hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/game/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">游戏</span>
+    </a>
+      <button type="button" class="hextra-sidebar-collapsible-button hx:absolute hx:top-1/2 hx:-translate-y-1/2 hx:ltr:right-2 hx:rtl:left-2 hx:shrink-0 hx:cursor-pointer hx:p-0 hx:text-gray-500 hx:dark:text-neutral-400 hx:group-hover:text-gray-900 hx:dark:group-hover:text-gray-50 hx:group-data-[active=true]:text-primary-800 hx:group-data-[active=true]:dark:text-primary-600 hx:hextra-focus-visible-inset" aria-label="切换章节" aria-expanded="true"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" focusable="false" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></button>
+  </div><div class="hextra-sidebar-children hx:ltr:pr-0 hx:rtl:pl-0 hx:overflow-hidden">
+        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none]
+      hx:hextra-focus-visible-inset
+        hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/game/stick_to_an_isolated_city/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">《墨守孤城》</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none]
+      hx:hextra-focus-visible-inset
+        hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/game/nine_kings/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">《九王》</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none]
+      hx:hextra-focus-visible-inset
+        hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/game/cs_dust2/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">cs炙热沙城二打法概述</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none]
+      hx:hextra-focus-visible-inset
+        hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/game/2025taptap_spotlight_48hgamejam_chengdu/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">2025TapTap聚光灯48Hgamejam成都场复盘</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none]
+      hx:hextra-focus-visible-inset
+        hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/game/2026ggj/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">2026 Global Game Jam武汉铃空站复盘</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col open"><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="true">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none]
+      hx:hextra-focus-visible-inset
+        hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
+      href="/game/diplomacy_is_not_an_option/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">《要战便战》</span>
+    </a>
+  </div>
+  
+    <ul class='hx:flex hx:flex-col hx:gap-1 hx:relative hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:dark:before:bg-neutral-800 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:pr-3 hx:rtl:before:right-0 hx:ltr:ml-3 hx:rtl:mr-3'><li>
+              <a
+                href="#1-%e5%9f%ba%e6%9c%ac%e7%8e%a9%e6%b3%95"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >1. 基本玩法</a>
+            </li>
+          <li>
+              <a
+                href="#2-%e6%a0%b8%e5%bf%83%e7%b3%bb%e7%bb%9f%e6%88%98%e5%bd%b9"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >2. 核心系统：战役</a>
+            </li>
+          </ul>
+  
+              
+            </li></ul>
+      </div></li>
+          <li class=""><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:ltr:pr-8 hx:rtl:pl-8
+      hx:hextra-focus-visible-inset
+        hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/tech/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">技术</span>
+    </a>
+      <button type="button" class="hextra-sidebar-collapsible-button hx:absolute hx:top-1/2 hx:-translate-y-1/2 hx:ltr:right-2 hx:rtl:left-2 hx:shrink-0 hx:cursor-pointer hx:p-0 hx:text-gray-500 hx:dark:text-neutral-400 hx:group-hover:text-gray-900 hx:dark:group-hover:text-gray-50 hx:group-data-[active=true]:text-primary-800 hx:group-data-[active=true]:dark:text-primary-600 hx:hextra-focus-visible-inset" aria-label="切换章节" aria-expanded="false"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" focusable="false" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></button>
+  </div><div class="hextra-sidebar-children hx:ltr:pr-0 hx:rtl:pl-0 hx:overflow-hidden">
+        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none]
+      hx:hextra-focus-visible-inset
+        hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/tech/ai_decision_tree_state_machine/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">AI决策-状态机</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none]
+      hx:hextra-focus-visible-inset
+        hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/tech/ai_decision_tree_state_machine_behavior_tree_htn_goap/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">AI决策-状态机&#43;行为树&#43;HTN&#43;GOAP</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none]
+      hx:hextra-focus-visible-inset
+        hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/tech/godot_a_star/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">基于Godot的A*寻路算法</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none]
+      hx:hextra-focus-visible-inset
+        hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/tech/godot_code_framework/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">Godot或许合格的程序架构</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none]
+      hx:hextra-focus-visible-inset
+        hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/tech/unity_general_cotton_and_the_conclusion_line/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">Unity泛型·委托及事件总线</span>
+    </a>
+  </div>
+              
+            </li></ul>
+      </div></li>
+          <li class=""><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none]
+      hx:hextra-focus-visible-inset
+        hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/about/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">关于</span>
+    </a>
+  </div></li>
+      <li class="[word-break:break-word] hx:mt-5 hx:mb-2 hx:px-2 hx:py-1.5 hx:text-sm hx:font-semibold hx:text-gray-900 hx:first:mt-0 hx:dark:text-gray-100">
+        <span class="hx:cursor-default">更多</span>
+      </li>
+    <li><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none]
+      hx:hextra-focus-visible-inset
+        hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/about"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">关于</span>
+    </a>
+  </div></li>
+    <li><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none]
+      hx:hextra-focus-visible-inset
+        hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="https://github.com/yuyi-yutie/yuyi-yutie.github.io"
+      target="_blank" rel="noreferrer"
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">GitHub发布页 ↗</span>
+    </a>
+  </div></li>
+    
+    </ul>
+
+    <ul class="hx:flex hx:flex-col hx:gap-1 hx:max-md:hidden">
+        
+          <li class=""><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none]
+      hx:hextra-focus-visible-inset
+        hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/game/stick_to_an_isolated_city/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">《墨守孤城》</span>
+    </a>
+  </div></li>
+          <li class=""><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none]
+      hx:hextra-focus-visible-inset
+        hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/game/nine_kings/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">《九王》</span>
+    </a>
+  </div></li>
+          <li class=""><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none]
+      hx:hextra-focus-visible-inset
+        hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/game/cs_dust2/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">cs炙热沙城二打法概述</span>
+    </a>
+  </div></li>
+          <li class=""><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none]
+      hx:hextra-focus-visible-inset
+        hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/game/2025taptap_spotlight_48hgamejam_chengdu/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">2025TapTap聚光灯48Hgamejam成都场复盘</span>
+    </a>
+  </div></li>
+          <li class=""><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none]
+      hx:hextra-focus-visible-inset
+        hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/game/2026ggj/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">2026 Global Game Jam武汉铃空站复盘</span>
+    </a>
+  </div></li>
+          <li class="open"><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="true">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none]
+      hx:hextra-focus-visible-inset
+        hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
+      href="/game/diplomacy_is_not_an_option/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">《要战便战》</span>
+    </a>
+  </div></li>
+        
+      <li class="[word-break:break-word] hx:mt-5 hx:mb-2 hx:px-2 hx:py-1.5 hx:text-sm hx:font-semibold hx:text-gray-900 hx:first:mt-0 hx:dark:text-gray-100">
+        <span class="hx:cursor-default">更多</span>
+      </li>
+    <li><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none]
+      hx:hextra-focus-visible-inset
+        hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/about"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">关于</span>
+    </a>
+  </div></li>
+    <li><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none]
+      hx:hextra-focus-visible-inset
+        hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="https://github.com/yuyi-yutie/yuyi-yutie.github.io"
+      target="_blank" rel="noreferrer"
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">GitHub发布页 ↗</span>
+    </a>
+  </div></li>
+    
+      </ul>
+    </div>
+  
+  
+    <div class="  hx:sticky hx:bottom-0 hx:max-h-(--menu-height) hx:bg-white hx:dark:bg-dark hx:mx-4 hx:py-4 hx:shadow-[0_-12px_16px_#fff] hx:flex hx:items-center hx:gap-2 hx:border-gray-200 hx:dark:border-neutral-800 hx:dark:shadow-[0_-12px_16px_#111] hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:shadow-none hx:border-t" data-toggle-animation="show"><div class="hx:flex hx:grow hx:flex-col"><div class="hx:flex hx:justify-items-start hx:group" data-theme="light">
+  <button
+    title="切换主题"
+    data-state="closed"
+    data-location="bottom"
+    class="hextra-theme-toggle hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:h-7 hx:px-2 hx:text-xs hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:font-medium hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:grow"
+    type="button"
+    aria-label="切换主题"
+    aria-expanded="false"
+    aria-haspopup="menu"
+  >
+    <div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height=12 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden">浅色</span><svg height=12 class="hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><span class="hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden">深色</span><svg height=12 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"  fill="currentColor">
+  <path d="M 11.996094,2 C 6.4986225,2.0192368 2.03125,6.5024993 2.03125,12 c 0,5.497501 4.4673725,9.980763 9.964844,10 H 12 12.0039 c 5.497471,-0.01924 9.964844,-4.502499 9.964844,-10 0,-5.4975007 -4.467373,-9.9807632 -9.964844,-10 H 12 Z M 12,4 c 4.417218,0.017598 7.96875,3.5822356 7.96875,8 0,4.417764 -3.551532,7.982402 -7.96875,8 z" />
+</svg>
+<span class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden">跟随系统</span></div>
+  </button>
+  <ul
+    class="hextra-theme-toggle-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900"
+    style="position: fixed; inset: auto auto 0px 0px; margin: 0px; min-width: 100px;"
+    data-theme="light"
+    role="menu"
+  >
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="true"
+        tabindex="-1"
+        data-item="light"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        浅色
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="false"
+        tabindex="-1"
+        data-item="dark"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        深色
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="false"
+        tabindex="-1"
+        data-item="system"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        跟随系统
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+  </ul>
+</div>
+</div></div></aside>
+    
+<nav class="hextra-toc hx:order-last hx:hidden hx:w-64 hx:shrink-0 hx:xl:block hx:print:hidden hx:px-4" aria-label="目录">
+    <div class="hextra-scrollbar hx:sticky hx:top-16 hx:overflow-y-auto hx:pr-4 hx:pt-6 hx:text-sm [hyphens:auto] hx:max-h-[calc(100vh-var(--navbar-height)-env(safe-area-inset-bottom))] hx:ltr:-mr-4 hx:rtl:-ml-4"><p class="hx:mb-4 hx:font-semibold hx:tracking-tight">此页上</p><ul>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#1-%e5%9f%ba%e6%9c%ac%e7%8e%a9%e6%b3%95">1. 基本玩法
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#2-%e6%a0%b8%e5%bf%83%e7%b3%bb%e7%bb%9f%e6%88%98%e5%bd%b9">2. 核心系统：战役
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#21-%e6%97%b6%e9%97%b4%e7%b3%bb%e7%bb%9f">2.1 时间系统
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#22-%e8%b5%84%e6%ba%90%e7%b3%bb%e7%bb%9f">2.2 资源系统
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#221-%e4%ba%ba%e5%8f%a3">2.2.1 人口
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#222-%e8%b5%84%e6%ba%90%e9%87%87%e9%9b%86%e7%b3%bb%e7%bb%9f">2.2.2 资源采集系统
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#223-%e9%a3%9f%e7%89%a9">2.2.3 食物
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#224-%e6%9c%a8%e6%9d%90%e7%9f%b3%e6%96%99%e9%92%a2%e9%93%81">2.2.4 木材，石料，钢铁
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#225-%e9%87%91%e5%b8%81">2.2.5 金币
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#226-%e5%ae%9d%e7%9f%b3">2.2.6 宝石
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#23-%e7%96%be%e7%97%85%e7%b3%bb%e7%bb%9f%e5%8f%8a%e5%b0%b8%e4%bd%93%e7%9b%b8%e5%85%b3">2.3 疾病系统（及尸体相关）
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#24-%e5%9c%b0%e5%9b%be%e7%b3%bb%e7%bb%9f">2.4 地图系统
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#25-%e5%bb%ba%e7%ad%91%e7%b3%bb%e7%bb%9f%e5%8f%8a%e5%b7%a5%e4%bd%9c%e8%8c%83%e5%9b%b4%e7%9b%b8%e5%85%b3">2.5 建筑系统（及工作范围相关）
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#251-%e4%ba%ba%e5%8f%a3%e5%bb%ba%e7%ad%91">2.5.1 人口建筑
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#252-%e8%b5%84%e6%ba%90%e5%bb%ba%e7%ad%91">2.5.2 资源建筑
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#253-%e5%86%9b%e4%ba%8b%e5%bb%ba%e7%ad%91">2.5.3 军事建筑
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#254-%e6%b0%91%e7%94%9f%e5%bb%ba%e7%ad%91">2.5.4 民生建筑
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#255-%e9%98%b2%e5%be%a1%e5%b7%a5%e4%ba%8b">2.5.5 防御工事
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-8 hx:rtl:pr-8 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#256-%e5%b7%a5%e4%bd%9c%e8%8c%83%e5%9b%b4">2.5.6 工作范围
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#26-%e5%86%9b%e4%ba%8b%e7%b3%bb%e7%bb%9f%e5%85%b6%e5%ae%9e%e5%ba%94%e8%af%a5%e5%8f%ab%e6%95%8c%e4%ba%baai%e7%b3%bb%e7%bb%9f">2.6 军事系统（其实应该叫&#34;敌人ai系统&#34;）
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#27-%e7%a7%91%e6%8a%80%e7%b3%bb%e7%bb%9f">2.7 科技系统
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#28-%e6%b3%95%e6%9c%af%e7%b3%bb%e7%bb%9f">2.8 法术系统
+        </a>
+      </li></ul>
+      <div class="hx:mt-8 hx:border-t hx:bg-white hx:pt-8 hx:shadow-[0_-12px_16px_white] hx:dark:bg-dark hx:dark:shadow-[0_-12px_16px_#111] hx:sticky hx:bottom-0 hx:flex hx:flex-col hx:items-start hx:gap-2 hx:pb-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-t hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:border-neutral-400">
+        <button id="backToTop" tabindex="-1" onClick="scrollUp();" class="hx:cursor-pointer hx:transition-all hx:duration-75 hx:opacity-0 hx:text-xs hx:font-medium hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50">
+          <span>返回顶部</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" focusable="false" class="hx:inline hx:ltr:ml-1 hx:rtl:mr-1 hx:h-3.5 hx:w-3.5 hx:rounded-full hx:border hx:border-gray-500 hx:hover:border-gray-900 hx:dark:border-gray-400 hx:dark:hover:border-gray-100 hx:contrast-more:border-gray-800 hx:contrast-more:dark:border-gray-50">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+
+    <article class="hx:w-full hx:break-words hx:flex hx:min-h-[calc(100vh-var(--navbar-height))] hx:min-w-0 hx:justify-center hx:pb-8 hx:pr-[calc(env(safe-area-inset-right)-1.5rem)]">
+      <main id="content" class="hx:w-full hx:min-w-0 hextra-max-content-width hx:px-6 hx:pt-4 hx:md:px-12">
+        <div class="hx:mt-1.5 hx:flex hx:items-center hx:gap-1 hx:overflow-hidden hx:text-sm hx:text-gray-500 hx:dark:text-gray-400 hx:contrast-more:text-current">
+        <div class="hx:whitespace-nowrap hx:transition-colors hx:min-w-[24px] hx:overflow-hidden hx:text-ellipsis hx:hover:text-gray-900 hx:dark:hover:text-gray-100">
+          <a href="/game/" class="hx:inline-block hx:rounded-sm hx:hextra-focus-visible-inset">游戏</a>
+        </div><svg class="hx:w-3.5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg><div class="hx:whitespace-nowrap hx:transition-colors hx:font-medium hx:text-gray-700 hx:contrast-more:font-bold hx:contrast-more:text-current hx:dark:text-gray-100 hx:contrast-more:dark:text-current">《要战便战》</div>
+  </div>
+
+        <div class="content">
+          
+          <div class="hx:flex hx:flex-col hx:sm:flex-row hx:items-start hx:sm:items-center hx:sm:justify-between hx:gap-4 hx:mb-4">
+            <h1 class="hx:mb-0">《要战便战》</h1>
+            
+          </div>
+          
+          <p>游戏类型：单机RTS</p>
+<p>画风：LowPoly</p>
+<p>时间：2026.3.8</p>
+<p>游戏进度：常规难度反抗军线通关（亡灵线此处不考虑）</p>
+<p>一句话总结：要塞的简化版，侧重防守的rts，ai类型简单但深度不错，可能是rts在pve方面发展的新方向</p>
+<p>（帝4也开了专门的轻肉鸽pve模式，和《要战便战》有点像）</p>
+<p>（提一嘴，前面写过的《墨守孤城》应该是以这个游戏为蓝本的）</p>
+<p>（叠甲：文中在双引号内的游戏内特定名词可能会不准确，因为部分名词官方没有给出，此处仅用作代指）</p>
+<h2>1. 基本玩法<span class="hx:absolute hx:-mt-20" id="1-基本玩法"></span>
+    <a href="#1-%e5%9f%ba%e6%9c%ac%e7%8e%a9%e6%b3%95" class="subheading-anchor" aria-label="此章节的永久链接"></a></h2><p>游戏中玩家将扮演一个阵营的集体意识，独立自主控制己方所有单位和建筑，完成每个&quot;战役&quot;关卡中的预设任务（如击杀单位或坚守市政厅）</p>
+<h2>2. 核心系统：战役<span class="hx:absolute hx:-mt-20" id="2-核心系统战役"></span>
+    <a href="#2-%e6%a0%b8%e5%bf%83%e7%b3%bb%e7%bb%9f%e6%88%98%e5%bd%b9" class="subheading-anchor" aria-label="此章节的永久链接"></a></h2><h3>2.1 时间系统<span class="hx:absolute hx:-mt-20" id="21-时间系统"></span>
+    <a href="#21-%e6%97%b6%e9%97%b4%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>游戏中的时间是随现实时间实时流逝的</p>
+<p>游戏中存在昼夜系统，但昼夜系统截至目前除了会使游戏画面亮度变化外毫无用处</p>
+<h3>2.2 资源系统<span class="hx:absolute hx:-mt-20" id="22-资源系统"></span>
+    <a href="#22-%e8%b5%84%e6%ba%90%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>游戏中显示在面板的资源共有：（时间及增长率相关不计入在内）</p>
+<p>人口，食物，木材，石料，钢铁，金币，宝石</p>
+<h4>2.2.1 人口<span class="hx:absolute hx:-mt-20" id="221-人口"></span>
+    <a href="#221-%e4%ba%ba%e5%8f%a3" class="subheading-anchor" aria-label="此章节的永久链接"></a></h4><p>游戏中的人口没有固定上限，而是根据玩家建造的房屋数量、等级及其他建筑buff效果实时计算上限</p>
+<p>游戏中玩家的人口若未分配工作则从称为&quot;空闲工人&quot;</p>
+<p>人口的增长以&quot;天&quot;为单位，每天开始时，若当前人口数低于人口上限，则为玩家补充人口，这些人口将直接变为&quot;空闲工人&quot;，补充的人口数与人口上限呈正相关</p>
+<h4>2.2.2 资源采集系统<span class="hx:absolute hx:-mt-20" id="222-资源采集系统"></span>
+    <a href="#222-%e8%b5%84%e6%ba%90%e9%87%87%e9%9b%86%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="此章节的永久链接"></a></h4><p>游戏中玩家可以建造资源采集相关建筑，将&quot;空闲工人&quot;转化为&quot;资源采集人口&quot;，资源采集人口会依次自动行动经过&quot;资源点&quot;——&ldquo;资源采集建筑&rdquo;——&ldquo;资源存储建筑&rdquo;，以此将资源点中的资源转化为玩家拥有的资源</p>
+<p>游戏中的资源存储建筑均单独计算存放上限</p>
+<h4>2.2.3 食物<span class="hx:absolute hx:-mt-20" id="223-食物"></span>
+    <a href="#223-%e9%a3%9f%e7%89%a9" class="subheading-anchor" aria-label="此章节的永久链接"></a></h4><p>游戏中食物没有固定上限，而是根据玩家建造的粮仓数量及等级实时计算上限</p>
+<p>游戏中玩家将在每天开始时消耗食物，消耗量取决于当前人口数及其他建筑buff效果，若玩家食物不足以供人口消耗，则消耗玩家所有食物，没有分配到食物的人口将获得&quot;饥饿&quot;buff，有饥饿buff的人口随时间流逝可能&quot;得病&quot;，饥饿buff可叠加，当该人口分配到食物时，饥饿buff清空，长时间拥有饥饿buff有概率死亡</p>
+<p>（有关&quot;得病&quot;见下文<u>疾病系统</u>）</p>
+<p>玩家可以建造产粮相关建筑随时间流逝获取食物，食物来源可以是：</p>
+<p>树莓丛，鱼群，农田</p>
+<p>树莓丛为周期性资源，在游戏开始时固定在地图上刷新，玩家可以建造&quot;采莓人小屋&quot;将空闲工人转化为&quot;采莓人&quot;，当采莓人将某个树莓丛采集完毕时，树莓丛将进入冷却，冷却结束后树莓丛所包含的食物数量将回复至上限</p>
+<p>鱼群为一次性资源，在游戏开始时固定在地图的水域地块的边缘刷新，玩家可以在鱼群附近建造&quot;渔场&quot;将空闲工人转化为&quot;渔夫&quot;，当渔夫将某个鱼群采集完毕时，鱼群消失（此后该鱼群对应的渔场将毫无作用，可以直接拆除）</p>
+<p>农田为永久资源，由玩家建造，玩家可以建造&quot;农场&quot;将空闲工人转化为&quot;农夫&quot;，农田不会耗尽，农夫可以持续采集，但采集速率较低</p>
+<p>农田的建造机制为，玩家需要在空地处选定位置建造&quot;农场&quot;，随后玩家需要在农场附近选定5个空间上连续的位置建造&quot;农田&quot;，建造农田不需要时间，当农场被摧毁时农田会自动摧毁，农场间不能共享农田</p>
+<h4>2.2.4 木材，石料，钢铁<span class="hx:absolute hx:-mt-20" id="224-木材石料钢铁"></span>
+    <a href="#224-%e6%9c%a8%e6%9d%90%e7%9f%b3%e6%96%99%e9%92%a2%e9%93%81" class="subheading-anchor" aria-label="此章节的永久链接"></a></h4><p>可以简单分类为：木材为一本资源，石料为二本资源，钢铁为三本资源</p>
+<p>（有关&quot;一本二本三本&quot;见下文<u>建筑系统</u>）</p>
+<p>（下文将统称为&quot;材料&quot;）</p>
+<p>游戏中材料没有固定上限，而是通过玩家建造的仓库数量及等级实时计算上限，三种材料的上限共享</p>
+<p>（如某仓库可存放100单位的材料，则存放100木材或50木材50石材或10木材10石材80钢铁均可）</p>
+<p>玩家可以建造材料采集相关建筑随时间流逝获取材料</p>
+<p>木材为可再生资源，游戏开始时会固定在地图上刷新初始树木，玩家可以建造&quot;伐木场&quot;将空闲工人转化为&quot;伐木工&quot;，当某个树木所含木材量被收集完时，树木消失，玩家可通过建造&quot;植树人小屋&quot;将空闲工人转化为&quot;植树人&quot;，植树人将有冷却地在植树人小屋旁生产树木</p>
+<p>石料为一次性/永久资源，在游戏开始时固定在地图的山脉地块刷新石矿和石矿床，玩家可以在石矿附近建造&quot;采石厂&quot;将空闲工人转化为&quot;采石工人&quot;，当某个石矿所含石料被收集完时，石矿消失，特殊地，玩家可以在石矿床附近建造&quot;永恒石矿厂&quot;，石矿床所含石料不会被收集完，永恒石矿厂需研究相关科技解锁</p>
+<p>（有关&quot;科技&quot;见下文<u>科技系统</u>）</p>
+<p>铁矿采集机制同石矿，此处不赘述</p>
+<h4>2.2.5 金币<span class="hx:absolute hx:-mt-20" id="225-金币"></span>
+    <a href="#225-%e9%87%91%e5%b8%81" class="subheading-anchor" aria-label="此章节的永久链接"></a></h4><p>游戏中金币没有上限无存储建筑，为高级资源无法通过资源采集获得</p>
+<p>玩家需要在二本及以上时建造&quot;市场&quot;，在市场中周期性地交易物资，可交易的物资为食物，木材，石料，钢铁，金币，均可随意指向交换（但不存在同种资源交换）</p>
+<h4>2.2.6 宝石<span class="hx:absolute hx:-mt-20" id="226-宝石"></span>
+    <a href="#226-%e5%ae%9d%e7%9f%b3" class="subheading-anchor" aria-label="此章节的永久链接"></a></h4><p>宝石有且仅有一个用途，消耗宝石以使用法术</p>
+<p>游戏中宝石没有上限无存储建筑，为高级资源</p>
+<p>玩家可以在&quot;裂隙&quot;地块建造&quot;永恒炼金塔&quot;将空闲工人转化为&quot;炼金大师&quot;，裂隙产出的宝石不会枯竭，但采集速率较低</p>
+<p>敌方建筑被摧毁时，会在该建筑附近掉落若干可收集的宝石，玩家可以派遣军事单位接触宝石以收集</p>
+<h3>2.3 疾病系统（及尸体相关）<span class="hx:absolute hx:-mt-20" id="23-疾病系统及尸体相关"></span>
+    <a href="#23-%e7%96%be%e7%97%85%e7%b3%bb%e7%bb%9f%e5%8f%8a%e5%b0%b8%e4%bd%93%e7%9b%b8%e5%85%b3" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>疾病为单位的buff，获得该buff的单位移动速度降低且可能传染给附近的单位（军事单位不会被传染疾病），长时间拥有疾病buff有概率死亡</p>
+<p>获得疾病buff的方式为：因饥饿概率产生，靠近未被埋葬的尸体概率产生，被有疾病的单位传染</p>
+<p>玩家可建造&quot;急救帐篷&quot;或&quot;医院&quot;使影响范围内的所有疾病单位痊愈，治疗不需要时间</p>
+<p>游戏中玩家单位死亡时会在原地产生尸体，尸体不会自动消失，尸体存在时间越久，导致疾病概率越高，当尸体长时间未被埋葬时，会转变为&quot;行尸走肉&quot;，为敌对单位</p>
+<p>玩家可以建造&quot;掘墓人之家&quot;将空闲工人转化为&quot;掘墓人&quot;，掘墓人的资源点为&quot;尸体&quot;，无资源采集建筑，资源存储建筑为&quot;墓园&quot;，特殊地，当玩家拆除存放了尸体的墓地时，墓地内的所有尸体会立即转变为&quot;行尸走肉&quot;</p>
+<h3>2.4 地图系统<span class="hx:absolute hx:-mt-20" id="24-地图系统"></span>
+    <a href="#24-%e5%9c%b0%e5%9b%be%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>游戏中的地图元素均为含权重随机生成的，包括但不限于：资源点，山脉及水域地块，敌人营地</p>
+<p>地图存在边缘区域，边缘区域内玩家不可建造建筑</p>
+<h3>2.5 建筑系统（及工作范围相关）<span class="hx:absolute hx:-mt-20" id="25-建筑系统及工作范围相关"></span>
+    <a href="#25-%e5%bb%ba%e7%ad%91%e7%b3%bb%e7%bb%9f%e5%8f%8a%e5%b7%a5%e4%bd%9c%e8%8c%83%e5%9b%b4%e7%9b%b8%e5%85%b3" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>游戏中玩家可消耗资源在空地中摆放任意无特殊需求建筑的地基，地基开始读建造条前会被单位无视，无法被攻击也无法排开单位，但会摧毁地基范围内的树木</p>
+<p>玩家可以建造&quot;建筑工人之家&quot;将空闲工人转化为&quot;建筑工人&quot;，建筑工人将移动到需要建造的建筑的地基处读建造条，建筑工人数量与读条速度正相关，单个建筑允许同时参与建造的建筑工人数有上限，若有单位在地基内则不会开始读条，己方建筑工人有读条倾向时地基内的所有己方单位会自动避开</p>
+<p>玩家可以随时拆除任意建筑，拆除建筑不需要时间，会返还部分资源</p>
+<p>部分建筑可升级，升级建筑同样需要建筑工人读条</p>
+<p>有关建筑的阻挡关系，有：</p>
+<ul>
+<li>
+<p>若建筑水平竖直相邻，则连接处不可通过</p>
+</li>
+<li>
+<p>若建筑斜向相邻，则连接处可接触但不可通过</p>
+</li>
+</ul>
+<p>（有点抽象，下方给出例子）</p>
+<table>
+  <thead>
+      <tr>
+          <th></th>
+          <th>目标建筑</th>
+          <th>建筑3</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>目的地</td>
+          <td>建筑2</td>
+          <td>读条点</td>
+      </tr>
+      <tr>
+          <td>建筑1</td>
+          <td>出发点</td>
+          <td></td>
+      </tr>
+  </tbody>
+</table>
+<p>若表格为地图限定区域，按照上方所示进行建造时，出发点处的单位无法到达目的地，但读条点处的建筑工人可以对目标建筑读条</p>
+<p>游戏中常规模式下玩家默认拥有一个市政厅，市政厅需要升级以解锁更多建筑，市政厅升级需要消耗资源和时间，其中一级升二级需要消耗木材和石料，二级升三级需要消耗木材，石料，钢铁和金币</p>
+<p>（下方将一级市政厅简称为一本，其余等级亦同）</p>
+<p>（以下建筑为个人分类，与游戏面板中的分类有出入，且有两类特殊建筑为放入下方分类中，为科技建筑和法术建筑，分别在<u>科技系统</u>和<u>法术系统</u>中）</p>
+<h4>2.5.1 人口建筑<span class="hx:absolute hx:-mt-20" id="251-人口建筑"></span>
+    <a href="#251-%e4%ba%ba%e5%8f%a3%e5%bb%ba%e7%ad%91" class="subheading-anchor" aria-label="此章节的永久链接"></a></h4><p>人口建筑有：</p>
+<table>
+  <thead>
+      <tr>
+          <th>一本</th>
+          <th>1级房屋</th>
+          <th></th>
+          <th></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>二本</td>
+          <td>2级房屋</td>
+          <td>1级喷泉</td>
+          <td>酒馆</td>
+      </tr>
+      <tr>
+          <td>三本</td>
+          <td>3级房屋</td>
+          <td>2级喷泉</td>
+          <td></td>
+      </tr>
+  </tbody>
+</table>
+<p>房屋作用为供给人口上限，喷泉作用为给影响范围内的房屋提供人口上限加成，酒馆作用为降低影响范围内的房屋对应的人口数的食物消耗量</p>
+<h4>2.5.2 资源建筑<span class="hx:absolute hx:-mt-20" id="252-资源建筑"></span>
+    <a href="#252-%e8%b5%84%e6%ba%90%e5%bb%ba%e7%ad%91" class="subheading-anchor" aria-label="此章节的永久链接"></a></h4><p>资源存储建筑有：</p>
+<table>
+  <thead>
+      <tr>
+          <th>一本</th>
+          <th>1级仓库</th>
+          <th>1级粮仓</th>
+          <th></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>二本</td>
+          <td>2级仓库</td>
+          <td>2级粮仓</td>
+          <td>市场</td>
+      </tr>
+      <tr>
+          <td>三本</td>
+          <td>3级仓库</td>
+          <td>3级粮仓</td>
+          <td></td>
+      </tr>
+  </tbody>
+</table>
+<p>资源采集建筑有：</p>
+<table>
+  <thead>
+      <tr>
+          <th>一本</th>
+          <th>采莓人小屋</th>
+          <th>渔场</th>
+          <th></th>
+          <th>1级伐木场</th>
+          <th>1级采石厂</th>
+          <th></th>
+          <th></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>二本</td>
+          <td></td>
+          <td></td>
+          <td>1级农场</td>
+          <td>2级伐木场</td>
+          <td>2级采石厂</td>
+          <td>1级炼钢厂</td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>三本</td>
+          <td></td>
+          <td></td>
+          <td>2级农场</td>
+          <td>3级伐木场</td>
+          <td>3级采石厂</td>
+          <td>2级炼钢厂</td>
+          <td>工坊</td>
+      </tr>
+      <tr>
+          <td>三本</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>植树人小屋</td>
+          <td>永恒石矿厂</td>
+          <td>永恒铁矿厂</td>
+          <td>永恒炼金塔</td>
+      </tr>
+  </tbody>
+</table>
+<p>工坊的作用为提升影响范围内的资源采集建筑的工作效率，不可影响工坊，影响不可叠加</p>
+<h4>2.5.3 军事建筑<span class="hx:absolute hx:-mt-20" id="253-军事建筑"></span>
+    <a href="#253-%e5%86%9b%e4%ba%8b%e5%bb%ba%e7%ad%91" class="subheading-anchor" aria-label="此章节的永久链接"></a></h4><p>军事建筑有：</p>
+<table>
+  <thead>
+      <tr>
+          <th>一本</th>
+          <th>1级兵营</th>
+          <th></th>
+          <th></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>二本</td>
+          <td>2级兵营</td>
+          <td>1级工程师工会</td>
+          <td>1级马厩</td>
+      </tr>
+      <tr>
+          <td>三本</td>
+          <td>3级兵营</td>
+          <td>2级工程师工会</td>
+          <td>2级马厩</td>
+      </tr>
+  </tbody>
+</table>
+<p>特殊地，玩家阵营中的单位均有每秒回血机制</p>
+<hr>
+<p>兵营生产单位为：</p>
+<table>
+  <thead>
+      <tr>
+          <th>一级</th>
+          <th>剑士</th>
+          <th>弓箭手</th>
+          <th></th>
+          <th></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>二级</td>
+          <td>弩手</td>
+          <td>矛兵</td>
+          <td>斧兵</td>
+          <td>治疗师</td>
+      </tr>
+      <tr>
+          <td>三级</td>
+          <td>锤兵</td>
+          <td>步行骑士</td>
+          <td></td>
+          <td></td>
+      </tr>
+  </tbody>
+</table>
+<p>其中，剑士与弓箭手均为基础兵种，无任何加成，弩手为玩家阵营最强的远程兵种，矛兵对骑兵单位有攻击加成，且无视骑兵单位的冲锋效果，斧兵为过渡兵种，治疗师无加成不赘述，锤兵攻击造成范围伤害，步行骑士为玩家阵营最强的步兵</p>
+<hr>
+<p>工程师工会生产单位为：</p>
+<table>
+  <thead>
+      <tr>
+          <th>一级</th>
+          <th>投石车</th>
+          <th></th>
+          <th></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>二级</td>
+          <td>弩炮</td>
+          <td>自爆车（简称）</td>
+          <td>投石机</td>
+      </tr>
+  </tbody>
+</table>
+<p>其中，投石车攻击造成单次范围，且会对被攻击到的敌人施加击飞，有攻击盲区，弩炮攻击对直线上的敌人造成穿透伤害，自爆车对自身攻击范围内的敌人造成自杀性范围伤害和击飞，投石机造成伤害同投石机，但伤害更高，攻击范围更远，攻击盲区更大</p>
+<hr>
+<p>马厩生产单位为：</p>
+<table>
+  <thead>
+      <tr>
+          <th>一级</th>
+          <th>骑手</th>
+          <th></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>二级</td>
+          <td>马弓手</td>
+          <td>骑士</td>
+      </tr>
+  </tbody>
+</table>
+<p>其中，骑手和骑士均可造成冲锋伤害，其余无特殊加成此处不赘述</p>
+<h4>2.5.4 民生建筑<span class="hx:absolute hx:-mt-20" id="254-民生建筑"></span>
+    <a href="#254-%e6%b0%91%e7%94%9f%e5%bb%ba%e7%ad%91" class="subheading-anchor" aria-label="此章节的永久链接"></a></h4><p>民生建筑有：</p>
+<table>
+  <thead>
+      <tr>
+          <th>一本</th>
+          <th>1级建筑工人之家</th>
+          <th>1级掘墓人之家</th>
+          <th>墓地</th>
+          <th>急救帐篷</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>二本</td>
+          <td>2级建筑工人之家</td>
+          <td>2级掘墓人之家</td>
+          <td></td>
+          <td>医院</td>
+      </tr>
+  </tbody>
+</table>
+<h4>2.5.5 防御工事<span class="hx:absolute hx:-mt-20" id="255-防御工事"></span>
+    <a href="#255-%e9%98%b2%e5%be%a1%e5%b7%a5%e4%ba%8b" class="subheading-anchor" aria-label="此章节的永久链接"></a></h4><p>游戏中的防御工事简单分为三种，墙（包含门在内，此处不讨论门），塔，陷阱</p>
+<p>墙有三级，此处不赘述，更高级的墙拥有更高级的防御力和更高的血量上限</p>
+<hr>
+<p>塔有三种规格，分别为1/9/25容量</p>
+<p>1容量塔为瞭望塔，有2级，仅能容纳1个远程单位，即弓箭手/弩手/治疗师，瞭望塔会给予玩家大范围的视野，同时给予塔上的单位最高的攻击范围加成</p>
+<p>9容量塔有3级，最多容纳9个远程单位或1个投石车/弩炮</p>
+<p>25容量塔有两种，一种称塔，一种称台，均有3级，台通常有更高的血量，塔会为其上的单位提供较台更高的攻击范围加成，最多容纳25个远程单位或4个投石车/弩炮或1个投石机</p>
+<p>特别地，器械单位（投石车/弩炮/投石机）在防御工事上时会获得额外的攻击盲区</p>
+<hr>
+<p>游戏中的陷阱仅有2种，减速陷阱和爆桶陷阱</p>
+<p>减速陷阱会给予与该陷阱重叠的敌人速度减益，同时扣除陷阱及敌人生命值</p>
+<p>爆桶陷阱会在有敌人位于陷阱3x3范围内时爆炸，对该范围内的敌人造成伤害</p>
+<p>陷阱的建造速度极快，且不受敌方远程单位影响</p>
+<h4>2.5.6 工作范围<span class="hx:absolute hx:-mt-20" id="256-工作范围"></span>
+    <a href="#256-%e5%b7%a5%e4%bd%9c%e8%8c%83%e5%9b%b4" class="subheading-anchor" aria-label="此章节的永久链接"></a></h4><p>工作范围仅存在于资源采集建筑相关的系统中</p>
+<p>玩家有两种行为可以改变资源采集建筑的工作范围：（准确来说是该建筑对应的工人的工作范围，但这个属性确实是建筑的，此处不细究）</p>
+<ul>
+<li>
+<p>加减工作范围半径（以格为单位）</p>
+</li>
+<li>
+<p>更改资源采集建筑的集结点</p>
+</li>
+</ul>
+<p>以某资源采集建筑的集结点为圆心，以工作范围半径为半径的圆形范围定义为该资源采集建筑的工作范围</p>
+<p>特别地，资源采集建筑的集结点默认为该建筑位置，半径有默认值和最大值最小值</p>
+<p>工作范围对资源采集的影响为：当工作范围内存在可采集的资源时，该资源采集建筑对应的工人才会设定其为资源点开始采集</p>
+<h3>2.6 军事系统（其实应该叫&quot;敌人ai系统&quot;）<span class="hx:absolute hx:-mt-20" id="26-军事系统其实应该叫敌人ai系统"></span>
+    <a href="#26-%e5%86%9b%e4%ba%8b%e7%b3%bb%e7%bb%9f%e5%85%b6%e5%ae%9e%e5%ba%94%e8%af%a5%e5%8f%ab%e6%95%8c%e4%ba%baai%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>（《要战便战》的敌人ai系统和星际争霸2的合作模式的敌人ai系统基本相同，不过《要战便战》的ai要更简单一些）</p>
+<p>总体来说，《要战便战》中不存在可控制单位或管理资源的ai</p>
+<p>游戏中存在两类ai，一类为静态ai，一类为红点ai</p>
+<p>静态ai为游戏开始时，作为地图元素根据地图配置的相关权重随机刷新在空地上的敌人营地，敌人营地通常包括少量敌人建筑和若干敌人单位，这些敌人单位会在闲置时随机向近距离内的某处地点移动（有距离上限，idle状态下不会走出以营地建筑为中心的某个范围），若在该单位的索敌范围内出现敌对单位（对于这些静态ai来说，玩家单位为敌对单位，但有时也存在第三方势力的单位（如行尸走肉），这些静态ai也会对这些单位发动攻击，故而称敌对单位）</p>
+<p>静态ai可能拥有以下建筑：</p>
+<ul>
+<li>
+<p>无作用的占位建筑——要实在说有点作用，可能只有在玩家摧毁该营地的时候给出宝石奖励</p>
+</li>
+<li>
+<p>自动生产单位的建筑——会随时间流逝刷新出少量敌人单位，这些敌人单位不会停留在营地处，而是会行军攻击至玩家市政厅（可以理解为F2A）</p>
+</li>
+<li>
+<p>警戒生产单位的建筑——名字随便取的，效果是若该建筑索敌范围内出现敌对单位，则立刻招募某些单位，该效果有冷却，招募的单位和冷却时间均会标注在该建筑的详细信息面板上</p>
+</li>
+<li>
+<p>防御工事——如墙，门，放置了单位的塔</p>
+</li>
+</ul>
+<p>红点ai为随时间流逝，在固定时间点于地图边缘刷新出的大量敌人，刷新下一波红点ai的时间点和刷新区域会提前告知玩家，刷新出的敌人会F2A至玩家市政厅处，索敌逻辑与静态ai相同</p>
+<h3>2.7 科技系统<span class="hx:absolute hx:-mt-20" id="27-科技系统"></span>
+    <a href="#27-%e7%a7%91%e6%8a%80%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>游戏中玩家可以消耗时间和资源研究科技，同一时间最多研究一个科技</p>
+<p>可否研究某项科技仅与两个因素有关：是否研究其前置科技，是否建造解锁该科技的建筑</p>
+<p>（可以理解为类似红警2的建筑驱动科技树发展）</p>
+<p>与科技相关的关键建筑如下：</p>
+<ul>
+<li>
+<p>1/2/3级市政厅</p>
+</li>
+<li>
+<p>1/2/3级兵营</p>
+</li>
+<li>
+<p>1/2级工程师工会</p>
+</li>
+<li>
+<p>2级马厩</p>
+</li>
+<li>
+<p>市场</p>
+</li>
+<li>
+<p>急救帐篷</p>
+</li>
+<li>
+<p>大学</p>
+</li>
+</ul>
+<p>具体科技此处不赘述</p>
+<h3>2.8 法术系统<span class="hx:absolute hx:-mt-20" id="28-法术系统"></span>
+    <a href="#28-%e6%b3%95%e6%9c%af%e7%b3%bb%e7%bb%9f" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>法术系统的核心建筑为&quot;方尖碑&quot;，共3级，每一级解锁一个法术，玩家默认解锁一个法术</p>
+<p>游戏中的四种法术为：</p>
+<ul>
+<li>
+<p>召唤——在特定区域内召唤若干特殊军事单位，这些军事单位属性在一本到二本军事单位之间，且有持续时间限制，持续时间结束后，这些单位消失，这些单位被击杀或消失均不留下尸体</p>
+</li>
+<li>
+<p>极星射线——以玩家鼠标处为伤害区域中心点（玩家可以在使用该法术过程中移动伤害区域），在一定范围内造成持续的伤害和击飞，有持续时间限制</p>
+</li>
+<li>
+<p>群体治疗——在特定区域内持续治疗己方单位</p>
+</li>
+<li>
+<p>陨石——在特定区域内造成一次性大范围伤害和击飞</p>
+</li>
+</ul>
+<hr>
+<p>以上</p>
+
+        </div>
+        
+    <div class="hx:mt-12 hx:mb-8 hx:block hx:text-xs hx:text-gray-500 hx:ltr:text-right hx:rtl:text-left hx:dark:text-gray-400">
+      最后更新于 <time datetime="2026-03-08T00:00:00.000Z">2026年3月8日</time></div><div class="hx:mb-8 hx:flex hx:items-center hx:border-t hx:pt-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-neutral-400 hx:dark:contrast-more:border-neutral-400 hx:print:hidden"><a
+        href="/game/2026ggj/"
+        title="2026 Global Game Jam武汉铃空站复盘"
+        class="hx:flex hx:max-w-[50%] hx:items-center hx:gap-1 hx:py-4 hx:text-base hx:font-medium hx:text-gray-600 hx:transition-colors [word-break:break-word] hx:hover:text-primary-600 hx:dark:text-gray-300 hx:md:text-lg hx:ltr:pr-4 hx:rtl:pl-4"
+      ><svg class="hx:inline hx:h-5 hx:shrink-0 hx:ltr:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>2026 Global Game Jam武汉铃空站复盘</a></div>
+      </main>
+    </article>
+  </div>
+
+      <footer class="hextra-footer hx:bg-gray-100 hx:pb-[env(safe-area-inset-bottom)] hx:dark:bg-neutral-900 hx:print:bg-transparent"><div class="hextra-custom-footer hextra-max-footer-width hx:pl-[max(env(safe-area-inset-left),1.5rem)] hx:pr-[max(env(safe-area-inset-right),1.5rem)] hx:text-gray-600 hx:dark:text-gray-400"></div><div
+      class="hextra-max-footer-width hx:mx-auto hx:flex hx:justify-center hx:py-12 hx:pl-[max(env(safe-area-inset-left),1.5rem)] hx:pr-[max(env(safe-area-inset-right),1.5rem)] hx:text-gray-600 hx:dark:text-gray-400 hx:md:justify-start"
+    >
+      <div class="hx:flex hx:w-full hx:flex-col hx:items-center hx:sm:items-start"><div class="hx:font-semibold"><a class="hx:flex hx:text-sm hx:items-center hx:gap-1 hx:text-current" target="_blank" rel="noopener noreferrer" title="Hextra GitHub Homepage" href="https://github.com/imfing/hextra">
+    <span>由 Hextra 提供支持<svg height=1em class="hx:inline-block hx:ltr:ml-1 hx:rtl:mr-1 hx:align-[-2.5px]" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="m 105.50024,22.224647 c -9.59169,-5.537563 -21.40871,-5.537563 -31.000093,0 L 39.054693,42.689119 C 29.463353,48.226675 23.55484,58.460531 23.55484,69.535642 v 40.928918 c 0,11.07542 5.908513,21.3092 15.499853,26.84652 l 35.445453,20.46446 c 9.591313,5.53732 21.408404,5.53732 31.000094,0 l 35.44507,-20.46446 c 9.59131,-5.53732 15.49985,-15.7711 15.49985,-26.84652 V 69.535642 c 0,-11.075111 -5.90854,-21.308967 -15.49985,-26.846523 z M 34.112797,85.737639 c -1.384445,2.397827 -1.384445,5.352099 0,7.749927 l 24.781554,42.922974 c 1.38437,2.39783 3.942853,3.87496 6.711592,3.87496 h 49.563107 c 2.76905,0 5.3273,-1.47713 6.71144,-3.87496 l 24.78194,-42.922974 c 1.38414,-2.397828 1.38414,-5.3521 0,-7.749927 L 121.88049,42.814746 c -1.38414,-2.397828 -3.94239,-3.874964 -6.71144,-3.874964 H 65.605944 c -2.768739,0 -5.327223,1.477059 -6.711592,3.874964 z" style="stroke-width:0.774993" /></svg></span>
+  </a></div><div class="hx:mt-6 hx:text-xs">© 2025 YUYI <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/."target="_blank" rel="noopener">lisence ↗</a></div></div>
+    </div></footer>
+    
+    <script defer src="/js/main.js" integrity=""></script>
+<script defer src="/js/flexsearch.9f5b5908f93ae86f1ecd4b043b799f580c2d1654e703dd9357d568ac41b2547a.js" integrity="sha256-n1tZCPk66G8ezUsEO3mfWAwtFlTnA92TV9VorEGyVHo=" crossorigin="anonymous"></script>
+        <script defer src="/zh-cn.search.js" integrity=""></script>
+  </body>
+</html>
