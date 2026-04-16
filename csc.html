@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <title>Game</title>
+  <script src="pieces_config.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 100vw; height: 100vh; overflow: hidden;
+      background: radial-gradient(ellipse at center, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      display: flex; align-items: center; justify-content: center; gap: 32px;
+      user-select: none;
+      font-family: 'Segoe UI', 'PingFang SC', sans-serif;
+    }
+    #turn-banner {
+      position: fixed; top: 18px; left: 50%; transform: translateX(-50%);
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15);
+      backdrop-filter: blur(8px); border-radius: 999px;
+      padding: 6px 24px; color: rgba(255,255,255,0.7);
+      font-size: 13px; letter-spacing: 1px; z-index: 100; pointer-events: none;
+    }
+    #turn-banner b { color: #fff; font-weight: 700; }
+    #ctx-menu {
+      position: fixed; display: none; z-index: 999;
+      background: rgba(20,22,40,0.97); border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 10px; padding: 5px 0;
+      backdrop-filter: blur(14px); box-shadow: 0 8px 32px rgba(0,0,0,0.55);
+      min-width: 150px;
+    }
+    #ctx-menu.visible { display: block; }
+    .ctx-item {
+      padding: 9px 18px; font-size: 13px; color: rgba(255,255,255,0.8);
+      cursor: pointer; letter-spacing: 0.5px; transition: background 0.15s;
+      display: flex; align-items: center; gap: 7px; position: relative;
+    }
+    .ctx-item:hover { background: rgba(255,255,255,0.09); color: #fff; }
+    .ctx-item .ctx-icon { font-size: 13px; width: 18px; text-align: center; }
+    .ctx-item .ctx-arrow { margin-left: auto; font-size: 10px; opacity: .5; }
+    .ctx-divider { height: 1px; background: rgba(255,255,255,0.1); margin: 4px 0; }
+    .ctx-item.has-sub { overflow: visible; }
+    .ctx-submenu {
+      position: absolute; left: 100%; top: -5px;
+      background: rgba(20,22,40,0.97); border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 10px; padding: 5px 0;
+      backdrop-filter: blur(14px); box-shadow: 0 8px 32px rgba(0,0,0,0.55);
+      min-width: 168px; display: none; z-index: 1000;
+    }
+    .ctx-item.has-sub:hover > .ctx-submenu { display: block; }
+    .ctx-submenu .ctx-item.no-los  { opacity: 0.32; pointer-events: none; }
+    .ctx-submenu .ctx-item.no-ammo { opacity: 0.32; pointer-events: none; }
+    .side-panel { display: flex; flex-direction: column; gap: 12px; width: 168px; }
+    .hp-card {
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px; padding: 9px 11px;
+      display: flex; flex-direction: column; gap: 6px;
+      backdrop-filter: blur(6px);
+      transition: opacity 0.3s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .side-panel.enemy .hp-card { border-color: rgba(255,80,80,0.25);  box-shadow: 0 0 10px rgba(255,60,60,0.08); }
+    .side-panel.ally  .hp-card { border-color: rgba(40,220,120,0.25); box-shadow: 0 0 10px rgba(40,220,120,0.08); }
+    .hp-card.committed { opacity: 0.48; }
+    .side-panel.enemy .hp-card.hovered { border-color: rgba(255,120,120,0.75) !important; box-shadow: 0 0 18px 4px rgba(255,80,80,0.35) !important; }
+    .side-panel.ally  .hp-card.hovered { border-color: rgba(60,220,140,0.75)  !important; box-shadow: 0 0 18px 4px rgba(40,220,120,0.35) !important; }
+    .hp-card-header { display: flex; align-items: center; gap: 7px; margin-bottom: 1px; }
+    .card-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+    .side-panel.enemy .card-dot { background: radial-gradient(circle at 35% 35%,#ff8a80,#c0392b); box-shadow: 0 0 5px rgba(255,60,60,.7); }
+    .side-panel.ally  .card-dot { background: radial-gradient(circle at 35% 35%,#80ffb8,#27ae60); box-shadow: 0 0 5px rgba(40,220,120,.7); }
+    .card-label { font-size: 11px; color: rgba(255,255,255,0.45); letter-spacing: 0.4px; }
+    .card-name-badge { font-size: 12px; font-weight: 700; margin-left: auto; padding: 1px 6px; border-radius: 5px; letter-spacing: 1px; }
+    .side-panel.enemy .card-name-badge { color:#ff8a80; background:rgba(255,80,80,.12);  border:1px solid rgba(255,80,80,.28); }
+    .side-panel.ally  .card-name-badge { color:#80ffb8; background:rgba(40,220,120,.12); border:1px solid rgba(40,220,120,.28); }
+    .card-pending-arrow { font-size:10px; margin-left:3px; animation:arrowPulse 1s ease-in-out infinite; color:#ffb347; }
+    @keyframes arrowPulse { 0%,100%{opacity:1} 50%{opacity:.2} }
+    .stat-grid { display:grid; grid-template-columns:30px 1fr; row-gap:5px; align-items:center; }
+    .stat-label { font-size:10px; font-weight:700; letter-spacing:.4px; line-height:1; }
+    .side-panel.enemy .stat-label { color:rgba(255,120,120,.7); }
+    .side-panel.ally  .stat-label { color:rgba(80,220,140,.7); }
+    .hp-content { display:flex; align-items:center; gap:5px; }
+    .hp-value { font-size:11px; font-weight:700; min-width:22px; text-align:right; flex-shrink:0; }
+    .side-panel.enemy .hp-value { color:#ff8a80; }
+    .side-panel.ally  .hp-value { color:#80ffb8; }
+    .hp-bar-track { flex:1; height:5px; background:rgba(255,255,255,.08); border-radius:999px; overflow:hidden; }
+    .hp-bar-fill  { height:100%; border-radius:999px; transition:width .4s ease; }
+    .side-panel.enemy .hp-bar-fill { background:linear-gradient(90deg,#c0392b,#ff6b6b); box-shadow:0 0 5px rgba(255,60,60,.55); }
+    .side-panel.ally  .hp-bar-fill { background:linear-gradient(90deg,#27ae60,#51cf66); box-shadow:0 0 5px rgba(40,220,120,.55); }
+    .ep-content { display:flex; align-items:center; gap:3px; }
+    .ep-box { flex:1; height:9px; border-radius:3px; border:1px solid rgba(255,255,255,.22); transition:background .3s; }
+    .ep-box.empty  { background:rgba(255,255,255,.05); }
+    .side-panel.enemy .ep-box.filled { background:#ff8a80; border-color:#ff6b6b; box-shadow:0 0 4px rgba(255,80,80,.5); }
+    .side-panel.ally  .ep-box.filled { background:#80ffb8; border-color:#51cf66; box-shadow:0 0 4px rgba(40,220,120,.5); }
+    .grid {
+      display:grid; grid-template-columns:repeat(5,72px); grid-template-rows:repeat(5,72px);
+      gap:20px; flex-shrink:0;
+    }
+    .cell {
+      width:72px; height:72px; border-radius:50%;
+      border:3px solid #3a86ff; position:relative; overflow:visible;
+      box-shadow:0 0 8px 2px rgba(58,134,255,.3),inset 0 0 8px 2px rgba(58,134,255,.1);
+      transition:box-shadow .2s,border-color .2s,background .3s;
+    }
+    .cell.obstacle { background:#0a0a0a !important; border-color:#222 !important; box-shadow:inset 0 0 20px rgba(0,0,0,1) !important; cursor:not-allowed; }
+    .cell.smoke-zone { background:rgba(155,155,165,0.75) !important; border-color:#aaa !important; box-shadow:0 0 12px 4px rgba(180,180,190,.35),inset 0 0 10px rgba(200,200,210,.2) !important; }
+    .cell.fire-zone  { background:rgba(215,55,15,0.68)  !important; border-color:#ff6030 !important; box-shadow:0 0 18px 6px rgba(255,80,20,.55),inset 0 0 10px rgba(255,120,40,.3) !important; }
+    .cell.drop-target { border-color:rgba(255,255,255,.6); box-shadow:0 0 22px 8px rgba(255,255,255,.28),inset 0 0 12px rgba(255,255,255,.08); cursor:context-menu; }
+    .cell.drop-target:hover { border-color:#fff; box-shadow:0 0 32px 12px rgba(255,255,255,.4),inset 0 0 16px rgba(255,255,255,.15); }
+    .cell-badge { position:absolute; bottom:4px; right:4px; font-size:9px; font-weight:700; color:#fff; background:rgba(0,0,0,.5); border-radius:4px; padding:1px 3px; pointer-events:none; z-index:5; line-height:1.3; }
+    .piece { position:absolute; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:900; line-height:1; cursor:grab; transition:box-shadow .2s,opacity .2s; }
+    .piece.red   { background:radial-gradient(circle at 35% 35%,#ff8a80,#c0392b); box-shadow:0 0 10px 3px rgba(255,60,60,.55);  color:rgba(255,255,255,.95); text-shadow:0 1px 3px rgba(0,0,0,.6); }
+    .piece.green { background:radial-gradient(circle at 35% 35%,#80ffb8,#27ae60); box-shadow:0 0 10px 3px rgba(40,220,120,.55); color:rgba(0,0,0,.72); text-shadow:0 1px 2px rgba(255,255,255,.3); }
+    .piece.selected { animation:selPulse 1s ease-in-out infinite; cursor:grabbing; z-index:10; }
+    .piece.red.selected   { box-shadow:0 0 26px 10px rgba(255,100,100,.9),0 0 6px 3px rgba(255,255,255,.5); }
+    .piece.green.selected { box-shadow:0 0 26px 10px rgba(60,220,130,.9),0 0 6px 3px rgba(255,255,255,.5); }
+    @keyframes selPulse { 0%,100%{filter:brightness(1)} 50%{filter:brightness(1.45)} }
+    .piece.committed { opacity:.42; filter:grayscale(25%); cursor:default; }
+    .piece.ghost { opacity:.28; background:rgba(255,255,255,.06) !important; box-shadow:none !important; border:2px dashed rgba(255,255,255,.45); pointer-events:none; }
+    .piece.ghost.red   { color:#ff8a80; }
+    .piece.ghost.green { color:#80ffb8; }
+    .piece-floater { position:fixed; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:900; line-height:1; pointer-events:none; z-index:500; }
+    .piece-floater.red   { background:radial-gradient(circle at 35% 35%,#ff8a80,#c0392b); box-shadow:0 0 14px 5px rgba(255,60,60,.7);  color:rgba(255,255,255,.95); }
+    .piece-floater.green { background:radial-gradient(circle at 35% 35%,#80ffb8,#27ae60); box-shadow:0 0 14px 5px rgba(40,220,120,.7); color:rgba(0,0,0,.72); }
+    .proj-floater { position:fixed; font-size:24px; pointer-events:none; z-index:600; transform:translate(-50%,-50%); line-height:1; }
+    body.executing { pointer-events:none; }
+    .press-ring { position:absolute; width:64px; height:64px; border-radius:50%; border:3px solid transparent; border-top-color:#fff; top:50%; left:50%; transform:translate(-50%,-50%); animation:pressRing .5s linear forwards; pointer-events:none; z-index:20; }
+    @keyframes pressRing { from{transform:translate(-50%,-50%) rotate(0deg);opacity:1} to{transform:translate(-50%,-50%) rotate(360deg);opacity:.2} }
+  </style>
+</head>
+<body>
+  <div id="turn-banner">回合 <b id="turn-num">1</b>  ·  规划中</div>
+  <div class="side-panel enemy" id="panel-enemy"></div>
+  <div class="grid" id="grid"></div>
+  <div class="side-panel ally"  id="panel-ally"></div>
+
+  <div id="ctx-menu">
+    <div id="ctx-move-group" style="display:none;">
+      <div class="ctx-item" id="ctx-still"><span class="ctx-icon">🥾</span>静步至</div>
+      <div class="ctx-item" id="ctx-pull" ><span class="ctx-icon">🪝</span>大拉至</div>
+      <div class="ctx-item" id="ctx-jump" ><span class="ctx-icon">💨</span>跳拉至</div>
+      <div class="ctx-divider"></div>
+      <div class="ctx-item has-sub">
+        <span class="ctx-icon">🎯</span>部署至
+        <span class="ctx-arrow">▶</span>
+        <div class="ctx-submenu" id="ctx-submenu">
+          <div class="ctx-item" id="ctx-grenade"><span class="ctx-icon">💩</span>部署手榴弹至</div>
+          <div class="ctx-item" id="ctx-smoke"  ><span class="ctx-icon">🌫️</span>部署烟雾弹至</div>
+          <div class="ctx-item" id="ctx-fire"   ><span class="ctx-icon">🔥</span>部署燃烧弹至</div>
+        </div>
+      </div>
+      <div class="ctx-divider"></div>
+    </div>
+    <div class="ctx-item" id="ctx-end-turn"><span class="ctx-icon">⏹</span>结束回合</div>
+  </div>
+
+<script>
+  var LAYOUT = {
+    1:{ size:42, fs:16, offsets:[[0,0]] },
+    2:{ size:26, fs:11, offsets:[[-16,0],[16,0]] },
+    3:{ size:22, fs: 9, offsets:[[0,-14],[-14,12],[14,12]] },
+    4:{ size:19, fs: 8, offsets:[[-13,-13],[13,-13],[-13,13],[13,13]] },
+    5:{ size:17, fs: 7, offsets:[[-13,-15],[13,-15],[0,0],[-13,15],[13,15]] }
+  };
+
+  var RED='red', GREEN='green', MAX_HP=100, MAX_EP=5;
+  var NAMES=['甲','乙','丙','丁','戊'];
+  var ANIM_MS=420, PROJ_MS=600;
+
+  var cellStates = new Array(25).fill(null);
+  [11,12,13].forEach(function(i){ cellStates[i]={type:'obstacle'}; });
+
+  var pieces = [];
+  var moveQueue={red:[],green:[]}, actionQueue={red:[],green:[]};
+  var usedProjectileIds=new Set();
+  var selected=null, isExecuting=false, turnNumber=1;
+  var longPressTimer=null, pressRingEl=null, pressRingCell=null;
+  var ctxTargetIdx=null, hoveredPieceId=null;
+
+  var gridEl     = document.getElementById('grid');
+  var panelEnemy = document.getElementById('panel-enemy');
+  var panelAlly  = document.getElementById('panel-ally');
+  var ctxMenu    = document.getElementById('ctx-menu');
+  var ctxMoveGrp = document.getElementById('ctx-move-group');
+
+  // 加载棋子配置
+  function loadPiecesConfig() {
+    console.log('Loading pieces config...');
+    
+    // 检查外部JS文件是否已加载
+    if (typeof piecesConfig !== 'undefined' && piecesConfig.pieces) {
+      console.log('Successfully loaded config from JS file:', piecesConfig);
+      initializePieces(piecesConfig.pieces);
+      render();
+    } else {
+      console.error('Config not found, using default');
+      // 如果外部配置未加载，使用默认配置
+      initializePiecesWithDefault();
+      render();
+    }
+  }
+
+  // 根据配置初始化棋子
+  function initializePieces(configPieces) {
+    pieces = configPieces.map(function(p, i) {
+      var boardIndex = p.color === RED ? i : 20 + (i - 5);
+      return {
+        id: p.id,
+        name: p.name,
+        color: p.color,
+        boardIndex: boardIndex,
+        pendingIndex: null,
+        hp: MAX_HP,
+        ep: MAX_EP
+      };
+    });
+  }
+
+  // 使用默认配置初始化棋子
+  function initializePiecesWithDefault() {
+    pieces = [].concat(
+      NAMES.map(function(n,i){ return{id:i,  name:n,color:RED,  boardIndex:i,   pendingIndex:null,hp:MAX_HP,ep:MAX_EP}; }),
+      NAMES.map(function(n,i){ return{id:i+5,name:n,color:GREEN,boardIndex:20+i,pendingIndex:null,hp:MAX_HP,ep:MAX_EP}; })
+    );
+  }
+
+  function getCellsBetween(fromIdx,toIdx){
+    var r1=Math.floor(fromIdx/5),c1=fromIdx%5,r2=Math.floor(toIdx/5),c2=toIdx%5;
+    var cells=[],dr=r2-r1,dc=c2-c1,nr=Math.abs(dr),nc=Math.abs(dc);
+    var pr=dr>0?1:-1,pc=dc>0?1:-1,r=r1,c=c1;
+    for(var ix=0,iy=0;ix<nc||iy<nr;){
+      if(nc===0||(nr>0&&(0.5+ix)/nc>(0.5+iy)/nr)){r+=pr;iy++;}
+      else{c+=pc;ix++;}
+      if(r!==r2||c!==c2) cells.push(r*5+c);
+    }
+    return cells;
+  }
+  function hasLoS(fromIdx,toIdx){
+    return !getCellsBetween(fromIdx,toIdx).some(function(idx){
+      var s=cellStates[idx]; return s&&(s.type==='obstacle'||s.type==='smoke');
+    });
+  }
+  function isObstacle(idx){ return !!(cellStates[idx]&&cellStates[idx].type==='obstacle'); }
+  function getPiecesAt(idx){ return pieces.filter(function(p){return p.boardIndex===idx;}); }
+  function getGhostsAt(idx){ return pieces.filter(function(p){return p.pendingIndex===idx&&p.pendingIndex!==p.boardIndex;}); }
+  function hasPending(p){ return p.pendingIndex!==null; }
+  function cellCenter(idx){
+    var r=gridEl.querySelectorAll('.cell')[idx].getBoundingClientRect();
+    return{x:r.left+r.width/2,y:r.top+r.height/2};
+  }
+  function pieceTransform(dx,dy,scale){ return'translate(calc(-50% + '+dx+'px), calc(-50% + '+dy+'px)) scale('+(scale||1)+')'; }
+  function sleep(ms){ return new Promise(function(r){setTimeout(r,ms);}); }
+
+  function renderPanels(){
+    renderPanel(panelEnemy,pieces.filter(function(p){return p.color===RED;}),'enemy','敌方');
+    renderPanel(panelAlly, pieces.filter(function(p){return p.color===GREEN;}),'ally','我方');
+  }
+  function renderPanel(el,list,side,label){
+    el.innerHTML='';
+    list.forEach(function(p){
+      var pct=Math.max(0,(p.hp/MAX_HP)*100);
+      var isSel=selected&&selected.piece===p;
+      var isHov=hoveredPieceId===p.id;
+      var card=document.createElement('div');
+      card.className='hp-card'+(hasPending(p)?' committed':'')+(isHov?' hovered':'');
+      if(isSel) card.style.outline=side==='enemy'?'2px solid rgba(255,100,100,.6)':'2px solid rgba(60,220,130,.6)';
+      var epBoxes='';
+      for(var i=0;i<MAX_EP;i++) epBoxes+='<div class="ep-box '+(i<p.ep?'filled':'empty')+'"></div>';
+      card.innerHTML=
+        '<div class="hp-card-header">'+
+          '<div class="card-dot"></div>'+
+          '<span class="card-label">'+label+'</span>'+
+          '<span class="card-name-badge">'+p.name+
+            (hasPending(p)?'<span class="card-pending-arrow">→</span>':'')+
+          '</span>'+
+        '</div>'+
+        '<div class="stat-grid">'+
+          '<span class="stat-label">HP</span>'+
+          '<div class="hp-content">'+
+            '<span class="hp-value">'+p.hp+'</span>'+
+            '<div class="hp-bar-track"><div class="hp-bar-fill" style="width:'+pct+'%"></div></div>'+
+          '</div>'+
+          '<span class="stat-label">精力</span>'+
+          '<div class="ep-content">'+epBoxes+'</div>'+
+        '</div>';
+      el.appendChild(card);
+    });
+  }
+
+  function render(){
+    if(pressRingEl){ pressRingEl.remove(); pressRingEl=null; pressRingCell=null; }
+    gridEl.innerHTML='';
+    for(var i=0;i<25;i++){
+      (function(idx){
+        var cell=document.createElement('div');
+        cell.classList.add('cell'); cell.dataset.idx=idx;
+        var st=cellStates[idx];
+        if(st){
+          if(st.type==='obstacle'){ cell.classList.add('obstacle'); gridEl.appendChild(cell); return; }
+          if(st.type==='smoke'){
+            cell.classList.add('smoke-zone');
+            var b=document.createElement('div'); b.className='cell-badge'; b.textContent='🌫️'+st.turnsLeft; cell.appendChild(b);
+          } else if(st.type==='fire'){
+            cell.classList.add('fire-zone');
+            var b=document.createElement('div'); b.className='cell-badge'; b.textContent='🔥'+st.turnsLeft; cell.appendChild(b);
+          }
+        }
+        if(selected&&!hasPending(selected.piece)) cell.classList.add('drop-target');
+        var physical=getPiecesAt(idx), ghosts=getGhostsAt(idx);
+        var slots=physical.map(function(p){return{p:p,ghost:false};})
+                  .concat(ghosts.map(function(p){return{p:p,ghost:true};}));
+        var count=Math.min(slots.length,5)||1;
+        var layout=LAYOUT[count];
+        slots.forEach(function(slot,si){
+          var p=slot.p,ghost=slot.ghost;
+          var off=layout.offsets[si]||[0,0];
+          var el=document.createElement('div');
+          el.classList.add('piece',p.color);
+          if(ghost) el.classList.add('ghost');
+          else if(hasPending(p)) el.classList.add('committed');
+          var isSel=!ghost&&selected&&selected.piece===p;
+          if(isSel) el.classList.add('selected');
+          el.style.left='50%'; el.style.top='50%';
+          el.style.width=layout.size+'px'; el.style.height=layout.size+'px';
+          el.style.fontSize=layout.fs+'px';
+          el.style.transform=pieceTransform(off[0],off[1],isSel?1.22:1);
+          el.textContent=p.name;
+          if(!ghost&&!isExecuting&&!hasPending(p)){
+            el.addEventListener('mouseenter',function(){ hoveredPieceId=p.id; renderPanels(); });
+            el.addEventListener('mouseleave',function(){ hoveredPieceId=null; renderPanels(); });
+            el.addEventListener('mousedown',function(e){
+              if(e.button!==0) return; e.stopPropagation();
+              pressRingEl=document.createElement('div'); pressRingEl.className='press-ring';
+              cell.appendChild(pressRingEl); pressRingCell=cell;
+              longPressTimer=setTimeout(function(){
+                if(pressRingEl){ pressRingEl.remove(); pressRingEl=null; pressRingCell=null; }
+                selected={piece:p}; render();
+              },500);
+            });
+            el.addEventListener('mouseup',    cancelPress);
+            el.addEventListener('mouseleave', cancelPress);
+            el.addEventListener('contextmenu',function(e){e.preventDefault();e.stopPropagation();});
+          }
+          cell.appendChild(el);
+        });
+        cell.addEventListener('contextmenu',function(e){
+          e.preventDefault(); e.stopPropagation();
+          if(isExecuting) return;
+          if(selected&&!hasPending(selected.piece)){
+            ctxTargetIdx=idx;
+            var los=hasLoS(selected.piece.boardIndex,idx);
+            var obst=isObstacle(idx);
+            var hasUsed=usedProjectileIds.has(selected.piece.id);
+            ['ctx-grenade','ctx-smoke','ctx-fire'].forEach(function(id){
+              var item=document.getElementById(id);
+              item.classList.toggle('no-ammo', hasUsed);
+              item.classList.toggle('no-los',  !hasUsed&&(!los||obst));
+            });
+            showCtxMenu(e.clientX,e.clientY,true);
+          } else { ctxTargetIdx=null; showCtxMenu(e.clientX,e.clientY,false); }
+        });
+        gridEl.appendChild(cell);
+      })(i);
+    }
+    renderPanels();
+  }
+
+  function showCtxMenu(x,y,withMove){
+    ctxMoveGrp.style.display=withMove?'block':'none';
+    ctxMenu.style.left=x+'px'; ctxMenu.style.top=y+'px';
+    ctxMenu.classList.add('visible');
+  }
+  function hideCtxMenu(){ ctxMenu.classList.remove('visible'); ctxTargetIdx=null; }
+
+  function commitMove(){
+    if(ctxTargetIdx===null||!selected) return;
+    if(isObstacle(ctxTargetIdx)){ hideCtxMenu(); return; }
+    var p=selected.piece;
+    if(p.boardIndex!==ctxTargetIdx){
+      p.pendingIndex=ctxTargetIdx;
+      var colorKey=p.color===RED?'red':'green';
+      moveQueue[colorKey].push({type:'move',pieceId:p.id,from:p.boardIndex,to:ctxTargetIdx});
+    }
+    selected=null; ctxTargetIdx=null; hideCtxMenu(); render();
+  }
+  function commitAction(actionType){
+    if(ctxTargetIdx===null||!selected) return;
+    if(isObstacle(ctxTargetIdx)){ hideCtxMenu(); return; }
+    if(!hasLoS(selected.piece.boardIndex,ctxTargetIdx)){ hideCtxMenu(); return; }
+    if(usedProjectileIds.has(selected.piece.id)){ hideCtxMenu(); return; }
+    usedProjectileIds.add(selected.piece.id);
+    var colorKey=selected.piece.color===RED?'red':'green';
+    actionQueue[colorKey].push({type:actionType,pieceId:selected.piece.id,
+                      from:selected.piece.boardIndex,to:ctxTargetIdx});
+    hideCtxMenu(); render();
+  }
+
+  document.getElementById('ctx-still'   ).addEventListener('click', commitMove);
+  document.getElementById('ctx-pull'    ).addEventListener('click', commitMove);
+  document.getElementById('ctx-jump'    ).addEventListener('click', commitMove);
+  document.getElementById('ctx-grenade' ).addEventListener('click', function(){ commitAction('grenade'); });
+  document.getElementById('ctx-smoke'   ).addEventListener('click', function(){ commitAction('smoke');   });
+  document.getElementById('ctx-fire'    ).addEventListener('click', function(){ commitAction('fire');    });
+  document.getElementById('ctx-end-turn').addEventListener('click', function(){ hideCtxMenu(); if(!isExecuting) executeTurn(); });
+
+  document.addEventListener('mousedown',function(e){
+    if(!ctxMenu.contains(e.target)) hideCtxMenu();
+    if(e.button===0&&!e.target.closest('.cell')&&!e.target.closest('#ctx-menu')){ selected=null; render(); }
+  });
+  document.addEventListener('contextmenu',function(e){
+    e.preventDefault();
+    if(!e.target.closest('.cell')&&!isExecuting) showCtxMenu(e.clientX,e.clientY,false);
+  });
+
+  function animateMove(p,fromIdx,toIdx){
+    return new Promise(function(resolve){
+      var sz=LAYOUT[1].size,fs=LAYOUT[1].fs;
+      var from=cellCenter(fromIdx),to=cellCenter(toIdx);
+      var f=document.createElement('div');
+      f.className='piece-floater '+p.color; f.textContent=p.name;
+      f.style.cssText='width:'+sz+'px;height:'+sz+'px;font-size:'+fs+'px;'+
+        'left:'+(from.x-sz/2)+'px;top:'+(from.y-sz/2)+'px;transition:none;';
+      document.body.appendChild(f);
+      f.getBoundingClientRect();
+      f.style.transition='left '+ANIM_MS+'ms linear,top '+ANIM_MS+'ms linear';
+      f.style.left=(to.x-sz/2)+'px'; f.style.top=(to.y-sz/2)+'px';
+      setTimeout(function(){ f.remove(); resolve(); },ANIM_MS);
+    });
+  }
+
+  function animateProjectile(emoji,fromIdx,toIdx){
+    return new Promise(function(resolve){
+      var from=cellCenter(fromIdx),to=cellCenter(toIdx);
+      var f=document.createElement('div');
+      f.className='proj-floater'; f.textContent=emoji;
+      f.style.left=from.x+'px'; f.style.top=from.y+'px'; f.style.transition='none';
+      document.body.appendChild(f);
+      f.getBoundingClientRect();
+      f.style.transition='left '+PROJ_MS+'ms linear,top '+PROJ_MS+'ms linear';
+      f.style.left=to.x+'px'; f.style.top=to.y+'px';
+      setTimeout(function(){ f.remove(); resolve(); },PROJ_MS);
+    });
+  }
+
+  function tickZones(){
+    pieces.forEach(function(p){
+      var st=cellStates[p.boardIndex];
+      if(st&&st.type==='fire') p.hp=Math.max(0,p.hp-25);
+    });
+    for(var ci=0;ci<25;ci++){
+      var st=cellStates[ci];
+      if(st&&(st.type==='smoke'||st.type==='fire')){
+        st.turnsLeft--;
+        if(st.turnsLeft<=0) cellStates[ci]=null;
+      }
+    }
+  }
+
+  async function executeTurn(){
+    isExecuting=true; selected=null;
+    document.body.classList.add('executing');
+    updateBanner('执行中…');
+
+    tickZones(); render(); await sleep(120);
+
+    var emojiMap={grenade:'💩',smoke:'🌫️',fire:'🔥'};
+
+    // 为每个阵营创建操作队列，按单位ID分组
+    var redActions = {};
+    var greenActions = {};
+    
+    // 收集红方操作，按单位ID分组
+    moveQueue.red.forEach(function(mv){
+      if(!redActions[mv.pieceId]){
+        redActions[mv.pieceId] = {pieceId: mv.pieceId, move: null, action: null};
+      }
+      redActions[mv.pieceId].move = mv;
+    });
+    actionQueue.red.forEach(function(act){
+      if(!redActions[act.pieceId]){
+        redActions[act.pieceId] = {pieceId: act.pieceId, move: null, action: null};
+      }
+      redActions[act.pieceId].action = act;
+    });
+    
+    // 收集绿方操作，按单位ID分组
+    moveQueue.green.forEach(function(mv){
+      if(!greenActions[mv.pieceId]){
+        greenActions[mv.pieceId] = {pieceId: mv.pieceId, move: null, action: null};
+      }
+      greenActions[mv.pieceId].move = mv;
+    });
+    actionQueue.green.forEach(function(act){
+      if(!greenActions[act.pieceId]){
+        greenActions[act.pieceId] = {pieceId: act.pieceId, move: null, action: null};
+      }
+      greenActions[act.pieceId].action = act;
+    });
+    
+    // 转换为数组形式
+    var redActionArray = Object.keys(redActions).map(function(key){
+      return {color: 'red', ...redActions[key]};
+    });
+    var greenActionArray = Object.keys(greenActions).map(function(key){
+      return {color: 'green', ...greenActions[key]};
+    });
+    
+    // 按序号分组，确保同序号操作同时执行
+    var maxLength = Math.max(redActionArray.length, greenActionArray.length);
+    
+    for(var i=0;i<maxLength;i++){
+      var currentActions = [];
+      
+      // 收集当前序号的所有操作
+      if(i < redActionArray.length){
+        currentActions.push(redActionArray[i]);
+      }
+      if(i < greenActionArray.length){
+        currentActions.push(greenActionArray[i]);
+      }
+      
+      if(currentActions.length === 0) continue;
+      
+      // 执行当前序号的所有操作
+      var anims = [];
+      currentActions.forEach(function(action){
+        var piece = pieces.find(function(p){ return p.id === action.pieceId; });
+        
+        if(action.move && piece){
+          anims.push(animateMove(piece, action.move.from, action.move.to));
+        }
+        if(action.action){
+          anims.push(animateProjectile(emojiMap[action.action.type], action.action.from, action.action.to));
+        }
+      });
+      
+      if(anims.length) await Promise.all(anims);
+      
+      // 更新游戏状态
+      currentActions.forEach(function(action){
+        var piece = pieces.find(function(p){ return p.id === action.pieceId; });
+        
+        if(action.move && piece){
+          piece.boardIndex = action.move.to;
+          piece.pendingIndex = null;
+        }
+        if(action.action){
+          if(action.action.type === 'grenade'){
+            getPiecesAt(action.action.to).forEach(function(p){ p.hp = Math.max(0, p.hp - 50); });
+          } else if(action.action.type === 'fire'){
+            /* ★ 目标格已有烟雾时，火焰被压制，不生成燃烧区域 */
+            var targetState = cellStates[action.action.to];
+            if(!isObstacle(action.action.to) && !(targetState && targetState.type === 'smoke'))
+              cellStates[action.action.to] = {type: 'fire', turnsLeft: 1};
+          } else if(action.action.type === 'smoke'){
+            if(!isObstacle(action.action.to)) cellStates[action.action.to] = {type: 'smoke', turnsLeft: 2};
+          }
+        }
+      });
+      
+      render();
+      await sleep(60);
+    }
+
+    // 清空队列
+    moveQueue.red.length = 0;
+    moveQueue.green.length = 0;
+    actionQueue.red.length = 0;
+    actionQueue.green.length = 0;
+    
+    isExecuting=false;
+    document.body.classList.remove('executing');
+    advanceTurn();
+  }
+
+  function advanceTurn(){
+    usedProjectileIds.clear();
+    turnNumber++;
+    updateBanner('规划中');
+    render();
+  }
+  function updateBanner(s){
+    document.getElementById('turn-banner').innerHTML='回合 <b>'+turnNumber+'</b>  ·  '+s;
+  }
+  function cancelPress(){
+    clearTimeout(longPressTimer); longPressTimer=null;
+    if(pressRingEl){ pressRingEl.remove(); pressRingEl=null; pressRingCell=null; }
+  }
+
+  loadPiecesConfig();
+</script>
+</body>
+</html>
